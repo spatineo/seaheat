@@ -23,8 +23,8 @@ export class CertificateStack extends cdk.Stack {
 
     switch(targetEnv) {
         case 'staging':
-            this.domainName = 'seaheat-staging.net';
-            this.hostedZoneId = 'Z0462309TFCIKB6GSWB9'; // ??
+            this.domainName = 'seaheat-staging.com';
+            this.hostedZoneId = 'Z0660851JG2CK3DEP4C9';
             break;
         default:
             throw Error(`Unknown environment ${targetEnv}`)
