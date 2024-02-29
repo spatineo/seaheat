@@ -1,18 +1,17 @@
-.main {
+.graph {
   position: relative;
-  border: 1px solid black;
-  padding: 2%;
-  border-radius: 1%;
-}
-
-.main container {
-  width: 100%;
-  padding: 8px;
   border: 1px solid #ccc;
+  padding: 2%;
   border-radius: 4px;
 }
 
-.main .label{
+.graph .graph-container {
+  width: 100%;
+  padding: 8px;
+ 
+}
+
+.graph .graph-label{
   position: absolute;
   top: -12px;
   left: 8px;
