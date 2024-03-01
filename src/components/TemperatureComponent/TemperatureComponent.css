@@ -1,21 +1,29 @@
-.graph {
+.temperature {
   position: relative;
   border: 1px solid #ccc;
   padding: 2%;
   border-radius: 4px;
 }
 
-.graph .graph-container {
+.temperature .temperature-container {
   width: 100%;
   padding: 8px;
  
 }
 
-.graph .graph-label{
+.temperature .temperature-label {
   position: absolute;
   top: -12px;
   left: 8px;
   background-color: white;
   padding: 0 4px;
   font-size: 0.8rem
+}
+
+.select:focus {
+  border-color: transparent; 
+}
+
+.select-div:focus {
+  border-color: transparent;
 }

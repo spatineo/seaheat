@@ -1,77 +1,63 @@
 import * as echarts from 'echarts';
-/* 
-const rawData = [
-  [100, 302, 301, 334, 390, 330, 320],
-  [320, 132, 101, 134, 90, 230, 210],
-  [220, 182, 191, 234, 290, 330, 310],
-  [150, 212, 201, 154, 190, 330, 410],
-  [820, 832, 901, 934, 1290, 1330, 1320]
+const d =  [
+  [100, 302, 301, 334, 390, 330, 320, 400, 300, 200, 210, 310],
+  [320, 132, 101, 134, 90, 230, 210, 200, 210, 310, 300, 200],
+  [220, 182, 191, 234, 290, 330, 310, 200, 210, 310, 600, 100],
+  [150, 212, 201, 154, 190, 330, 410, 150, 170, 200, 210, 310],
+  [820, 832, 901, 200, 210, 310, 934, 1290, 1330, 1320, 300, 120],
+  [220, 182, 11, 234, 290, 200, 210, 310, 230, 310, 120, 150],
+  [820, 332, 901, 934, 200, 210, 310, 1290, 1330, 1320, 180, 140],
 ];
-const totalData = [];
-for (let i = 0; i < rawData[0].length; ++i) {
+
+const totalData: number[] = [];
+for (let i = 0; i < d[0].length; ++i) {
   let sum = 0;
-  for (let j = 0; j < rawData.length; ++j) {
-    sum += rawData[j][i];
+  for (let j = 0; j < d.length; ++j) {
+    sum += d[j][i];
   }
   totalData.push(sum);
 }
-const grid = {
-  left: 100,
-  right: 100,
-  top: 50,
-  bottom: 50
-};
-const series = [
+
+const series: echarts.SeriesOption | echarts.SeriesOption[] | undefined = [
   'Direct',
   'Mail Ad',
   'Affiliate Ad',
   'Video Ad',
-  'Search Engine'
+  'Search Engine',
 ].map((name, sid) => {
   return {
     name,
     type: 'bar',
     stack: 'total',
-    barWidth: '60%',
-    label: {
-      show: true,
-      formatter: (params) => Math.round(params.value * 1000) / 10 + '%'
-    },
-    data: rawData[sid].map((d, did) =>
+    data: d[sid].map((d, did) =>
       totalData[did] <= 0 ? 0 : d / totalData[did]
     )
   };
 });
-option = {
-  legend: {
-    selectedMode: false
-  },
-  grid,
-  yAxis: {
-    type: 'value'
-  },
-  xAxis: {
-    type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  },
-  series
-};
-*/
 
 const option: echarts.EChartsOption = {
-  xAxis: {
-    type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  },
   yAxis: {
     type: 'value'
   },
-  series: [
-    {
-      data: [120, 200, 150, 80, 70, 110, 130],
-      type: 'bar'
-    }
-  ]
+  xAxis: {
+    position: 'top',
+    type: 'category',
+    data: [
+      'Jan',
+      'Feb',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'Aug',
+      'Sept',
+      'Oct',
+      'Nov',
+      'Dec'
+    ]
+  },
+  series
 };
 
 export const data = {
