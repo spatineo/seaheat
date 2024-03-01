@@ -1,29 +1,72 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
 
-interface ArrayValues {
-  color: string,
-  value: string
+interface Axis {
+  label: string,
+  values: (string|number)[];
+}
+
+interface Value {
+  x: string|number,
+  y: string|number,
+  value: number
+}
+
+interface Legend {
+  minValue: number,
+  maxValue: number,
+  color: string
 }
 
 interface TemperatureProps {
-  tempatureValues: ArrayValues[]
+  axes: {
+    x: Axis,
+    y: Axis
+  },
+  data: Value[],
+  legend: Legend[]
+  seabedDepth: number,
 }
 
-export const TemperatureComponent = ({tempatureValues} : TemperatureProps ) => {
-  const columnCount = Math.ceil(tempatureValues.length / 3);
+
+/**
+ * 
+ * props = {
+ *    axes: {
+ *     x: {
+ *       label: 'Month',
+ *       values: ['Jan', 'Feb', 'Mar']
+ *     },
+ *     y: {
+ *       label: 'Depth',
+ *       values: ['0m', '-10m', '-20m']
+ *     }
+ *   },
+ *   data: [{ x: 'Jan', y: '0m', value: 10 }, { x: 'Jan', y: '-10m', value: 8 }],
+ *   legend: [{ minValue: 10, maxValue: 14, color: '#443388' }],
+ *   seabedDepth: -51
+ * }
+ * 
+ */
+
+export const TemperatureComponent = (options : TemperatureProps ) => {
 
   return (
-    <Flex>
-    {[...Array(columnCount)].map((_, columnIndex) => (
-      <Box key={columnIndex} ml={8}>
-        {tempatureValues.slice(columnIndex * 3, (columnIndex + 1) * 3).map(({ color, value }, index) => (
-          <Flex key={index} alignItems="center">
-            <Box mr={2} style={{ backgroundColor: `${color}`, width: "16px", height: "12px"}}></Box>
-            <Text>{value}</Text>
-          </Flex>
-        ))}
-      </Box>
-    ))}
-  </Flex>
+    <table>
+      <tr>
+        {
+          options.axes.x.values.map(value => <th>{value}</th>)
+        }
+        <th></th>
+      </tr>
+      {
+        options.axes.y.values.map(yValue => <tr>
+          {
+            options.axes.x.values.map(xValue => <td>{
+              options.data.find(v => v.x === xValue && v.y === yValue)?.value
+            }</td>)
+          }
+          <th>{yValue}</th>
+        </tr>)
+      }
+    </table>
   );
 }
