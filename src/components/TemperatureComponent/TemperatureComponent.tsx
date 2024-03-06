@@ -1,3 +1,13 @@
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+} from '@chakra-ui/react'
 
 interface Axis {
   label: string,
@@ -50,23 +60,35 @@ interface TemperatureProps {
 export const TemperatureComponent = (options : TemperatureProps ) => {
 
   return (
-    <table>
-      <tr>
-        {
-          options.axes.x.values.map(value => <th>{value}</th>)
-        }
-        <th></th>
-      </tr>
-      {
-        options.axes.y.values.map(yValue => <tr>
-          {
-            options.axes.x.values.map(xValue => <td>{
-              options.data.find(v => v.x === xValue && v.y === yValue)?.value
-            }</td>)
-          }
-          <th>{yValue}</th>
-        </tr>)
-      }
-    </table>
+    <TableContainer >
+      <Table>
+            <Thead>
+              <Tr>
+              {
+                options.axes.x.values.map(value => <Th m={4}>{value}</Th>)
+              }
+              <Th>0</Th>
+              </Tr>
+             
+            </Thead>
+            <Tbody>
+             {
+              options.axes.y.values.map(yValue => <Tr>
+                {
+                  options.axes.x.values.map(xValue => <Td>{
+                    options.data.find(v => v.x === xValue && v.y === yValue)?.value
+                  }</Td>
+                  )
+                }
+                <Th>{yValue}</Th>
+              </Tr>)
+            }
+             </Tbody>
+             <Tfoot>
+
+             </Tfoot>
+      </Table>
+    </TableContainer>
+    
   );
 }
