@@ -16,11 +16,15 @@ type Story = StoryObj<typeof meta>;
 
 
 export const Primary: Story = {
-  args: data.arg
+  args: {
+   ...data.one,
+  }
 };
 
 export const Large: Story = {
-  args: {
-    ...Primary.args
-  },
+  args: data.two
+};
+
+export const Small: Story = {
+  args: data.three
 };

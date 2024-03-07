@@ -1,7 +1,6 @@
 import './App.css'
 import { Hello } from './components/hello/Hello'
 
-
 function App() {
   return (
     <>
