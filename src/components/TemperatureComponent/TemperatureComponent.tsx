@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Box,
   Table,
@@ -7,6 +8,9 @@ import {
   Th,
   Td,
   TableContainer,
+  Input,
+  Flex,
+  HStack
 } from '@chakra-ui/react'
 import './TemperatureComponent.css'
 
@@ -35,73 +39,99 @@ interface TemperatureProps {
   data: Value[],
   legend: Legend[]
   seabedDepth: number,
+  componentLabel?: string,
+  location:  [number, number]
 }
 
-
-/**
- * 
- * props = {
- *    axes: {
- *     x: {
- *       label: 'Month',
- *       values: ['Jan', 'Feb', 'Mar']
- *     },
- *     y: {
- *       label: 'Depth',
- *       values: ['0m', '-10m', '-20m']
- *     }
- *   },
- *   data:  [
- *      { x: 'Jan', y: '0m', value: 10 }, 
- *    { x: 'Jan', y: '-10m', value: 8 },
- *    { x: 'Jan', y: '-20m', value: 15 },
-  *    { x: 'Jan', y: '-30m', value: 25 },
-  *    { x: 'Jan', y: '-40m', value: 30},
-  *    { x: 'Jan', y: '-50m', value: 48}
-  * ]
- *   legend: [{ minValue: 10, maxValue: 14, color: '#443388' }],
- *   seabedDepth: -51
- * }
- * 
- */
-//{`\u00A0`}
 export const TemperatureComponent = (options : TemperatureProps ) => {
+  const [ depth, setDepth ] = useState<number>(-31);
+  const [ name, setName ] = useState<string>('');
+
+  const handleDepthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(event.target.value);
+    value < options.seabedDepth ? setDepth(0) : setDepth(value);
+  };
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
   const table = () => {
     return (
-      <TableContainer>
-        <Table className='table'>
-          <Thead>
-            <Tr>
-              {options.axes.x.values.map((value, index) => <Th key={index}  m={8}>{value}</Th>)}
-            </Tr>
-            </Thead>
-              <Tbody>
-              {options.axes.y.values.map((yValue, yIndex) =>
-              <Tr key={yIndex}>
-                  {options.axes.x.values.map((xValue, xIndex) => {
-                    const cellValue = options.data.find(d => d.x === xValue && d.y === yValue)?.value;
-                    const bgColor = (cellValue !== undefined) && (cellValue < 0 ) ? 
-                      '#5624ac' : (cellValue !== undefined && cellValue >= 0 && cellValue <= 4) ? 
-                      '#435caf' : cellValue! >= 5 && cellValue! <= 10 ? '#8cd67a' : cellValue! >= 11 && cellValue! <= 15 ? 
-                      '#eed323' : cellValue! >= 16 && cellValue! <= 20 ? '#ca8c3b' : cellValue! >= 21 && cellValue! <= 25 ? '#be3e26' : '#949494';
-                    return <Td bgColor={bgColor} key={xIndex} className={cellValue! === 60 ? 'footer' : 'td'}>
-                    {typeof cellValue === "number" ? `\u00A0` : options.seabedDepth} 
-                  </Td>
-                  })
-                  }
-                  <Th>{yValue === "-10m" ? `\u00A0` : yValue}</Th>
+          <TableContainer>
+            <Table className='temperature-component-table'>
+              <Thead>
+                <Tr>
+                  {options.axes.x.values.map((value, index) => <Th key={index}  m={8}>{value}</Th>)}
                 </Tr>
-                )
-              }
-              </Tbody>
-        </Table>
-      </TableContainer>
+                </Thead>
+                  <Tbody>
+                  {options.axes.y.values.map((yValue, yIndex) =>
+                  <Tr key={yIndex} className='temperature-component-tr'>
+                      {options.axes.x.values.map((xValue, xIndex) => {
+                        const cellValue = options.data.find(d => d.x === xValue && d.y === yValue)?.value;
+                        const bgColor = (cellValue !== undefined) && (cellValue < 0 ) ? 
+                          '#5624ac' : (cellValue !== undefined && cellValue >= 0 && cellValue <= 4) ? 
+                          '#435caf' : cellValue! >= 5 && cellValue! <= 10 ? '#8cd67a' : cellValue! >= 11 && cellValue! <= 15 ? 
+                          '#eed323' : cellValue! >= 16 && cellValue! <= 20 ? '#ca8c3b' : cellValue! >= 21 && cellValue! <= 25 ? '#be3e26' : '#949494';
+                        return <Td bgColor={bgColor} key={xIndex} className={cellValue! === 60 ? 'footer' : 'temperature-component-td'}>
+                        {typeof cellValue === "number" ? `\u00A0` : options.seabedDepth} 
+                      </Td>
+                      })
+                      }
+                      <Th>{yValue === "-10m" ? `\u00A0` : yValue}</Th>
+                    </Tr>
+                    )
+                  }
+                  </Tbody>
+            </Table>
+          </TableContainer>
+    )
+  }
+
+  const inputContent = () => {
+    return (
+      <Box mb="8">
+        <Flex flexDirection="column">
+          <HStack mb="2" w="40%">
+            <Box flex="1">Location: </Box>
+            <Box flex="2">{`${options.location[0]}, ${options.location[1]}`}</Box>
+          </HStack>
+          <HStack w="38.5%" mb="2">
+            <Box flex="1" marginRight="2">Depth:</Box>
+            <Box flex="2">
+            <HStack>
+              <Input
+                type="number"
+                min={-100}
+                max={0}
+                value={depth}
+                onChange={handleDepthChange}
+                size='sm'
+                variant='flushed'
+                p="0"
+              /><Box>m</Box></HStack>
+            </Box>
+          </HStack>
+          <HStack w="38%" mb="2">
+            <Box mr="2" flex="1">Name:</Box>
+            <Box flex="2">
+              <Input
+                value={name}
+                onChange={handleNameChange}
+                size='sm'
+                variant='flushed'
+                />{' '} 
+            </Box>
+          </HStack>
+        </Flex>
+      </Box>
     )
   }
 
   return (
-    <Box>
-      {table()}
+    <Box border="1px solid grey" borderRadius="3" p="4">
+      <Box>{inputContent()}</Box>
+      <Box>{table()}</Box>
     </Box>
   );
 }
