@@ -92,7 +92,8 @@ export const data = {
       { x: 'Dec', y: '-60m', value: 70},
     ],
     legend: [{ minValue: 10, maxValue: 14, color: '#443388' }],
-    seabedDepth: -51
+    seabedDepth: -51,
+    location: [55.893856, 19.051956]
    },
    two:{
     axes: {
