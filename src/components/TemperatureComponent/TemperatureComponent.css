@@ -1,0 +1,11 @@
+.temperature-component-table {
+  border-collapse: collapse;
+}
+
+.temperature-component-table .temperature-component-tr .temperature-component-td {
+  border-right: 4px solid white;
+}
+
+.temperature-component-table .temperature-component-tr .temperature-component-grey:nth-last-child() {
+  border-right: 0px solid white;
+}
