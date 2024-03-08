@@ -61,7 +61,7 @@ export const TemperatureComponent = (options : TemperatureProps ) => {
             <Table className='temperature-component-table'>
               <Thead>
                 <Tr>
-                  {options.axes.x.values.map((value, index) => <Th key={index}  m={8}>{value}</Th>)}
+                  {options.axes.x.values.map((value, index) => <Th key={index} m={8} p="4">{value}</Th>)}
                 </Tr>
                 </Thead>
                   <Tbody>
@@ -73,7 +73,7 @@ export const TemperatureComponent = (options : TemperatureProps ) => {
                           '#5624ac' : (cellValue !== undefined && cellValue >= 0 && cellValue <= 4) ? 
                           '#435caf' : cellValue! >= 5 && cellValue! <= 10 ? '#8cd67a' : cellValue! >= 11 && cellValue! <= 15 ? 
                           '#eed323' : cellValue! >= 16 && cellValue! <= 20 ? '#ca8c3b' : cellValue! >= 21 && cellValue! <= 25 ? '#be3e26' : '#949494';
-                        return <Td bgColor={bgColor} key={xIndex} className={cellValue! === 60 ? 'footer' : 'temperature-component-td'}>
+                        return <Td bgColor={bgColor} key={xIndex}>
                         {typeof cellValue === "number" ? `\u00A0` : options.seabedDepth} 
                       </Td>
                       })
@@ -131,6 +131,7 @@ export const TemperatureComponent = (options : TemperatureProps ) => {
   return (
     <Box border="1px solid grey" borderRadius="3" p="4">
       <Box>{inputContent()}</Box>
+      <Box mb="4">Pipeline length to facility: - km</Box>
       <Box>{table()}</Box>
     </Box>
   );
