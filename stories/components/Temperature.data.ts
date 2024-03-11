@@ -13,7 +13,6 @@ export const data = {
       }
     },
     data: [
- 
       { x: 'Jan', y: '-10m', value: 1 },
       { x: 'Jan', y: '-20m', value: 1 },
       { x: 'Jan', y: '-30m', value: 3 },
@@ -91,7 +90,15 @@ export const data = {
       { x: 'Dec', y: '-50m', value: 4},
       { x: 'Dec', y: '-60m', value: 70},
     ],
-    legend: [{ minValue: 10, maxValue: 14, color: '#443388' }],
+    legend: [
+      { minValue: -2, maxValue: -1, color: '#5721AE' }, 
+      { minValue: 0, maxValue: 4, color: '#435caf' }, 
+      { minValue: 5, maxValue: 10, color: '#8cd67a' }, 
+      { minValue: 11, maxValue: 15, color: '#eed323' }, 
+      { minValue: 16, maxValue: 20, color: '#ca8c3b' }, 
+      { minValue: 21, maxValue: 25, color: '#be3e26' }, 
+      { minValue: 25, maxValue: 100, color: '#949494' },
+    ],
     seabedDepth: -51,
     location: [55.893856, 19.051956]
    },
@@ -202,7 +209,6 @@ export const data = {
     { x: 'May', y: '-40m', value: 4},
     { x: 'May', y: '-50m', value: 4},
     { x: 'May', y: '-60m', value: 60},],
-    legend: [{ minValue: 10, maxValue: 14, color: '#443388' }],
     seabedDepth: -51
    },
 }
