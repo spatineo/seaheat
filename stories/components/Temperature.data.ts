@@ -96,8 +96,8 @@ export const data = {
       { minValue: 5, maxValue: 10, color: '#8cd67a' }, 
       { minValue: 11, maxValue: 15, color: '#eed323' }, 
       { minValue: 16, maxValue: 20, color: '#ca8c3b' }, 
-      { minValue: 21, maxValue: 25, color: '#be3e26' }, 
-      { minValue: 25, maxValue: 100, color: '#949494' },
+      { minValue: 21, maxValue: 25, color: '#D50101' }, 
+      { minValue: 26, maxValue: 50, color: '#770000' },
     ],
     seabedDepth: -51,
     location: [55.893856, 19.051956]
