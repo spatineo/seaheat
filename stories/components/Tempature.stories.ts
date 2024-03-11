@@ -32,5 +32,6 @@ export const Large: Story = {
 export const Small: Story = {
   args:{ 
     ...data.three,
-    location: [60.893856, 21.051956]
+    location: [60.893856, 21.051956],
+    legend: data.one.legend
 }}
