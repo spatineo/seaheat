@@ -11,8 +11,11 @@ import MapContext from "./MapContext";
 import 'ol/ol.css';
 import './MapComponent.css';
 
+interface MapComponentProps {
+    children?: React.ReactNode;
+}
 
-export const MapComponent = () => {
+export const MapComponent = ({ children }: MapComponentProps) => {
     const mapRef = useRef(null);
     const [map, setMap] = useState<Map | null>(null);
 
@@ -38,7 +41,9 @@ export const MapComponent = () => {
 
     return (
         <MapContext.Provider value={{ map }}>
-            <Box ref={mapRef} className="map-component" />
+            <Box ref={mapRef} className="map-component">
+                {children}
+            </Box>
         </MapContext.Provider>
     );
 }
