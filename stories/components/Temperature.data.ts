@@ -100,7 +100,6 @@ export const data = {
       { minValue: 26, maxValue: 50, color: '#770000' },
     ],
     seabedDepth: -51,
-    location: [55.893856, 19.051956]
    },
    two:{
     axes: {
@@ -209,8 +208,13 @@ export const data = {
     { x: 'May', y: '-40m', value: 4},
     { x: 'May', y: '-50m', value: 4},
     { x: 'May', y: '-60m', value: 60},],
-    seabedDepth: -51
+    seabedDepth: -51,
+    legend: [
+      { minValue: -2, maxValue: -1, color: '#5721AE' }, 
+      { minValue: 0, maxValue: 4, color: '#435caf' }, 
+     ]
    },
+  
 }
 
 // max value is less than 0
