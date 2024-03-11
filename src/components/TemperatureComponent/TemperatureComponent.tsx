@@ -47,7 +47,6 @@ export const TemperatureComponent = (options : TemperatureProps ) => {
     return { x: calculatedX, y: calculatedY };
   }, [axes]);
 
-  window.console.log(calculatedAxes)
   const table = () => {
     return (
       <Box overflowX="auto">
