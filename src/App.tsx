@@ -1,13 +1,13 @@
 import './App.css'
-import { Hello } from './components/hello/Hello'
-import { ConnectedIntakeComponent } from './components/intake/ConnectedIntakeComponent'
+import { ConnectedIntakeComponent } from './app/connected/ConnectedIntakeComponent'
+import { ConnectedHello } from './app/connected/ConnectedHello'
 
 function App() {
   return (
     <>
       <h1>SeaHeat placeholder</h1>
       <div className="card">
-        <Hello label="hello" />
+        <ConnectedHello />
         <ConnectedIntakeComponent />
       </div>
     </>
