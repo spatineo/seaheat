@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Box,
   Table,
@@ -9,16 +9,23 @@ import {
   Td,
   Flex,
 } from '@chakra-ui/react'
-import './TemperatureComponent.css'
+import './TemperatureComponent.css';
+import { heightOfStep } from '../../utils/helpers.functions';
+import { depth } from '../../../stories/components/Temperature.data';
 
-interface Axis {
+interface XAxis {
   label: string,
   values: (string|number)[];
 }
 
+interface YAxis {
+  label: string,
+  values: number[];
+}
+
 interface Value {
   x: string|number,
-  y: string|number,
+  y: number,
   value?: number
 }
 
@@ -30,8 +37,8 @@ interface Legend {
 
 interface TemperatureProps {
   axes: {
-    x: Axis,
-    y: Axis
+    x: XAxis,
+    y: YAxis
   },
   data: Value[],
   legend: Legend[]
@@ -41,6 +48,26 @@ interface TemperatureProps {
 export const TemperatureComponent = (options: TemperatureProps) => {
  
   const { tableContent, legendsContent } = useMemo(() => {
+
+    const calculatedData = options.axes.y.values.map(yValue => {
+      const seabed = Math.abs(options.seabedDepth);
+      const len = depth.findIndex(d => d >= seabed)
+      console.log(seabed, len)
+      for(let i = 0; i <= len; i++){
+        console.log(heightOfStep(depth, i))
+      }
+      return {
+        yValueNumber: yValue,
+        cells: options.axes.x.values.map(xValue => {
+          const cellValue = options.data.find(d => d.x === xValue && d.y === yValue)?.value;
+          if(!cellValue) return;
+          const legendItem = options.legend.find(l => l.minValue <= cellValue && cellValue <= l.maxValue);
+          const bgColor = legendItem && legendItem.color;
+          return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
+        })
+      };
+    });
+  
     const tableContent = (
       <Box overflowX="auto">
         <Table className='temperature-component-table' variant="simple" size="sm">
@@ -50,39 +77,38 @@ export const TemperatureComponent = (options: TemperatureProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {options.axes.y.values.map((yValue, yIndex) => {
-              const yValueNumber = (typeof yValue === "string") && yValue.replace(/\D/g, '');
-              if (Number(yValueNumber) < 60) {
-                return (
-                  <Tr key={yIndex} className='temperature-component-tr'>
-                    {options.axes.x.values.map((xValue, xIndex) => {
-                      const cellValue = options.data.find(d => d.x === xValue && d.y === yValue)?.value;
-                      if (!cellValue) return;
-                      const legendItem = options.legend.find(l => l.minValue <= cellValue && cellValue <= l.maxValue);
-                      const bgColor = legendItem && legendItem.color;
-                      return <Td key={xIndex} className={'temperature-component-td'} bgColor={bgColor}>
-                        {typeof cellValue === "number" && `\u00A0`}
-                      </Td>
-                    })}
-                    <Th>{yValue}</Th>
-                  </Tr>
-                );
-              } else {
-                return (
-                  <Tr className='temperature-component-tr' key={yIndex}>
-                    <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th'>{options.seabedDepth}</Td>
-                    <Th>{yValue}</Th>
-                  </Tr>
-                );
-              }
-            })}
-          </Tbody>
+          {calculatedData.map((rowData, rowIndex) => {
+            return (
+            <React.Fragment key={rowIndex}>
+              {(rowData !== undefined) && Math.abs(rowData.yValueNumber) < 60 && (
+                <Tr className='temperature-component-tr'>
+                  {rowData.cells.map((cell, cellIndex) => {
+                    return (
+                    <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>
+                      {cell && typeof cell.value === "number" && `\u00A0`}
+                    </Td>
+                  )}
+                  )}
+                  <Th>{rowData.cells[0]?.y}</Th> 
+                </Tr>
+              )}
+              {Math.abs(rowData.yValueNumber) >= 60 && (
+                <Tr className='temperature-component-tr'>
+                  <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th'>{options.seabedDepth}</Td>
+                  <Th>{rowData.cells[0]?.y}</Th>
+                </Tr>
+              )}
+            </React.Fragment>
+          )
+              })}
+        </Tbody>
+
         </Table>
       </Box>
     );
 
     const legendsContent = (
-      <Box h="auto" w="100%" boxSizing='border-box' maxW="1200px">
+      <Box boxSizing='border-box'>
         <Flex flexWrap="wrap" mt={4}>
           {options.legend.map(({ color, minValue, maxValue }, index) => (
             <Box m="2" key={index}>
