@@ -20,8 +20,8 @@ export const IntakeComponent = ({ location, depth, name, setName, setDepth, setL
     return (
         <Box>
             <FormControl>
-                <FormLabel>Name</FormLabel>
-                 <Input type="text" value={name ? name : ""} onChange={(value) => callIf(setName, value.target.value)} />
+                <FormLabel m={2}>Name</FormLabel>
+                 <Input  m={2} type="text" value={name ? name : ""} onChange={(value) => callIf(setName, value.target.value)} />
             </FormControl>
             <FormControl>
                 <FormLabel>Depth</FormLabel>
