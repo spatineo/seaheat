@@ -51,10 +51,13 @@ export const TemperatureComponent = (options: TemperatureProps) => {
  
   const { tableContent, legendsContent } = useMemo(() => {
 
+    let totalHeight = 0;
     const calculatedData = options.axes.y.values.map((yValue, yIndex) => {
+      const height = heightOfStep(options.axes.y.values, yIndex);
+      totalHeight += height;
       return {
         yValueNumber: yValue,
-        height: heightOfStep(options.axes.y.values, yIndex),
+        height,
         cells: options.axes.x.values.map((xValue, xIndex) => {
           const cellValue = options.data.find(d => d.x === xIndex && d.y === yIndex)?.value;
           if(!cellValue) return;
@@ -80,7 +83,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
             <React.Fragment key={rowIndex}>
               {(rowData !== undefined) && Math.abs(rowData.yValueNumber) < 60 && (
                 //Tein laskelman näin että visualisesti näkyy eron style={{ height: `${rowData.height < 0 ? 1 : rowData.height + (rowIndex * 15)}px` }}
-                <Tr className='temperature-component-tr' style={{ height: `${rowData.height}px` }}>
+                <Tr className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*100}%` }}>
                   {rowData.cells.map((cell, cellIndex) => {
                     return (
                     <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>&nbsp;</Td>
