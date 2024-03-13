@@ -10,15 +10,9 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import './TemperatureComponent.css';
-import { heightOfStep } from '../../utils/helpers.functions';
 import { depth } from '../../../stories/components/Temperature.data';
 
-interface XAxis {
-  label: string,
-  values: (string|number)[];
-}
-
-interface YAxis {
+interface Axis {
   label: string,
   values: number[];
 }
@@ -37,12 +31,20 @@ interface Legend {
 
 interface TemperatureProps {
   axes: {
-    x: XAxis,
-    y: YAxis
+    x: Axis,
+    y: Axis
   },
   data: Value[],
   legend: Legend[]
   seabedDepth: number,
+}
+
+function heightOfStep(depth: number[], step: number) {
+  if (step < 0 || (step+1) >= depth.length) throw new Error("illegal step "+step);
+  const a = step > 0 ? depth[step-1] : 0;
+  const b = depth[step];
+  const c = depth[step+1];
+  return (b-a)/2 + (c-b)/2;
 }
 
 export const TemperatureComponent = (options: TemperatureProps) => {
@@ -50,14 +52,11 @@ export const TemperatureComponent = (options: TemperatureProps) => {
   const { tableContent, legendsContent } = useMemo(() => {
 
     const calculatedData = options.axes.y.values.map(yValue => {
-      const seabed = Math.abs(options.seabedDepth);
-      const len = depth.findIndex(d => d >= seabed)
-      console.log(seabed, len)
-      for(let i = 0; i <= len; i++){
-        console.log(heightOfStep(depth, i))
-      }
+      //const step = Math.abs(yValue /10);  
+      console.log(options.axes.y.values.map(item => Math.abs(item)))
       return {
         yValueNumber: yValue,
+        height: heightOfStep(depth, Math.abs(yValue/10)),
         cells: options.axes.x.values.map(xValue => {
           const cellValue = options.data.find(d => d.x === xValue && d.y === yValue)?.value;
           if(!cellValue) return;
@@ -78,14 +77,17 @@ export const TemperatureComponent = (options: TemperatureProps) => {
           </Thead>
           <Tbody>
           {calculatedData.map((rowData, rowIndex) => {
+          
             return (
             <React.Fragment key={rowIndex}>
               {(rowData !== undefined) && Math.abs(rowData.yValueNumber) < 60 && (
-                <Tr className='temperature-component-tr'>
+                //Tein laskelman näin että visualisesti näkyy eron style={{ height: `${rowData.height < 0 ? 1 : rowData.height + (rowIndex * 15)}px` }}
+                <Tr className='temperature-component-tr' style={{ height: `${rowData.height < 0 ? 1 : rowData.height + (rowIndex * 15)}px` }}>
                   {rowData.cells.map((cell, cellIndex) => {
                     return (
                     <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>
-                      {cell && typeof cell.value === "number" && `\u00A0`}
+                      {/* {cell && typeof cell.value === "number" && `\u00A0`} */}
+                      { cell?.value && Math.abs(cell?.value)}
                     </Td>
                   )}
                   )}
