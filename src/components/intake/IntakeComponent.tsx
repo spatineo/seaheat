@@ -25,12 +25,12 @@ export const IntakeComponent = ({ location, depth, name, setName, setDepth, setL
             </FormControl>
             <FormControl>
                 <FormLabel>Depth</FormLabel>
-                <Input type="number" value={depth ? depth : undefined} onChange={(value) => callIf(setDepth, toNumber(value.target.value))} />
+                <Input type="number" value={depth ? depth : ""} onChange={(value) => callIf(setDepth, toNumber(value.target.value))} />
             </FormControl>
             <FormControl>
                 <FormLabel>Location</FormLabel>
-                <Input type="number" value={location[0] ? location[0] : undefined} onChange={(value) => callIf(setLocation, [toNumber(value.target.value), location[1]])} />
-                <Input type="number" value={location[1] ? location[1] : undefined} onChange={(value) => callIf(setLocation, [location[0], toNumber(value.target.value)])} />
+                <Input type="number" value={location[0] ? location[0] : ""} onChange={(value) => callIf(setLocation, [toNumber(value.target.value), location[1]])} />
+                <Input type="number" value={location[1] ? location[1] : ""} onChange={(value) => callIf(setLocation, [location[0], toNumber(value.target.value)])} />
             </FormControl>
         </Box>
     )

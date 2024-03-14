@@ -1,6 +1,4 @@
 import './App.css'
-import { ConnectedIntakeComponent } from './app/connected/ConnectedIntakeComponent'
-import { ConnectedHello } from './app/connected/ConnectedHello'
 import { Grid, GridItem } from '@chakra-ui/react'
 import { DesignerView } from './app/views/DesignerView'
 import { DimensionSelectView } from './app/views/DimensionSelectView'
