@@ -73,8 +73,8 @@ export const TemperatureComponent = (options: TemperatureProps) => {
 
 
   const tableContent = (
-    <Box overflowX="auto">
-      <Table className='temperature-component-table' variant="simple" size="sm" height='100%'>
+    <Box>
+      <Table className='temperature-component-table' variant="simple" w="100%" height='100%'>
         <Thead>
           <Tr>
             {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
@@ -107,23 +107,27 @@ export const TemperatureComponent = (options: TemperatureProps) => {
   );
 
   const legendsContent = (
-    <Box boxSizing='border-box'>
-      <Flex flexWrap="wrap" mt={4}>
+    <Flex 
+      boxSizing='border-box' 
+      w="100%"
+      mt="4"
+      flexWrap="wrap"
+      >
         {options.legend.map(({ color, minValue, maxValue }, index) => (
-          <Box m="2" key={index}>
-            <Flex alignItems="center" mr={4} mb={4}>
-              <Box mr={2} bgColor={color} minW="12" minH="10"></Box>
-              <Box>{maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}</Box>
-            </Flex>
-          </Box>
+            <Box key={index}  w="24%" sx={{ display: "flex", alignItems: "center"}} mb="2" >
+              <Box mr={2} bgColor={color} w="16%" h="60%">
+              </Box>
+              <Box>
+                {maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}
+              </Box>
+            </Box>
         ))}
-      </Flex>
-    </Box>
+    </Flex>
   );
 
 
   return (
-    <Box p="4" boxSizing='border-box' w="70%">
+    <Box p="4" boxSizing='border-box' w="100%">
       <Box>{tableContent}</Box>
       <Box>{legendsContent}</Box>
     </Box>
