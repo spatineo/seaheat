@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Box,
   Table,
@@ -54,7 +54,9 @@ export const TemperatureComponent = (options: TemperatureProps) => {
     let totalHeight = 0;
     const calculatedData = options.axes.y.values.map((yValue, yIndex) => {
       const height = heightOfStep(options.axes.y.values, yIndex);
-      totalHeight += height;
+      if(!isNaN(height)) {
+        totalHeight += height 
+      }
       return {
         yValueNumber: yValue,
         height,
@@ -69,7 +71,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
     });
 
     const tableContent = (
-      <Box overflowX="auto">
+      <Box>
         <Table className='temperature-component-table' variant="simple" size="sm">
           <Thead>
             <Tr>
@@ -77,32 +79,23 @@ export const TemperatureComponent = (options: TemperatureProps) => {
             </Tr>
           </Thead>
           <Tbody>
-          {calculatedData.map((rowData, rowIndex) => {
-          
-            return (
-            <React.Fragment key={rowIndex}>
-              {(rowData !== undefined) && Math.abs(rowData.yValueNumber) < 60 && (
-                //Tein laskelman näin että visualisesti näkyy eron style={{ height: `${rowData.height < 0 ? 1 : rowData.height + (rowIndex * 15)}px` }}
-                <Tr className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*100}%` }}>
-                  {rowData.cells.map((cell, cellIndex) => {
+            {calculatedData.map((rowData, rowIndex) => (
+              <Tr key={rowIndex} className='temperature-component-tr' style={{ height: !isNaN(rowData.height) ? `${rowData.height / totalHeight * 100}%` : 'auto' }}>
+                {rowData.cells.map((cell, cellIndex) => {
+                  if (cell !== undefined && cell?.value <= 50) {
                     return (
-                    <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>&nbsp;</Td>
-                  )}
-                  )}
-                  <Th>{rowData.cells[0]?.y}</Th> 
-                </Tr>
-              )}
-              {Math.abs(rowData.yValueNumber) >= 60 && (
-                <Tr className='temperature-component-tr'>
-                  <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th'>{options.seabedDepth}</Td>
-                  <Th>{rowData.cells[0]?.y}</Th>
-                </Tr>
-              )}
-            </React.Fragment>
-          )
-              })}
-        </Tbody>
-
+                      <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>{cell?.value}</Td>
+                    );
+                  } else {
+                    return (
+                      <Td key={cellIndex} className={'temperature-component-th'} bgColor="grey"></Td>
+                    );
+                  }
+                })}
+                <Th>{rowData.cells[0]?.y}</Th>
+              </Tr>
+            ))}
+          </Tbody>
         </Table>
       </Box>
     );
