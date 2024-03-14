@@ -1,14 +1,42 @@
 import './App.css'
-import { Hello } from './components/hello/Hello'
+import { Grid, GridItem } from '@chakra-ui/react'
+import { DesignerView } from './app/views/DesignerView'
+import { DimensionSelectView } from './app/views/DimensionSelectView'
+import { SelectedPointView } from './app/views/SelectedPointView'
+import { MapView } from './app/views/MapView'
+import { LayersView } from './app/views/LayersView'
+import { GraphView } from './app/views/GraphView'
 
 function App() {
   return (
-    <>
-      <h1>SeaHeat placeholder</h1>
-      <div className="card">
-        <Hello label="hello" />
-      </div>
-    </>
+    <Grid
+      templateAreas={`"designer dimensionSelect selectedPoint"
+                      "designer map             selectedPoint"
+                      "layers   map             selectedPoint"
+                      "graph    graph           graph"`}
+      h="100%"
+      w="100%"
+      gap="1"
+    >
+      <GridItem area ={'designer'}>
+        <DesignerView />
+      </GridItem>
+      <GridItem area ={'dimensionSelect'}>
+        <DimensionSelectView />
+      </GridItem>
+      <GridItem area ={'selectedPoint'}>
+        <SelectedPointView />
+      </GridItem>
+      <GridItem area ={'map'}>
+        <MapView />
+      </GridItem>
+      <GridItem area ={'layers'}>
+        <LayersView />
+      </GridItem>
+      <GridItem area ={'graph'}>
+        <GraphView />
+      </GridItem>
+    </Grid>
   )
 }
 
