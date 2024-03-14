@@ -19,7 +19,7 @@ export const importState = createAction<ExportFile>('IMPORT_STATE');
 export const ioMiddleware = createListenerMiddleware()
 ioMiddleware.startListening({
     actionCreator: exportState,
-    effect: async (action, listenerApi) => {
+    effect: async (_action, listenerApi) => {
         const dataToExport = {
             "application": "fmi-seaheat",
             "version": "0.0.0",
