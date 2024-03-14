@@ -47,5 +47,5 @@ ioMiddleware.startListening({
         }
         
         listenerApi.dispatch(restoreIntakeState(action.payload.state.intake))
-    }    
+    }
 })
