@@ -20,7 +20,7 @@ export const Primary: Story = {
    ...data.one,
   }
 };
-
+/*
 export const Large: Story = {
   args: {
     ...data.two,
@@ -31,3 +31,4 @@ export const Small: Story = {
   args:{ 
     ...data.three,
 }}
+*/

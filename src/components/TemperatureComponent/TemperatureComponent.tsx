@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Box,
   Table,
@@ -9,17 +9,18 @@ import {
   Td,
   Flex,
 } from '@chakra-ui/react'
-import './TemperatureComponent.css'
+import './TemperatureComponent.css';
 
-interface Axis {
+interface Axis <T>{
   label: string,
-  values: (string|number)[];
+  values: T[];
 }
 
+
 interface Value {
-  x: string|number,
-  y: string|number,
-  value?: number
+  x: number,
+  y: number,
+  value: number
 }
 
 interface Legend {
@@ -30,74 +31,96 @@ interface Legend {
 
 interface TemperatureProps {
   axes: {
-    x: Axis,
-    y: Axis
+    x: Axis<string>,
+    y: Axis<number>
   },
   data: Value[],
   legend: Legend[]
   seabedDepth: number,
 }
 
+function heightOfStep(depth: number[], step: number) {
+  if (step < 0 || step >= depth.length) throw new Error("illegal step "+step);
+  const a = step > 0 ? depth[step-1] : 0;
+  const b = depth[step];
+  const c = step < (depth.length-1) ? depth[step+1] : (depth[step] + (b-a));
+  return (b-a)/2 + (c-b)/2;
+}
+
 export const TemperatureComponent = (options: TemperatureProps) => {
  
-  const { tableContent, legendsContent } = useMemo(() => {
-    const tableContent = (
-      <Box overflowX="auto">
-        <Table className='temperature-component-table' variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {options.axes.y.values.map((yValue, yIndex) => {
-              const yValueNumber = (typeof yValue === "string") && yValue.replace(/\D/g, '');
-              if (Number(yValueNumber) < 60) {
-                return (
-                  <Tr key={yIndex} className='temperature-component-tr'>
-                    {options.axes.x.values.map((xValue, xIndex) => {
-                      const cellValue = options.data.find(d => d.x === xValue && d.y === yValue)?.value;
-                      if (!cellValue) return;
-                      const legendItem = options.legend.find(l => l.minValue <= cellValue && cellValue <= l.maxValue);
-                      const bgColor = legendItem && legendItem.color;
-                      return <Td key={xIndex} className={'temperature-component-td'} bgColor={bgColor}>
-                        {typeof cellValue === "number" && `\u00A0`}
-                      </Td>
-                    })}
-                    <Th>{yValue}</Th>
-                  </Tr>
-                );
-              } else {
-                return (
-                  <Tr className='temperature-component-tr' key={yIndex}>
-                    <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th'>{options.seabedDepth}</Td>
-                    <Th>{yValue}</Th>
-                  </Tr>
-                );
-              }
-            })}
-          </Tbody>
-        </Table>
-      </Box>
-    );
+  const { calculatedData, totalHeight } = useMemo(() => {
 
-    const legendsContent = (
-      <Box h="auto" w="100%" boxSizing='border-box' maxW="1200px">
-        <Flex flexWrap="wrap" mt={4}>
-          {options.legend.map(({ color, minValue, maxValue }, index) => (
-            <Box m="2" key={index}>
-              <Flex alignItems="center" mr={4} mb={4}>
-                <Box mr={2} bgColor={color} minW="12" minH="10"></Box>
-                <Box>{maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}</Box>
-              </Flex>
-            </Box>
-          ))}
-        </Flex>
-      </Box>
-    );
-
-    return { tableContent, legendsContent };
+    let totalHeight = 0;
+    const calculatedData = options.axes.y.values.filter(yValue => yValue < options.seabedDepth).map((yValue, yIndex) => {
+      const height = heightOfStep(options.axes.y.values, yIndex);
+      console.log('Height of step',yIndex,height);
+      totalHeight += height;
+      return {
+        yValueNumber: yValue,
+        height,
+        cells: options.axes.x.values.map((xValue, xIndex) => {
+          const cellValue = options.data.find(d => d.x === xIndex && d.y === yIndex)?.value;
+          if(!cellValue) return;
+          const legendItem = options.legend.find(l => l.minValue <= cellValue && cellValue <= l.maxValue);
+          const bgColor = legendItem && legendItem.color;
+          return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
+        })
+      };
+    });
+    return { calculatedData, totalHeight };
   }, [options]);
+
+
+  const tableContent = (
+    <Box overflowX="auto">
+      <Table className='temperature-component-table' variant="simple" size="sm" height='100%'>
+        <Thead>
+          <Tr>
+            {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
+          </Tr>
+        </Thead>
+        <Tbody>
+        {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {
+          return (
+          <React.Fragment key={rowIndex}>
+            {(rowData !== undefined) && (
+              <Tr className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
+                {rowData.cells.map((cell, cellIndex) => {
+                  return (
+                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
+                )}
+                )}
+                <Th></Th>
+              </Tr>
+            )}
+          </React.Fragment>
+        )
+        })}
+        <Tr className='temperature-component-tr'>
+          <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th' textAlign="center">{options.seabedDepth}</Td>
+          <Th></Th>
+        </Tr>
+      </Tbody>
+      </Table>
+    </Box>
+  );
+
+  const legendsContent = (
+    <Box boxSizing='border-box'>
+      <Flex flexWrap="wrap" mt={4}>
+        {options.legend.map(({ color, minValue, maxValue }, index) => (
+          <Box m="2" key={index}>
+            <Flex alignItems="center" mr={4} mb={4}>
+              <Box mr={2} bgColor={color} minW="12" minH="10"></Box>
+              <Box>{maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}</Box>
+            </Flex>
+          </Box>
+        ))}
+      </Flex>
+    </Box>
+  );
+
 
   return (
     <Box p="4" boxSizing='border-box' w="70%">
