@@ -98,11 +98,10 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         )
         })}
         <Tr className='temperature-component-tr'>
-          <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th'>{options.seabedDepth}</Td>
+          <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th' textAlign="center">{options.seabedDepth}</Td>
           <Th></Th>
         </Tr>
       </Tbody>
-
       </Table>
     </Box>
   );
