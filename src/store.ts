@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import intakeReducer from './app/slices/intake';
-import { ioMiddleware } from './middleware/ImportExportMiddleware';
+import { importExportMiddleware } from './middleware/ImportExportMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -9,7 +9,7 @@ export const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(ioMiddleware.middleware)
+    getDefaultMiddleware().prepend(importExportMiddleware.middleware)
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

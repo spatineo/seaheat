@@ -13,8 +13,8 @@ export interface ExportFile {
 export const exportState = createAction('EXPORT_STATE');
 export const importState = createAction<ExportFile>('IMPORT_STATE');
 
-export const ioMiddleware = createListenerMiddleware()
-ioMiddleware.startListening({
+export const importExportMiddleware = createListenerMiddleware()
+importExportMiddleware.startListening({
     actionCreator: exportState,
     effect: async (_action, listenerApi) => {
         const dataToExport = {
@@ -36,7 +36,7 @@ ioMiddleware.startListening({
     }
 })
 
-ioMiddleware.startListening({
+importExportMiddleware.startListening({
     actionCreator: importState,
     effect: async (action, listenerApi) => {
         if (action.payload.application !== "fmi-seaheat") {
