@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import MapContext from "../MapContext";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
@@ -17,18 +17,15 @@ export const SingleFeatureLayer = ({name, location, zIndex} : SingleFeatureLayer
     useEffect(() => {
         if (!map) return;
 
-        const feature = new Feature({
+        const source = new VectorSource();
+        source.addFeature(new Feature({
             name,
             geometry: new Point(location)
-        })
-
-        const source = new VectorSource();
-        source.addFeature(feature)
+        }));
 
         const layer = new VectorLayer({ source, zIndex })
 
         map.addLayer(layer);
-        //setLayer(layer);
 
         return () => {
             map.removeLayer(layer);
