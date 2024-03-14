@@ -26,10 +26,15 @@ export const intakeSlice = createSlice({
     setName: (state, action: PayloadAction<string | null>) => {
       state.name = action.payload
     },
+    restoreIntakeState: (state, action: PayloadAction<IntakeState>) => {
+      state.name = action.payload.name;
+      state.depth = action.payload.depth;
+      state.location = action.payload.location;
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setLocation, setDepth, setName } = intakeSlice.actions
+export const { setLocation, setDepth, setName, restoreIntakeState } = intakeSlice.actions
 
 export default intakeSlice.reducer
