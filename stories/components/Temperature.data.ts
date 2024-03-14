@@ -109,7 +109,7 @@ export const data = {
       { minValue: 21, maxValue: 25, color: '#D50101' }, 
       { minValue: 26, maxValue: 50, color: '#770000' },
     ],
-    seabedDepth: -51,
+    seabedDepth: 51,
    },
    /*
    two:{
@@ -180,7 +180,7 @@ export const data = {
     { minValue: 21, maxValue: 25, color: '#D50101' }, 
     { minValue: 26, maxValue: 50, color: '#770000' },
   ],
-    seabedDepth: -51
+    seabedDepth: 51
    },
    three:{
     axes: {
@@ -228,7 +228,7 @@ export const data = {
     { x: 4, y: '-40m', value: 4},
     { x: 4, y: '-50m', value: 4},
     { x: 4, y: '-60m', value: 60},],
-    seabedDepth: -51,
+    seabedDepth: 51,
     legend: [
       { minValue: -2, maxValue: -1, color: '#5721AE' }, 
       { minValue: 0, maxValue: 4, color: '#435caf' }, 

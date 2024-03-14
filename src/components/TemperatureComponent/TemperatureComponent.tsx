@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Box,
   Table,
@@ -43,20 +43,19 @@ function heightOfStep(depth: number[], step: number) {
   if (step < 0 || step >= depth.length) throw new Error("illegal step "+step);
   const a = step > 0 ? depth[step-1] : 0;
   const b = depth[step];
-  const c = step < depth.length ? depth[step+1] : depth[step] + (b-a);
+  const c = step < (depth.length-1) ? depth[step+1] : (depth[step] + (b-a));
   return (b-a)/2 + (c-b)/2;
 }
 
 export const TemperatureComponent = (options: TemperatureProps) => {
  
-  const { tableContent, legendsContent } = useMemo(() => {
+  const { calculatedData, totalHeight } = useMemo(() => {
 
     let totalHeight = 0;
-    const calculatedData = options.axes.y.values.map((yValue, yIndex) => {
+    const calculatedData = options.axes.y.values.filter(yValue => yValue < options.seabedDepth).map((yValue, yIndex) => {
       const height = heightOfStep(options.axes.y.values, yIndex);
-      if(!isNaN(height)) {
-        totalHeight += height 
-      }
+      console.log('Height of step',yIndex,height);
+      totalHeight += height;
       return {
         yValueNumber: yValue,
         height,
@@ -69,54 +68,60 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         })
       };
     });
-
-    const tableContent = (
-      <Box>
-        <Table className='temperature-component-table' variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {calculatedData.map((rowData, rowIndex) => (
-              <Tr key={rowIndex} className='temperature-component-tr' style={{ height: !isNaN(rowData.height) ? `${rowData.height / totalHeight * 100}%` : 'auto' }}>
-                {rowData.cells.map((cell, cellIndex) => {
-                  if (cell !== undefined && cell?.value <= 50) {
-                    return (
-                      <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>{cell?.value}</Td>
-                    );
-                  } else {
-                    return (
-                      <Td key={cellIndex} className={'temperature-component-th'} bgColor="grey"></Td>
-                    );
-                  }
-                })}
-                <Th>{rowData.cells[0]?.y}</Th>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </Box>
-    );
-
-    const legendsContent = (
-      <Box boxSizing='border-box'>
-        <Flex flexWrap="wrap" mt={4}>
-          {options.legend.map(({ color, minValue, maxValue }, index) => (
-            <Box m="2" key={index}>
-              <Flex alignItems="center" mr={4} mb={4}>
-                <Box mr={2} bgColor={color} minW="12" minH="10"></Box>
-                <Box>{maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}</Box>
-              </Flex>
-            </Box>
-          ))}
-        </Flex>
-      </Box>
-    );
-
-    return { tableContent, legendsContent };
+    return { calculatedData, totalHeight };
   }, [options]);
+
+
+  const tableContent = (
+    <Box overflowX="auto">
+      <Table className='temperature-component-table' variant="simple" size="sm" height='100%'>
+        <Thead>
+          <Tr>
+            {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
+          </Tr>
+        </Thead>
+        <Tbody>
+        {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {
+          return (
+          <React.Fragment key={rowIndex}>
+            {(rowData !== undefined) && (
+              <Tr className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
+                {rowData.cells.map((cell, cellIndex) => {
+                  return (
+                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
+                )}
+                )}
+                <Th></Th>
+              </Tr>
+            )}
+          </React.Fragment>
+        )
+        })}
+        <Tr className='temperature-component-tr'>
+          <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th'>{options.seabedDepth}</Td>
+          <Th></Th>
+        </Tr>
+      </Tbody>
+
+      </Table>
+    </Box>
+  );
+
+  const legendsContent = (
+    <Box boxSizing='border-box'>
+      <Flex flexWrap="wrap" mt={4}>
+        {options.legend.map(({ color, minValue, maxValue }, index) => (
+          <Box m="2" key={index}>
+            <Flex alignItems="center" mr={4} mb={4}>
+              <Box mr={2} bgColor={color} minW="12" minH="10"></Box>
+              <Box>{maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}</Box>
+            </Flex>
+          </Box>
+        ))}
+      </Flex>
+    </Box>
+  );
+
 
   return (
     <Box p="4" boxSizing='border-box' w="70%">
