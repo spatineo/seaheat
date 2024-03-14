@@ -8,6 +8,6 @@
 }
 
 
-.temperature-component-tr .temperature-component-th:last-child {
-  border-left: 4px solid white;
+.temperature-component-table .temperature-component-tr td{
+  border-right: 4px solid white;
 }
