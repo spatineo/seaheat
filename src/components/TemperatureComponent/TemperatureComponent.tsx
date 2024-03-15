@@ -54,7 +54,6 @@ export const TemperatureComponent = (options: TemperatureProps) => {
     let totalHeight = 0;
     const calculatedData = options.axes.y.values.filter(yValue => yValue < options.seabedDepth).map((yValue, yIndex) => {
       const height = heightOfStep(options.axes.y.values, yIndex);
-      console.log('Height of step',yIndex,height);
       totalHeight += height;
       return {
         yValueNumber: yValue,
