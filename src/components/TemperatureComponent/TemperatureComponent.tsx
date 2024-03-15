@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Box,
   Table,
@@ -80,27 +80,19 @@ export const TemperatureComponent = (options: TemperatureProps) => {
           </Tr>
         </Thead>
         <Tbody>
-        {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {
-          return (
-          <React.Fragment key={rowIndex}>
-            {(rowData !== undefined) && (
-              <Tr className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
-                {rowData.cells.map((cell, cellIndex) => {
-                  return (
-                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
-                )}
-                )}
-                <Th></Th>
-              </Tr>
-            )}
-          </React.Fragment>
-        )
-        })}
-        <Tr className='temperature-component-tr'>
-          <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th' textAlign="center">{options.seabedDepth}</Td>
-          <Th></Th>
-        </Tr>
-      </Tbody>
+          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => (
+            <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
+              {rowData.cells.map((cell, cellIndex) => (
+                <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
+              ))}
+              <Th>{/* rowData.cells.map(y => y?.value) */}</Th>
+            </Tr>
+          ))}
+          <Tr className='temperature-component-tr'>
+            <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th' textAlign="center">{options.seabedDepth}</Td>
+            <Th></Th>
+          </Tr>
+        </Tbody>
       </Table>
     </Box>
   );
