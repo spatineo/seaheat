@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SingleFeatureLayer } from "../../components/map/layer/SingleFeatureLayer"
 import { setLocation } from "../slices/intake"
+import { SeaheatFeatureType } from '../../types';
 
 export const ConnectedMapComponent = () => {
     const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export const ConnectedMapComponent = () => {
 
     return (
         <MapComponent onClickFeature={setIntakeLocation}>
-            {location !== null ? <SingleFeatureLayer name="intake" location={location} zIndex={100} /> : <></> }
+            {location !== null ? <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={location} zIndex={100} /> : <></> }
         </MapComponent>
     )
 }

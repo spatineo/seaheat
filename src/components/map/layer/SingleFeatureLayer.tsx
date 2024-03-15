@@ -4,14 +4,15 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Feature } from "ol";
 import { Point } from "ol/geom";
+import { SeaheatFeatureType } from "../../../types";
 
 interface SingleFeatureLayerLayerProps {
-    name: string,
+    type: SeaheatFeatureType,
     location: number[],
     zIndex: number
 }
 
-export const SingleFeatureLayer = ({name, location, zIndex} : SingleFeatureLayerLayerProps) => {
+export const SingleFeatureLayer = ({type, location, zIndex} : SingleFeatureLayerLayerProps) => {
     const { map } = useContext(MapContext);
 
     useEffect(() => {
@@ -19,7 +20,7 @@ export const SingleFeatureLayer = ({name, location, zIndex} : SingleFeatureLayer
 
         const source = new VectorSource();
         source.addFeature(new Feature({
-            name,
+            name: type,
             geometry: new Point(location)
         }));
 
@@ -31,7 +32,7 @@ export const SingleFeatureLayer = ({name, location, zIndex} : SingleFeatureLayer
             map.removeLayer(layer);
         }
 
-    }, [map, name, location, zIndex]);
+    }, [map, type, location, zIndex]);
 
     return null;
 }

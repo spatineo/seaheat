@@ -10,16 +10,12 @@ import MapContext from "./MapContext";
 
 import 'ol/ol.css';
 import './MapComponent.css';
-import { MapBrowserEvent } from 'ol';
-
-enum ClickedFeatureType {
-    INTAKE,
-    DISCHARGE,
-    FACILITY
-}
+import { Feature, MapBrowserEvent } from 'ol';
+import { SeaheatFeatureType } from '../../types';
+import { Point } from 'ol/geom';
 
 export interface ClickEvent {
-    type?: ClickedFeatureType;
+    type?: SeaheatFeatureType;
     location: number[];
 }
 
@@ -31,14 +27,6 @@ interface MapComponentProps {
 export const MapComponent = ({ onClickFeature, children }: MapComponentProps) => {
     const mapRef = useRef(null);
     const [map, setMap] = useState<Map | null>(null);
-
-    const onClick = React.useCallback((evt : MapBrowserEvent<UIEvent>) => {
-        if (onClickFeature) {
-            onClickFeature({
-                location: evt.coordinate
-            });
-        }
-    }, [onClickFeature])
 
     useEffect(() => {
         if (!mapRef.current) return;
@@ -55,12 +43,37 @@ export const MapComponent = ({ onClickFeature, children }: MapComponentProps) =>
         });
         mapObject.setTarget(mapRef.current);
 
-        mapObject.on('click', onClick)
+        mapObject.on('click', (evt : MapBrowserEvent<UIEvent>) => {
+            if (!onClickFeature) return;
+
+            const foundFeatures : Array<ClickEvent> = [];
+            mapObject.forEachFeatureAtPixel(evt.pixel, (feature) => {
+                if (feature.getGeometry()?.getType() !== 'Point') return;
+
+                const f = feature as Feature<Point>;
+                
+                if (f.getGeometry()?.getCoordinates() === undefined) return;
+
+                foundFeatures.push({
+                    type: feature.get('name'),
+                    location: f.getGeometry()?.getCoordinates() as number[]
+                })
+                
+            });
+
+            if (foundFeatures.length > 0) {
+                onClickFeature(foundFeatures[0]);
+            } else {
+                onClickFeature({
+                    location: evt.coordinate
+                });
+            }
+        })
 
         setMap(mapObject);
 
         return () => mapObject.setTarget(undefined);
-    }, [mapRef, onClick])
+    }, [mapRef, onClickFeature])
 
     return (
         <MapContext.Provider value={{ map }}>
