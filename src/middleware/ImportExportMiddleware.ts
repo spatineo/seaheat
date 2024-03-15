@@ -36,15 +36,19 @@ importExportMiddleware.startListening({
     }
 })
 
+export const validateImportFile = (data : ExportFile) => {
+    if (data.application !== "fmi-seaheat") {
+        throw new Error(`Incorrect application (${data.application}) in JSON file`);
+    }
+    if (data.version !== "0.0.0") {
+        throw new Error(`Incorrect verion (${data.version}) in JSON file`);
+    }
+}
+
 importExportMiddleware.startListening({
     actionCreator: importState,
     effect: async (action, listenerApi) => {
-        if (action.payload.application !== "fmi-seaheat") {
-            throw new Error(`Incorrect application (${action.payload.application}) in JSON file`);
-        }
-        if (action.payload.version !== "0.0.0") {
-            throw new Error(`Incorrect verion (${action.payload.version}) in JSON file`);
-        }
+        validateImportFile(action.payload);
         
         listenerApi.dispatch(restoreIntakeState(action.payload.state.intake))
     }

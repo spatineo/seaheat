@@ -1,6 +1,6 @@
 import { Box, Button, Heading, Input, useToast } from "@chakra-ui/react"
 import { useDispatch } from "react-redux";
-import { ExportFile, exportState, importState } from "../../middleware/ImportExportMiddleware";
+import { ExportFile, exportState, importState, validateImportFile } from "../../middleware/ImportExportMiddleware";
 
 
 export const DesignerView = () => {
@@ -23,6 +23,7 @@ export const DesignerView = () => {
             }
             try {
                 const storedState = JSON.parse(String(fileReader.result)) as ExportFile;
+                validateImportFile(storedState);
                 dispatch(importState(storedState));
             } catch(e) {
                 toast({
