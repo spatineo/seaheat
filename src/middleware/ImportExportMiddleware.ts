@@ -1,5 +1,6 @@
 import { createAction, createListenerMiddleware } from "@reduxjs/toolkit";
 import { IntakeState, restoreIntakeState } from "../app/slices/intake";
+import { DischargeState, restoreDischargeState } from "../app/slices/discharge";
 import { UIState, restoreUIState } from "../app/slices/uiState";
 
 export interface ExportFile {
@@ -8,6 +9,7 @@ export interface ExportFile {
     exportedAt: string,
     state: {
         intake: IntakeState,
+        discharge: DischargeState,
         uiState: UIState
     }
 }
@@ -55,6 +57,8 @@ importExportMiddleware.startListening({
         validateImportFile(action.payload);
         
         listenerApi.dispatch(restoreIntakeState(action.payload.state.intake))
+        listenerApi.dispatch(restoreDischargeState(action.payload.state.discharge))
+
         listenerApi.dispatch(restoreUIState(action.payload.state.uiState))
     }
 })

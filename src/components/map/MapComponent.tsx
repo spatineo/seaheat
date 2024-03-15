@@ -13,6 +13,7 @@ import './MapComponent.css';
 import { Feature, MapBrowserEvent } from 'ol';
 import { SeaheatFeatureType } from '../../types';
 import { Point } from 'ol/geom';
+import { unByKey } from 'ol/Observable';
 
 export interface ClickEvent {
     type?: SeaheatFeatureType;
@@ -43,11 +44,19 @@ export const MapComponent = ({ onClickFeature, children }: MapComponentProps) =>
         });
         mapObject.setTarget(mapRef.current);
 
-        mapObject.on('click', (evt : MapBrowserEvent<UIEvent>) => {
+        setMap(mapObject);
+
+        return () => mapObject.setTarget(undefined);
+    }, [mapRef])
+
+    useEffect(() => {
+        if (!map || !onClickFeature) return;
+
+        const eventKey = map.on('click', (evt : MapBrowserEvent<UIEvent>) => {
             if (!onClickFeature) return;
 
             const foundFeatures : Array<ClickEvent> = [];
-            mapObject.forEachFeatureAtPixel(evt.pixel, (feature) => {
+            map.forEachFeatureAtPixel(evt.pixel, (feature) => {
                 if (feature.getGeometry()?.getType() !== 'Point') return;
 
                 const f = feature as Feature<Point>;
@@ -70,10 +79,10 @@ export const MapComponent = ({ onClickFeature, children }: MapComponentProps) =>
             }
         })
 
-        setMap(mapObject);
-
-        return () => mapObject.setTarget(undefined);
-    }, [mapRef, onClickFeature])
+        return () => {
+            unByKey(eventKey)
+        }
+    }, [onClickFeature, map])
 
     return (
         <MapContext.Provider value={{ map }}>

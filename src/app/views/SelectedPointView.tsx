@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { SeaheatFeatureType } from "../../types";
 import { setSelectedPointTab } from "../slices/uiState";
 import { RootState } from "../../store";
+import { ConnectedDischargeComponent } from "../connected/ConnectedDischargeComponent";
 
 export const SelectedPointView = () => {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export const SelectedPointView = () => {
                         <Text>Facility stuff</Text>
                     </TabPanel>
                     <TabPanel>
-                        <Text>Discharge stuff</Text>
+                        <ConnectedDischargeComponent />
                     </TabPanel>
                 </TabPanels>
             </Tabs>

@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SelectedPointComponent } from "../../components/selectedPoint/SelectedPointComponent"
-import { setName, setDepth } from "../slices/intake"
+import { setName, setDepth } from "../slices/discharge"
 import { wrapAction } from "./utils"
 
-export const ConnectedIntakeComponent = () => {
-    const intakeProps = useSelector((state: RootState) => state.intake)
+export const ConnectedDischargeComponent = () => {
+    const dischargeProps = useSelector((state: RootState) => state.discharge)
     const dispatch = useDispatch();
 
-    const intakeCallbacks = {
+    const dischargeCallbacks = {
         setName: wrapAction(setName, dispatch),
         setDepth: wrapAction(setDepth, dispatch),
     }
 
-    return (<SelectedPointComponent {...intakeProps} {...intakeCallbacks} /> )
+    return (<SelectedPointComponent {...dischargeProps} {...dischargeCallbacks} /> )
 }

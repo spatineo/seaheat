@@ -1,12 +1,12 @@
-import { IntakeState } from "../../app/slices/intake";
-import { Box, Center, Flex, FormControl, FormLabel, Input, Spacer, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import { SelectedPointProps } from "../../types";
 
-interface IntakeComponentProps extends IntakeState {
+interface SelectedPointComponentProps extends SelectedPointProps {
     setName?: (name: string | null) => void,
     setDepth?: (depth: number | null) => void,
 }
 
-export const IntakeComponent = ({ location, depth, name, setName, setDepth } : IntakeComponentProps) => {
+export const SelectedPointComponent = ({ location, depth, name, setName, setDepth } : SelectedPointComponentProps) => {
     function callIf<T>(fn: ((v: T) => void) | undefined, value : T) {
         if (fn) fn(value);
     }
