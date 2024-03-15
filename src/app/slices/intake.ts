@@ -2,13 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface IntakeState {
-  location: Array<number | null>,
+  location: Array<number> | null,
   depth: number | null,
   name: string | null
 }
 
 const initialState: IntakeState = {
-  location: [null, null],
+  location: null,
   depth: null,
   name: null
 }
@@ -17,7 +17,7 @@ export const intakeSlice = createSlice({
   name: 'intake',
   initialState,
   reducers: {
-    setLocation: (state, action: PayloadAction<Array<number | null>>) => {
+    setLocation: (state, action: PayloadAction<Array<number> | null>) => {
       state.location = action.payload
     },
     setDepth: (state, action: PayloadAction<number | null>) => {

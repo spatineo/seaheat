@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { IntakeComponent } from "../../components/intake/IntakeComponent"
-import { setName, setDepth, setLocation } from "../slices/intake"
+import { setName, setDepth } from "../slices/intake"
 import { wrapAction } from "./utils"
 
 export const ConnectedIntakeComponent = () => {
@@ -11,7 +11,6 @@ export const ConnectedIntakeComponent = () => {
     const intakeCallbacks = {
         setName: wrapAction(setName, dispatch),
         setDepth: wrapAction(setDepth, dispatch),
-        setLocation: wrapAction(setLocation, dispatch)
     }
 
     return (<IntakeComponent {...intakeProps} {...intakeCallbacks} /> )
