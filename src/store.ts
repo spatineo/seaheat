@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import intakeReducer from './app/slices/intake';
+import uiStateReducer from './app/slices/uiState';
 import { importExportMiddleware } from './middleware/ImportExportMiddleware';
 
 export const store = configureStore({
   reducer: {
-    intake: intakeReducer
+    intake: intakeReducer,
+    uiState: uiStateReducer
   },
 
   middleware: (getDefaultMiddleware) =>

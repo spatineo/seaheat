@@ -3,8 +3,11 @@ import { ClickEvent, MapComponent } from "../../components/map/MapComponent"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SingleFeatureLayer } from "../../components/map/layer/SingleFeatureLayer"
-import { setLocation } from "../slices/intake"
 import { SeaheatFeatureType } from '../../types';
+
+import { setLocation } from "../slices/intake"
+import { setSelectedPointTab } from "../slices/uiState";
+
 
 export const ConnectedMapComponent = () => {
     const dispatch = useDispatch();
@@ -19,7 +22,11 @@ export const ConnectedMapComponent = () => {
     }, [intake]);
 
     const setIntakeLocation = useCallback((evt : ClickEvent) => {
-        dispatch(setLocation(evt.location))
+        if (evt.type !== undefined) {
+            dispatch(setSelectedPointTab(evt.type))
+        } else {
+            dispatch(setLocation(evt.location))
+        }
     }, [dispatch])
 
     return (
