@@ -1,22 +1,37 @@
-import { Box, Button, Heading, Input } from "@chakra-ui/react"
+import { Box, Button, Heading, Input, useToast } from "@chakra-ui/react"
 import { useDispatch } from "react-redux";
 import { ExportFile, exportState, importState } from "../../middleware/ImportExportMiddleware";
 
 
 export const DesignerView = () => {
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const loadFileForImport = (file : File | null) => {
         if (!file) return;
 
         const fileReader = new FileReader();
-        fileReader.onloadend = (e) => {
+        fileReader.onloadend = () => {
             if (fileReader.result === null) {
-                console.error('File could not be read', e);
+                toast({
+                    title: 'Unable to read file',
+                    description: 'The browser did not read the file',
+                    status: 'error',
+                    isClosable: true
+                });
                 return;
             }
-            const storedState = JSON.parse(String(fileReader.result)) as ExportFile;
-            dispatch(importState(storedState));
+            try {
+                const storedState = JSON.parse(String(fileReader.result)) as ExportFile;
+                dispatch(importState(storedState));
+            } catch(e) {
+                toast({
+                    title: 'Unable to read file',
+                    description: 'Did you perhaps send the wrong type of file?',
+                    status: 'error',
+                    isClosable: true
+                });
+            }
         }
         fileReader.readAsText(file);
     }
