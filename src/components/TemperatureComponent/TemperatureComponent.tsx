@@ -34,6 +34,7 @@ interface TemperatureProps {
     x: Axis<string>,
     y: Axis<number>
   },
+  ticks: number[]
   data: Value[],
   legend: Legend[]
   seabedDepth: number,
@@ -48,13 +49,11 @@ function heightOfStep(depth: number[], step: number) {
 }
 
 export const TemperatureComponent = (options: TemperatureProps) => {
- 
-  const { calculatedData, totalHeight } = useMemo(() => {
-
-    let totalHeight = 0;
+  let mH = 0;
+  const heightInPixel = 300;
+  const { calculatedData } = useMemo(() => {
     const calculatedData = options.axes.y.values.filter(yValue => yValue < options.seabedDepth).map((yValue, yIndex) => {
       const height = heightOfStep(options.axes.y.values, yIndex);
-      totalHeight += height;
       return {
         yValueNumber: yValue,
         height,
@@ -67,34 +66,49 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         })
       };
     });
-    return { calculatedData, totalHeight };
+    return { calculatedData };
   }, [options]);
 
 
   const tableContent = (
     <Box>
-      <Table className='temperature-component-table' variant="simple" w="100%" height='100%'>
+      <Table className='temperature-component-table' variant="simple" w="100%" p="0" m="0">
         <Thead>
           <Tr>
             {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
           </Tr>
         </Thead>
-        <Tbody>
+        <Tbody h={heightInPixel} p="0" m="0">
           {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {
+             const rowHeight = rowData.height / options.seabedDepth * heightInPixel;
+             mH += rowHeight;
+             console.log(mH);
             return(
-              <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
+              <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
                 {rowData.cells.map((cell, cellIndex) => (
                   <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
                 ))}
-                <Th fontSize={`${(rowData.yValueNumber < 10.0 || rowData.yValueNumber > 12) ? 10 : rowData.yValueNumber}`}>
-                  {(rowData.yValueNumber > 10.0) ? rowData.yValueNumber : ''}</Th>
+
+               { rowIndex === 0 && (<Th className='temperature-component-th' rowSpan={calculatedData.length}>
+                <Box position="absolute" top="0" h="100%">
+                {options.ticks.map(tick => 
+                <Box 
+                  position="absolute"
+                  boxSizing='border-box'
+                  top={(tick / options.seabedDepth) * (heightInPixel - (20/2))}>
+                    -{tick}
+                    </Box>)}
+                </Box>
+               </Th>)}
+
+
               </Tr>
             )}
           )
           }
           <Tr className='temperature-component-tr'>
-            <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th' textAlign="center">{options.seabedDepth}</Td>
-            <Th>60</Th>
+            <Td colSpan={options.axes.x.values.length} bgColor="#949494" textAlign="center">{options.seabedDepth}</Td>
+            <Th></Th>
           </Tr>
         </Tbody>
       </Table>
