@@ -1,12 +1,13 @@
-import { Box, Center, Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import { Center, Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 import { SelectedPointProps } from "../../types";
 
 interface SelectedPointComponentProps extends SelectedPointProps {
+    distanceToFacility?: number,
     setName?: (name: string | null) => void,
     setDepth?: (depth: number | null) => void,
 }
 
-export const SelectedPointComponent = ({ location, depth, name, setName, setDepth } : SelectedPointComponentProps) => {
+export const SelectedPointComponent = ({ location, depth, name, distanceToFacility, setName, setDepth } : SelectedPointComponentProps) => {
     function callIf<T>(fn: ((v: T) => void) | undefined, value : T) {
         if (fn) fn(value);
     }
@@ -17,7 +18,7 @@ export const SelectedPointComponent = ({ location, depth, name, setName, setDept
     }
 
     return (
-        <Box>
+        <>
             <FormControl variant="floating">
                 <Flex>
                     <Center w='150px'>
@@ -49,6 +50,17 @@ export const SelectedPointComponent = ({ location, depth, name, setName, setDept
                     }
                 </Center>
             </Flex>
-        </Box>
+            <Flex>
+                <Center w='150px'>
+                    <Text>Distance to facility:</Text>
+                </Center>
+                <Center>
+                    {distanceToFacility ?
+                        <Text>{(distanceToFacility / 1000).toFixed(1)} km</Text> :
+                        <Text><i>-</i></Text>
+                    }
+                </Center>
+            </Flex>
+        </>
     )
 }
