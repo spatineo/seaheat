@@ -3,12 +3,12 @@ import { ClickEvent, MapComponent } from "../../components/map/MapComponent"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SingleFeatureLayer } from "../../components/map/layer/SingleFeatureLayer"
-import { SeaheatFeatureType } from '../../types';
+import { MapView, SeaheatFeatureType } from '../../types';
 
 import { setLocation as setIntakeLocation } from "../slices/intake"
 import { setLocation as setDischargeLocation } from "../slices/discharge"
 import { setLocation as setFacilityLocation } from "../slices/facility"
-import { setSelectedPointTab } from "../slices/uiState";
+import { setMapView, setSelectedPointTab } from "../slices/uiState";
 import { LineStringArrowLayer } from "../../components/map/layer/LineStringArrowLayer"
 
 
@@ -18,6 +18,8 @@ export const ConnectedMapComponent = () => {
     const discharge = useSelector((state: RootState) => state.discharge)
     const facility = useSelector((state: RootState) => state.facility)
     const currentTab = useSelector((state: RootState) => state.uiState.selectedPointTab)
+
+    const mapView = useSelector((state: RootState) => state.uiState.map.view)
 
     const clickLocation = useCallback((evt : ClickEvent) => {
         if (evt.type !== undefined) {
@@ -50,8 +52,12 @@ export const ConnectedMapComponent = () => {
         return ret
     }, [intake.location, facility.location, discharge.location])
 
+    const onMapViewChange = useCallback((evt: MapView) => {
+        dispatch(setMapView(evt));
+    }, [dispatch])
+
     return (
-        <MapComponent onClickFeature={(evt) => clickLocation(evt)}>
+        <MapComponent onClickFeature={(evt) => clickLocation(evt)} onMapViewChange={onMapViewChange} view={mapView}>
             <LineStringArrowLayer lineString={lineString} zIndex={100} />
             <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={intake.location} zIndex={110} />
             <SingleFeatureLayer type={SeaheatFeatureType.DISCHARGE} location={discharge.location} zIndex={120} />

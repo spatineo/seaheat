@@ -10,7 +10,7 @@ import MapContext from "./MapContext";
 
 import 'ol/ol.css';
 import './MapComponent.css';
-import { Feature, MapBrowserEvent } from 'ol';
+import { Feature, MapBrowserEvent, MapEvent } from 'ol';
 import { MapView, SeaheatFeatureType } from '../../types';
 import { Point } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
@@ -23,10 +23,11 @@ export interface ClickEvent {
 interface MapComponentProps {
     view: MapView,
     onClickFeature?: (f : ClickEvent) => void;
+    onMapViewChange?: (f : MapView) => void;
     children?: React.ReactNode;
 }
 
-export const MapComponent = ({ view, onClickFeature, children }: MapComponentProps) => {
+export const MapComponent = ({ view, onClickFeature,  onMapViewChange, children }: MapComponentProps) => {
     const mapRef = useRef(null);
     const [map, setMap] = useState<Map | null>(null);
 
@@ -35,8 +36,6 @@ export const MapComponent = ({ view, onClickFeature, children }: MapComponentPro
 
         const mapObject: Map = new Map({
             view: new View({
-                center: [2749287.033361, 8966980.662191],
-                zoom: 5,
                 projection: "EPSG:3857",
             }),
             layers: [new TileLayer({
@@ -51,11 +50,25 @@ export const MapComponent = ({ view, onClickFeature, children }: MapComponentPro
     }, [mapRef])
 
     useEffect(() => {
+        if (!map || !onMapViewChange) return;
+
+        const key = map.on('moveend', () => {
+            onMapViewChange({
+                center: map.getView().getCenter() as number[],
+                zoom: map.getView().getZoom() as number
+            })
+        })
+
+        return () => {
+            unByKey(key)
+        }
+    }, [map, onMapViewChange])
+
+    useEffect(() => {
         if (!map) return;
 
         map.getView().setCenter(view.center);
         map.getView().setZoom(view.zoom);
-        
     }, [map, view])
 
     useEffect(() => {
