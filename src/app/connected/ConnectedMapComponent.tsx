@@ -52,10 +52,10 @@ export const ConnectedMapComponent = () => {
 
     return (
         <MapComponent onClickFeature={(evt) => clickLocation(evt)}>
-            <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={intake.location} zIndex={100} />
-            <SingleFeatureLayer type={SeaheatFeatureType.DISCHARGE} location={discharge.location} zIndex={101} />
-            <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={facility.location} zIndex={102} />
-            <LineStringArrowLayer lineString={lineString} zIndex={103} />
+            <LineStringArrowLayer lineString={lineString} zIndex={100} />
+            <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={intake.location} zIndex={110} />
+            <SingleFeatureLayer type={SeaheatFeatureType.DISCHARGE} location={discharge.location} zIndex={120} />
+            <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={facility.location} zIndex={130} />
         </MapComponent>
     )
 }
