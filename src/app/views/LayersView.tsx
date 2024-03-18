@@ -18,11 +18,19 @@ export const LayersView = () => {
     return (
         <Box borderWidth='1px' borderRadius='lg' padding={5}>
             <Stack direction={['column']}>
-                <Heading size='md'>Background layers</Heading>
-                
+                <Heading size='md'>Select Layers</Heading>
+                <Text>Data layers</Text>
+                <CheckboxGroup colorScheme='blue' value={checked}>
+                    {
+                        availableLayers.filter((al) => al.isDatalayer).map((l, idx) =>
+                            <Checkbox size='md' checked={false} key={idx} onChange={() => dispatch(toggleLayer(l.id))} value={l.id}>{l.title}</Checkbox>
+                        )
+                    }
+                </CheckboxGroup>
+                <Text>Overlays</Text>
                 <CheckboxGroup colorScheme='green' value={checked}>
                     {
-                        availableLayers.map((l, idx) =>
+                        availableLayers.filter((al) => !al.isDatalayer).map((l, idx) =>
                             <Checkbox size='md' checked={false} key={idx} onChange={() => dispatch(toggleLayer(l.id))} value={l.id}>{l.title}</Checkbox>
                         )
                     }
