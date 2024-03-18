@@ -1,4 +1,4 @@
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { ConnectedIntakeComponent } from "../connected/ConnectedIntakeComponent"
 
 import { useDispatch, useSelector } from "react-redux"

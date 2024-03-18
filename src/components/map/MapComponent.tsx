@@ -10,7 +10,7 @@ import MapContext from "./MapContext";
 
 import 'ol/ol.css';
 import './MapComponent.css';
-import { Feature, MapBrowserEvent, MapEvent } from 'ol';
+import { Feature, MapBrowserEvent } from 'ol';
 import { MapView, SeaheatFeatureType } from '../../types';
 import { Point } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
