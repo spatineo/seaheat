@@ -1,4 +1,4 @@
-import { Box, Center, Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import { Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 import { FacilityProps } from "../../types";
 
 interface FacilityComponentProps extends FacilityProps {
@@ -11,28 +11,28 @@ export const FacilityComponent = ({ location, name, setName } : FacilityComponen
     }
 
     return (
-        <Box>
+        <>
             <FormControl variant="floating">
                 <Flex>
-                    <Center w='150px'>
+                    <Flex w='150px'>
                         <FormLabel>Name</FormLabel>
-                    </Center>
-                    <Center>
+                    </Flex>
+                    <Flex>
                         <Input type="text" value={name ? name : ""} onChange={(value) => callIf(setName, value.target.value)} />
-                    </Center>
+                    </Flex>
                 </Flex>
             </FormControl>
             <Flex>
-                <Center w='150px'>
+                <Flex w='150px'>
                     <Text>Location:</Text>
-                </Center>
-                <Center>
+                </Flex>
+                <Flex>
                     {location ?
                         <Text>[{Math.round(location[0])} {Math.round(location[1])}]</Text> :
                         <Text><i>unset</i></Text>
                     }
-                </Center>
+                </Flex>
             </Flex>
-        </Box>
+        </>
     )
 }
