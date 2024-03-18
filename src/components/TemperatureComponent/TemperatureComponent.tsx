@@ -80,17 +80,21 @@ export const TemperatureComponent = (options: TemperatureProps) => {
           </Tr>
         </Thead>
         <Tbody>
-          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => (
-            <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
-              {rowData.cells.map((cell, cellIndex) => (
-                <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
-              ))}
-              <Th>{/* rowData.cells.map(y => y?.value) */}</Th>
-            </Tr>
-          ))}
+          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {
+            return(
+              <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
+                {rowData.cells.map((cell, cellIndex) => (
+                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
+                ))}
+                <Th fontSize={`${(rowData.yValueNumber < 10.0 || rowData.yValueNumber > 12) ? 10 : rowData.yValueNumber}`}>
+                  {(rowData.yValueNumber > 10.0) ? rowData.yValueNumber : ''}</Th>
+              </Tr>
+            )}
+          )
+          }
           <Tr className='temperature-component-tr'>
             <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th' textAlign="center">{options.seabedDepth}</Td>
-            <Th></Th>
+            <Th>60</Th>
           </Tr>
         </Tbody>
       </Table>
@@ -109,7 +113,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
               <Box mr={2} bgColor={color} w="16%" h="60%">
               </Box>
               <Box>
-                {maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}
+                {maxValue < 0 ? (<Box>{'< 0 °C'}</Box>): minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}
               </Box>
             </Box>
         ))}
