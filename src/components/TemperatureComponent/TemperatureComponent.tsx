@@ -126,9 +126,9 @@ export const TemperatureComponent = (options: TemperatureProps) => {
             <Box key={index}  w="24%" sx={{ display: "flex", alignItems: "center"}} mb="2" >
               <Box mr={2} bgColor={color} w="16%" h="60%">
               </Box>
-              <Box>
-                {maxValue < 0 ? (<Box>{'< 0 °C'}</Box>): minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}
-              </Box>
+              <Flex>
+                {maxValue < 0 ? (<Box>{'< 0 °C'}</Box>): minValue >= 26 ? '> 25 °C' : (<Box>{`${minValue} - ${maxValue} °C`}</Box>)}
+              </Flex>
             </Box>
         ))}
     </Flex>
