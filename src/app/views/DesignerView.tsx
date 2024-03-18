@@ -1,25 +1,13 @@
-import { Box, Button, Heading, Input } from "@chakra-ui/react"
 import { useDispatch } from "react-redux";
-import { ExportFile, exportState, importState } from "../../middleware/ImportExportMiddleware";
+import { Box, Button, Heading, Input } from "@chakra-ui/react"
+import { exportState } from "../../middleware/ImportExportMiddleware";
+import { useFileImport } from "../hooks/useFileImport";
 
 
 export const DesignerView = () => {
     const dispatch = useDispatch();
-
-    const loadFileForImport = (file : File | null) => {
-        if (!file) return;
-
-        const fileReader = new FileReader();
-        fileReader.onloadend = (e) => {
-            if (fileReader.result === null) {
-                console.error('File could not be read', e);
-                return;
-            }
-            const storedState = JSON.parse(String(fileReader.result)) as ExportFile;
-            dispatch(importState(storedState));
-        }
-        fileReader.readAsText(file);
-    }
+    
+    const { loadFileForImport } = useFileImport();
 
     return (
         <Box>

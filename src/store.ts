@@ -1,11 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import intakeReducer from './app/slices/intake';
+import dischargeReducer from './app/slices/discharge';
+import facilityReducer from './app/slices/facility';
+
+import uiStateReducer from './app/slices/uiState';
+
 import { importExportMiddleware } from './middleware/ImportExportMiddleware';
 
 export const store = configureStore({
   reducer: {
-    intake: intakeReducer
+    intake: intakeReducer,
+    discharge: dischargeReducer,
+    facility: facilityReducer,
+
+    uiState: uiStateReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

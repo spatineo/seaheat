@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
@@ -10,12 +10,24 @@ import MapContext from "./MapContext";
 
 import 'ol/ol.css';
 import './MapComponent.css';
+import { Feature, MapBrowserEvent } from 'ol';
+import { MapView, SeaheatFeatureType } from '../../types';
+import { Point } from 'ol/geom';
+import { unByKey } from 'ol/Observable';
+
+export interface ClickEvent {
+    type?: SeaheatFeatureType;
+    location: number[];
+}
 
 interface MapComponentProps {
+    view: MapView,
+    onClickFeature?: (f : ClickEvent) => void;
+    onMapViewChange?: (f : MapView) => void;
     children?: React.ReactNode;
 }
 
-export const MapComponent = ({ children }: MapComponentProps) => {
+export const MapComponent = ({ view, onClickFeature,  onMapViewChange, children }: MapComponentProps) => {
     const mapRef = useRef(null);
     const [map, setMap] = useState<Map | null>(null);
 
@@ -24,8 +36,6 @@ export const MapComponent = ({ children }: MapComponentProps) => {
 
         const mapObject: Map = new Map({
             view: new View({
-                center: [2749287.033361, 8966980.662191],
-                zoom: 5,
                 projection: "EPSG:3857",
             }),
             layers: [new TileLayer({
@@ -38,6 +48,63 @@ export const MapComponent = ({ children }: MapComponentProps) => {
 
         return () => mapObject.setTarget(undefined);
     }, [mapRef])
+
+    useEffect(() => {
+        if (!map || !onMapViewChange) return;
+
+        const key = map.on('moveend', () => {
+            onMapViewChange({
+                center: map.getView().getCenter() as number[],
+                zoom: map.getView().getZoom() as number
+            })
+        })
+
+        return () => {
+            unByKey(key)
+        }
+    }, [map, onMapViewChange])
+
+    useEffect(() => {
+        if (!map) return;
+
+        map.getView().setCenter(view.center);
+        map.getView().setZoom(view.zoom);
+    }, [map, view])
+
+    useEffect(() => {
+        if (!map || !onClickFeature) return;
+
+        const eventKey = map.on('click', (evt : MapBrowserEvent<UIEvent>) => {
+            if (!onClickFeature) return;
+
+            const foundFeatures : Array<ClickEvent> = [];
+            map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+                if (feature.getGeometry()?.getType() !== 'Point') return;
+
+                const f = feature as Feature<Point>;
+                
+                if (f.getGeometry()?.getCoordinates() === undefined) return;
+
+                foundFeatures.push({
+                    type: feature.get('name'),
+                    location: f.getGeometry()?.getCoordinates() as number[]
+                })
+                
+            });
+
+            if (foundFeatures.length > 0) {
+                onClickFeature(foundFeatures[0]);
+            } else {
+                onClickFeature({
+                    location: evt.coordinate
+                });
+            }
+        })
+
+        return () => {
+            unByKey(eventKey)
+        }
+    }, [onClickFeature, map])
 
     return (
         <MapContext.Provider value={{ map }}>
