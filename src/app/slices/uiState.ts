@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { MapView, SeaheatFeatureType } from '../../types'
+import { availableLayers } from '../../config/layers';
 
 interface VisibleLayer {
   id: string,
@@ -40,8 +41,19 @@ export const uiStateSlice = createSlice({
 
     toggleLayer: (state, action: PayloadAction<string>) => {
       if (state.map.visibleLayers.find((v) => v.id == action.payload)) {
+        // unselect
         state.map.visibleLayers = state.map.visibleLayers.filter((v) => v.id !== action.payload)
       } else {
+        // select, BUT if this is a datalayer and there is already a datalayer, unselect that
+        const newLayer = availableLayers.find((al) => al.id === action.payload);
+        if (newLayer?.isDatalayer) {
+          state.map.visibleLayers = state.map.visibleLayers.filter((vl) => {
+            const al = availableLayers.find((al) => al.id === vl.id);
+            if (al?.isDatalayer) return false;
+            return true;
+          })
+        }
+
         state.map.visibleLayers.push({
           id: action.payload,
           opacity: .5

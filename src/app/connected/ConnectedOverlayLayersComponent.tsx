@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { availableLayers } from "./layers"
+import { availableLayers } from "../../config/layers"
 import { useMemo } from "react"
 import { WMSLayer } from "../../components/map/layer/WMSLayer"
 

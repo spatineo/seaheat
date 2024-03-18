@@ -26,5 +26,11 @@ export interface LayerConfiguration {
     url: string,
     title: string,
     layer: string,
-    type: string
+    type: string,
+    isDatalayer: boolean,
+    legend?: {
+        url: string,
+        width: number,
+        height: number
+    }
 }
