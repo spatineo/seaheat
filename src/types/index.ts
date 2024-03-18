@@ -31,6 +31,7 @@ export interface LayerConfiguration {
     legend?: {
         url: string,
         width: number,
-        height: number
+        height: number,
+        scale: number
     }
 }

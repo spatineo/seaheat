@@ -11,7 +11,12 @@ export const ConnectedLegendComponent = () => {
         const al = availableLayers.find((al) => al.id === vl.id);
 
         if (al?.isDatalayer && al.legend) {
-            return (<Image src={al.legend.url} alt='legend' style={{ position: 'relative', top: `-${al.legend.height}px`}}/>)
+            return (<Image
+                src={al.legend.url}
+                width={`${Math.round(al.legend.width * al.legend.scale)}px`}
+                height={`${Math.round(al.legend.height * al.legend.scale)}px`}
+                alt='legend'
+                style={{ position: 'absolute', right: '3px', bottom: '3px'}}/>);
         }
 
     }).find(v => !!v), [visibleLayers]);

@@ -26,8 +26,9 @@ export const availableLayers : Array<LayerConfiguration> = [
         type: 'WMS',
         legend: {
             url: 'https://gtkdata.gtk.fi/arcgis/services/EMODnet/EMODnet_Geology/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=Seabed_substrate_1M',
-            width: 208,
-            height: 112
+            width: 210,
+            height: 126,
+            scale: 0.9
         }
     },
     {
@@ -40,7 +41,8 @@ export const availableLayers : Array<LayerConfiguration> = [
         legend: {
             url: 'https://paikkatieto.ymparisto.fi/arcgis/services/Velmukartta/Velmukartta/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=1',
             width: 90,
-            height: 458
+            height: 468,
+            scale: .8
         }
     }
 ];
