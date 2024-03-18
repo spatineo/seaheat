@@ -11,7 +11,7 @@ import MapContext from "./MapContext";
 import 'ol/ol.css';
 import './MapComponent.css';
 import { Feature, MapBrowserEvent } from 'ol';
-import { SeaheatFeatureType } from '../../types';
+import { MapView, SeaheatFeatureType } from '../../types';
 import { Point } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
 
@@ -21,11 +21,12 @@ export interface ClickEvent {
 }
 
 interface MapComponentProps {
+    view: MapView,
     onClickFeature?: (f : ClickEvent) => void;
     children?: React.ReactNode;
 }
 
-export const MapComponent = ({ onClickFeature, children }: MapComponentProps) => {
+export const MapComponent = ({ view, onClickFeature, children }: MapComponentProps) => {
     const mapRef = useRef(null);
     const [map, setMap] = useState<Map | null>(null);
 
@@ -48,6 +49,14 @@ export const MapComponent = ({ onClickFeature, children }: MapComponentProps) =>
 
         return () => mapObject.setTarget(undefined);
     }, [mapRef])
+
+    useEffect(() => {
+        if (!map) return;
+
+        map.getView().setCenter(view.center);
+        map.getView().setZoom(view.zoom);
+        
+    }, [map, view])
 
     useEffect(() => {
         if (!map || !onClickFeature) return;

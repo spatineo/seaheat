@@ -15,3 +15,8 @@ export interface FacilityProps {
     location: Array<number> | null,
     name: string | null
 }
+
+export interface MapView {
+    center: number[],
+    zoom: number
+}
