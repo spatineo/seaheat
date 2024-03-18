@@ -7,6 +7,7 @@ import { SeaheatFeatureType } from '../../types';
 
 import { setLocation as setIntakeLocation } from "../slices/intake"
 import { setLocation as setDischargeLocation } from "../slices/discharge"
+import { setLocation as setFacilityLocation } from "../slices/facility"
 import { setSelectedPointTab } from "../slices/uiState";
 
 
@@ -14,6 +15,7 @@ export const ConnectedMapComponent = () => {
     const dispatch = useDispatch();
     const intake = useSelector((state: RootState) => state.intake)
     const discharge = useSelector((state: RootState) => state.discharge)
+    const facility = useSelector((state: RootState) => state.facility)
     const currentTab = useSelector((state: RootState) => state.uiState.selectedPointTab)
 
     const clickLocation = useCallback((evt : ClickEvent) => {
@@ -25,6 +27,8 @@ export const ConnectedMapComponent = () => {
                     return dispatch(setIntakeLocation(evt.location));
                 case SeaheatFeatureType.DISCHARGE:
                     return dispatch(setDischargeLocation(evt.location));
+                case SeaheatFeatureType.FACILITY:
+                    return dispatch(setFacilityLocation(evt.location));
             }
         }
     }, [currentTab, dispatch])
@@ -33,6 +37,7 @@ export const ConnectedMapComponent = () => {
         <MapComponent onClickFeature={(evt) => clickLocation(evt)}>
             {intake.location !== null ? <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={intake.location} zIndex={100} /> : <></> }
             {discharge.location !== null ? <SingleFeatureLayer type={SeaheatFeatureType.DISCHARGE} location={discharge.location} zIndex={101} /> : <></> }
+            {facility.location !== null ? <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={facility.location} zIndex={102} /> : <></> }
         </MapComponent>
     )
 }

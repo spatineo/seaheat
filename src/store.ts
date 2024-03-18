@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import intakeReducer from './app/slices/intake';
 import dischargeReducer from './app/slices/discharge';
+import facilityReducer from './app/slices/facility';
 
 import uiStateReducer from './app/slices/uiState';
 
@@ -11,6 +12,7 @@ export const store = configureStore({
   reducer: {
     intake: intakeReducer,
     discharge: dischargeReducer,
+    facility: facilityReducer,
 
     uiState: uiStateReducer,
   },

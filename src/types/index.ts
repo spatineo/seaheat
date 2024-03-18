@@ -10,3 +10,8 @@ export interface SelectedPointProps {
     depth: number | null,
     name: string | null
 }
+
+export interface FacilityProps {
+    location: Array<number> | null,
+    name: string | null
+}

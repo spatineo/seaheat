@@ -6,6 +6,7 @@ import { SeaheatFeatureType } from "../../types";
 import { setSelectedPointTab } from "../slices/uiState";
 import { RootState } from "../../store";
 import { ConnectedDischargeComponent } from "../connected/ConnectedDischargeComponent";
+import { ConnectedFacilityComponent } from "../connected/ConnectedFacilityComponent";
 
 export const SelectedPointView = () => {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export const SelectedPointView = () => {
                         <ConnectedIntakeComponent />
                     </TabPanel>
                     <TabPanel>
-                        <Text>Facility stuff</Text>
+                        <ConnectedFacilityComponent />
                     </TabPanel>
                     <TabPanel>
                         <ConnectedDischargeComponent />
