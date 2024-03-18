@@ -5,14 +5,16 @@ import VectorSource from "ol/source/Vector";
 import { Feature } from "ol";
 import { Point } from "ol/geom";
 import { SeaheatFeatureType } from "../../../types";
+import { StyleLike } from "ol/style/Style";
 
 interface SingleFeatureLayerProps {
     type: SeaheatFeatureType,
     location: number[] | null,
-    zIndex: number
+    zIndex: number,
+    style?: StyleLike
 }
 
-export const SingleFeatureLayer = ({type, location, zIndex} : SingleFeatureLayerProps) => {
+export const SingleFeatureLayer = ({type, location, style, zIndex} : SingleFeatureLayerProps) => {
     const { map } = useContext(MapContext);
 
     const [ source, setSource ] = useState<VectorSource | null>(null);
@@ -35,17 +37,21 @@ export const SingleFeatureLayer = ({type, location, zIndex} : SingleFeatureLayer
 
     useEffect(() => {
         if (!source || !location) return;
-
-        source.addFeature(new Feature({
+        const feature = new Feature({
             name: type,
-            geometry: new Point(location)
-        }));
+            geometry: new Point(location),
+        })
+
+        if (style) {
+            feature.setStyle(style);
+        }
+        source.addFeature(feature);
 
         return () => {
             source.clear();
         }
 
-    }, [source, type, location]);
+    }, [source, type, style, location]);
 
 
     return null;

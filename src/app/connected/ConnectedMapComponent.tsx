@@ -12,6 +12,19 @@ import { setMapView, setSelectedPointTab } from "../slices/uiState";
 import { LineStringArrowLayer } from "../../components/map/layer/LineStringArrowLayer"
 
 
+import { RegularShape, Style, Fill, Stroke } from 'ol/style';
+
+const selectedPointStyle = new Style({
+    image: new RegularShape({
+      fill: new Fill({color: 'black'}),
+      stroke: new Stroke({ color: 'black '}),
+      points: 5,
+      radius: 10,
+      radius2: 4,
+      angle: 0,
+    }),
+})
+
 export const ConnectedMapComponent = () => {
     const dispatch = useDispatch();
     const intake = useSelector((state: RootState) => state.intake)
@@ -59,9 +72,9 @@ export const ConnectedMapComponent = () => {
     return (
         <MapComponent onClickFeature={(evt) => clickLocation(evt)} onMapViewChange={onMapViewChange} view={mapView}>
             <LineStringArrowLayer lineString={lineString} zIndex={100} />
-            <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={intake.location} zIndex={110} />
-            <SingleFeatureLayer type={SeaheatFeatureType.DISCHARGE} location={discharge.location} zIndex={120} />
-            <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={facility.location} zIndex={130} />
+            <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={intake.location} zIndex={110} style={currentTab === SeaheatFeatureType.INTAKE ? selectedPointStyle : undefined} />
+            <SingleFeatureLayer type={SeaheatFeatureType.DISCHARGE} location={discharge.location} zIndex={120} style={currentTab === SeaheatFeatureType.DISCHARGE ? selectedPointStyle : undefined} />
+            <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={facility.location} zIndex={130} style={currentTab === SeaheatFeatureType.FACILITY ? selectedPointStyle : undefined} />
         </MapComponent>
     )
 }
