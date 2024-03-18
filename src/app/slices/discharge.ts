@@ -1,20 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export interface IntakeState {
+export interface DischargeState {
   location: Array<number> | null,
   depth: number | null,
   name: string | null
 }
 
-const initialState: IntakeState = {
+const initialState: DischargeState = {
   location: null,
   depth: null,
   name: null
 }
 
-export const intakeSlice = createSlice({
-  name: 'intake',
+export const dischargeSlice = createSlice({
+  name: 'discharge',
   initialState,
   reducers: {
     setLocation: (state, action: PayloadAction<Array<number> | null>) => {
@@ -26,7 +26,7 @@ export const intakeSlice = createSlice({
     setName: (state, action: PayloadAction<string | null>) => {
       state.name = action.payload
     },
-    restoreIntakeState: (state, action: PayloadAction<IntakeState>) => {
+    restoreDischargeState: (state, action: PayloadAction<DischargeState>) => {
       state.name = action.payload.name;
       state.depth = action.payload.depth;
       state.location = action.payload.location;
@@ -35,6 +35,6 @@ export const intakeSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setLocation, setDepth, setName, restoreIntakeState } = intakeSlice.actions
+export const { setLocation, setDepth, setName, restoreDischargeState } = dischargeSlice.actions
 
-export default intakeSlice.reducer
+export default dischargeSlice.reducer

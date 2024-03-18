@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react"
-import { MapComponent } from "../../components/map/MapComponent"
+import { ConnectedMapComponent } from "../connected/ConnectedMapComponent"
 
 export const MapView = () => {
     return (
         <Box>
-            <MapComponent />
+            <ConnectedMapComponent />
         </Box>
     )
 }

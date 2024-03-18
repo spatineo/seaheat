@@ -1,26 +1,27 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SelectedPointComponent } from "../../components/selectedPoint/SelectedPointComponent"
-import { setName, setDepth } from "../slices/intake"
+import { setName, setDepth } from "../slices/discharge"
 import { distanceBetweenPoints, wrapAction } from "./utils"
 import { useMemo } from "react"
 
-export const ConnectedIntakeComponent = () => {
-    const intakeProps = useSelector((state: RootState) => state.intake)
+export const ConnectedDischargeComponent = () => {
+    const dischargeProps = useSelector((state: RootState) => state.discharge)
     const facilityLocation = useSelector((state: RootState) => state.facility.location)
     const dispatch = useDispatch();
 
-    const intakeCallbacks = {
+    const dischargeCallbacks = {
         setName: wrapAction(setName, dispatch),
         setDepth: wrapAction(setDepth, dispatch),
     }
 
     const distanceToFacility : number | undefined = useMemo(() => {
-        if (!intakeProps || !intakeProps.location || !facilityLocation) return undefined;
+        if (!dischargeProps || !dischargeProps.location || !facilityLocation) return undefined;
 
-        return distanceBetweenPoints(intakeProps.location, facilityLocation);
+        return distanceBetweenPoints(dischargeProps.location, facilityLocation);
 
-    }, [intakeProps, facilityLocation])
+    }, [dischargeProps, facilityLocation])
 
-    return (<SelectedPointComponent {...intakeProps} {...intakeCallbacks} distanceToFacility={distanceToFacility} /> )
+
+    return (<SelectedPointComponent {...dischargeProps} {...dischargeCallbacks} distanceToFacility={distanceToFacility} /> )
 }
