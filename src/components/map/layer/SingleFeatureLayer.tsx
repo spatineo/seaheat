@@ -6,13 +6,13 @@ import { Feature } from "ol";
 import { Point } from "ol/geom";
 import { SeaheatFeatureType } from "../../../types";
 
-interface SingleFeatureLayerLayerProps {
+interface SingleFeatureLayerProps {
     type: SeaheatFeatureType,
     location: number[],
     zIndex: number
 }
 
-export const SingleFeatureLayer = ({type, location, zIndex} : SingleFeatureLayerLayerProps) => {
+export const SingleFeatureLayer = ({type, location, zIndex} : SingleFeatureLayerProps) => {
     const { map } = useContext(MapContext);
 
     useEffect(() => {
