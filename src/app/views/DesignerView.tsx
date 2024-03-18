@@ -11,7 +11,7 @@ export const DesignerView = () => {
 
     return (
         <>
-            <Heading>SeaHeat Designer</Heading>
+            <Heading size='lg'>SeaHeat Designer</Heading>
             <Box borderWidth='1px' borderRadius='lg' padding={5}>
                 <Stack direction={['column']}>
                     <Heading size='md'>Save/load</Heading>
