@@ -11,19 +11,41 @@ import { setLocation as setFacilityLocation } from "../slices/facility"
 import { setMapView, setSelectedPointTab } from "../slices/uiState";
 import { LineStringArrowLayer } from "../../components/map/layer/LineStringArrowLayer"
 
+import { Style, Icon } from 'ol/style';
 
-import { RegularShape, Style, Fill, Stroke } from 'ol/style';
+const { defaultStyle, selectedStyle } = [
+   { type: SeaheatFeatureType.INTAKE, src:'images/pipe.svg' },
+   { type: SeaheatFeatureType.DISCHARGE, src:'images/pipe.svg' },
+   { type: SeaheatFeatureType.FACILITY, src:'images/facility.svg' },
+].reduce((memo, d) => {
+    memo.defaultStyle.set(d.type, new Style({
+        image: new Icon({
+            src: d.src,
+            width: 24,
+            crossOrigin: 'anonymous',
+            color: '#000',
+        }),
+    }))
 
-const selectedPointStyle = new Style({
-    image: new RegularShape({
-      fill: new Fill({color: 'black'}),
-      stroke: new Stroke({ color: 'black '}),
-      points: 5,
-      radius: 10,
-      radius2: 4,
-      angle: 0,
-    }),
-})
+    memo.selectedStyle.set(d.type, new Style({
+        image: new Icon({
+            src: d.src,
+            width: 24,
+            crossOrigin: 'anonymous',
+            color: '#f55',
+        }),
+    }))
+
+    return memo;
+}, { defaultStyle: new Map<SeaheatFeatureType, Style>(), selectedStyle: new Map<SeaheatFeatureType, Style>()});
+
+const selectStyle = (selected : SeaheatFeatureType, featureType: SeaheatFeatureType) => {
+    if (selected === featureType) {
+        return selectedStyle.get(featureType);
+    } else {
+        return defaultStyle.get(featureType);
+    }
+}
 
 export const ConnectedMapComponent = () => {
     const dispatch = useDispatch();
@@ -72,9 +94,24 @@ export const ConnectedMapComponent = () => {
     return (
         <MapComponent onClickFeature={(evt) => clickLocation(evt)} onMapViewChange={onMapViewChange} view={mapView}>
             <LineStringArrowLayer lineString={lineString} zIndex={100} />
-            <SingleFeatureLayer type={SeaheatFeatureType.INTAKE} location={intake.location} zIndex={110} style={currentTab === SeaheatFeatureType.INTAKE ? selectedPointStyle : undefined} />
-            <SingleFeatureLayer type={SeaheatFeatureType.DISCHARGE} location={discharge.location} zIndex={120} style={currentTab === SeaheatFeatureType.DISCHARGE ? selectedPointStyle : undefined} />
-            <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={facility.location} zIndex={130} style={currentTab === SeaheatFeatureType.FACILITY ? selectedPointStyle : undefined} />
+            <SingleFeatureLayer
+                type={SeaheatFeatureType.INTAKE}
+                location={intake.location}
+                zIndex={110}
+                style={selectStyle(currentTab, SeaheatFeatureType.INTAKE)}
+            />
+            <SingleFeatureLayer
+                type={SeaheatFeatureType.DISCHARGE}
+                location={discharge.location}
+                zIndex={120}
+                style={selectStyle(currentTab, SeaheatFeatureType.DISCHARGE)}
+            />
+            <SingleFeatureLayer
+                type={SeaheatFeatureType.FACILITY}
+                location={facility.location}
+                zIndex={130}
+                style={selectStyle(currentTab, SeaheatFeatureType.FACILITY)}
+            />
         </MapComponent>
     )
 }

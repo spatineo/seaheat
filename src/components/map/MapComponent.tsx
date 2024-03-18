@@ -90,7 +90,7 @@ export const MapComponent = ({ view, onClickFeature,  onMapViewChange, children 
                     location: f.getGeometry()?.getCoordinates() as number[]
                 })
                 
-            });
+            }, { hitTolerance: 20});
 
             if (foundFeatures.length > 0) {
                 onClickFeature(foundFeatures[0]);
