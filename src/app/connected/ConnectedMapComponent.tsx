@@ -12,6 +12,7 @@ import { setMapView, setSelectedPointTab } from "../slices/uiState";
 import { LineStringArrowLayer } from "../../components/map/layer/LineStringArrowLayer"
 
 import { Style, Icon } from 'ol/style';
+import { ConnectedOverlayLayersComponent } from "./ConnectedOverlayLayersComponent"
 
 const { defaultStyle, selectedStyle } = [
    { type: SeaheatFeatureType.INTAKE, src:'images/pipe.svg' },
@@ -112,6 +113,7 @@ export const ConnectedMapComponent = () => {
                 zIndex={130}
                 style={selectStyle(currentTab, SeaheatFeatureType.FACILITY)}
             />
+            <ConnectedOverlayLayersComponent />
         </MapComponent>
     )
 }

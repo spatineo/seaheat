@@ -20,3 +20,11 @@ export interface MapView {
     center: number[],
     zoom: number
 }
+
+export interface LayerConfiguration {
+    id: string,
+    url: string,
+    title: string,
+    layer: string,
+    type: string
+}

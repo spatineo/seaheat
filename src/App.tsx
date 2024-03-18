@@ -16,7 +16,7 @@ function App() {
                       "graph    graph           graph"`}
       templateColumns={'2fr 2fr 3fr'}
       h="100%"
-      gap="1"
+      gap="3"
     >
       <GridItem area ={'designer'}>
         <DesignerView />
