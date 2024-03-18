@@ -56,7 +56,7 @@ export const uiStateSlice = createSlice({
 
         state.map.visibleLayers.push({
           id: action.payload,
-          opacity: .5
+          opacity: newLayer?.isDatalayer ? 1.0 : 0.5
         })
       }
     },

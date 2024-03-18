@@ -13,6 +13,7 @@ import { LineStringArrowLayer } from "../../components/map/layer/LineStringArrow
 
 import { Style, Icon } from 'ol/style';
 import { ConnectedOverlayLayersComponent } from "./ConnectedOverlayLayersComponent"
+import { ConnectedLegendComponent } from "./ConnectedLegendComponent"
 
 const { defaultStyle, selectedStyle } = [
    { type: SeaheatFeatureType.INTAKE, src:'images/pipe.svg' },
@@ -114,6 +115,7 @@ export const ConnectedMapComponent = () => {
                 style={selectStyle(currentTab, SeaheatFeatureType.FACILITY)}
             />
             <ConnectedOverlayLayersComponent />
+            <ConnectedLegendComponent />
         </MapComponent>
     )
 }
