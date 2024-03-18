@@ -52,7 +52,7 @@ export const HelsinkiFeature: Story = {
   },
   render: () => {
     return (
-      <MapComponent view={defaultView} onClickFeature={(evt) => console.log(evt)}>
+      <MapComponent view={defaultView}>
         <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={helsinki} zIndex={100} />
       </MapComponent>
     );
