@@ -49,7 +49,6 @@ function heightOfStep(depth: number[], step: number) {
 }
 
 export const TemperatureComponent = (options: TemperatureProps) => {
-  let mH = 0;
   const heightInPixel = 300;
   const { calculatedData } = useMemo(() => {
     const calculatedData = options.axes.y.values.filter(yValue => yValue < options.seabedDepth).map((yValue, yIndex) => {
@@ -79,10 +78,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
           </Tr>
         </Thead>
         <Tbody h={heightInPixel} p="0" m="0">
-          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {
-             const rowHeight = rowData.height / options.seabedDepth * heightInPixel;
-             mH += rowHeight;
-             console.log(mH);
+          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {          
             return(
               <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
                 {rowData.cells.map((cell, cellIndex) => (
