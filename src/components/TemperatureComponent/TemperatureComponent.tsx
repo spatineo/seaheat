@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Box,
   Table,
@@ -34,6 +34,7 @@ interface TemperatureProps {
     x: Axis<string>,
     y: Axis<number>
   },
+  ticks: number[]
   data: Value[],
   legend: Legend[]
   seabedDepth: number,
@@ -48,14 +49,10 @@ function heightOfStep(depth: number[], step: number) {
 }
 
 export const TemperatureComponent = (options: TemperatureProps) => {
- 
-  const { calculatedData, totalHeight } = useMemo(() => {
-
-    let totalHeight = 0;
+  const heightInPixel = 300;
+  const { calculatedData } = useMemo(() => {
     const calculatedData = options.axes.y.values.filter(yValue => yValue < options.seabedDepth).map((yValue, yIndex) => {
       const height = heightOfStep(options.axes.y.values, yIndex);
-      console.log('Height of step',yIndex,height);
-      totalHeight += height;
       return {
         yValueNumber: yValue,
         height,
@@ -68,40 +65,48 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         })
       };
     });
-    return { calculatedData, totalHeight };
+    return { calculatedData };
   }, [options]);
 
 
   const tableContent = (
     <Box>
-      <Table className='temperature-component-table' variant="simple" w="100%" height='100%'>
+      <Table className='temperature-component-table' variant="simple" w="100%" p="0" m="0">
         <Thead>
           <Tr>
             {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
           </Tr>
         </Thead>
-        <Tbody>
-        {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {
-          return (
-          <React.Fragment key={rowIndex}>
-            {(rowData !== undefined) && (
-              <Tr className='temperature-component-tr' style={{ height: `${rowData.height/totalHeight*300}px` }}>
-                {rowData.cells.map((cell, cellIndex) => {
-                  return (
+        <Tbody h={heightInPixel} p="0" m="0">
+          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {          
+            return(
+              <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
+                {rowData.cells.map((cell, cellIndex) => (
                   <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
-                )}
-                )}
-                <Th></Th>
+                ))}
+
+               { rowIndex === 0 && (<Th className='temperature-component-th' rowSpan={calculatedData.length}>
+                <Box position="absolute" top="0" h="100%">
+                {options.ticks.map(tick => 
+                <Box 
+                  position="absolute"
+                  boxSizing='border-box'
+                  top={(tick / options.seabedDepth) * (heightInPixel - (20/2))}>
+                    -{tick}
+                    </Box>)}
+                </Box>
+               </Th>)}
+
+
               </Tr>
             )}
-          </React.Fragment>
-        )
-        })}
-        <Tr className='temperature-component-tr'>
-          <Td colSpan={options.axes.x.values.length} bgColor="#949494" className='temperature-component-th' textAlign="center">{options.seabedDepth}</Td>
-          <Th></Th>
-        </Tr>
-      </Tbody>
+          )
+          }
+          <Tr className='temperature-component-tr'>
+            <Td colSpan={options.axes.x.values.length} bgColor="#949494" textAlign="center">{options.seabedDepth}</Td>
+            <Th></Th>
+          </Tr>
+        </Tbody>
       </Table>
     </Box>
   );
@@ -117,9 +122,9 @@ export const TemperatureComponent = (options: TemperatureProps) => {
             <Box key={index}  w="24%" sx={{ display: "flex", alignItems: "center"}} mb="2" >
               <Box mr={2} bgColor={color} w="16%" h="60%">
               </Box>
-              <Box>
-                {maxValue < 0 ? '< 0 °C' : minValue >= 26 ? '> 25 °C' : `${minValue} - ${maxValue} °C`}
-              </Box>
+              <Flex>
+                {maxValue < 0 ? (<Box>{'< 0 °C'}</Box>): minValue >= 26 ? '> 25 °C' : (<Box>{`${minValue} - ${maxValue} °C`}</Box>)}
+              </Flex>
             </Box>
         ))}
     </Flex>
