@@ -1,10 +1,13 @@
+import { FC, ReactElement } from 'react'
 import { useDispatch } from "react-redux";
-import { Box, Button, Heading, Input } from "@chakra-ui/react"
+import { Box, Button, Heading, Input, FormLabel,Flex } from "@chakra-ui/react"
 import { exportState } from "../../middleware/ImportExportMiddleware";
 import { useFileImport } from "../hooks/useFileImport";
 
-
-export const DesignerView = () => {
+interface DesignerViewProps {
+    icon: ReactElement
+}
+export const DesignerView:FC<DesignerViewProps> = ({ icon }) => {
     const dispatch = useDispatch();
     
     const { loadFileForImport } = useFileImport();
@@ -12,8 +15,12 @@ export const DesignerView = () => {
     return (
         <Box>
             <Heading>SeaHeat Designer</Heading>
-            <Button onClick={() => dispatch(exportState())}>Export</Button>
-            <Input type='file' value='' onChange={(evt) => loadFileForImport(evt.target.files && evt.target.files[0])}></Input>
+            <Flex alignItems="center">
+                <Button onClick={() => dispatch(exportState())}>Export</Button>
+                <FormLabel sx={{ cursor: "pointer" }}>{icon} Drag and drop
+                    <Input type='file' value='' onChange={(evt) => loadFileForImport(evt.target.files && evt.target.files[0])} display="none" />
+                </FormLabel>
+            </Flex>
         </Box>
     )
 }
