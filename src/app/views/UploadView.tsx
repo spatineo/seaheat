@@ -11,9 +11,29 @@ interface UploadViewProps {
 export const UploadView = ({ onChange, accept, multiple }: UploadViewProps) => {  
     const inputRef = useRef<HTMLInputElement | null>(null)  
     const handleClick = () => inputRef.current?.click()
+    const loadFile = (file: File) => {
+        console.log("File dropped:", file);
+    };
+    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const files = event.dataTransfer.files;
+        if (files && files.length > 0) {
+            loadFile(files[0]);
+        }
+    };
     return (
         <Box>
-        <InputGroup onClick={handleClick} display="flex" alignItems="center">
+        <InputGroup 
+            onClick={handleClick} 
+            display="flex" 
+            alignItems="center"
+            onDragOver={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+            }}
+            onDrop={handleDrop}
+            >
             <Button>Import</Button> 
             <DragHandleIcon pr="2" pl="2"/>
             <Text>Drag and Drop</Text>
