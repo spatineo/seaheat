@@ -6,6 +6,7 @@ import { SelectedPointView } from './app/views/SelectedPointView'
 import { MapView } from './app/views/MapView'
 import { LayersView } from './app/views/LayersView'
 import { GraphView } from './app/views/GraphView'
+import { DragHandleIcon } from '@chakra-ui/icons'
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
       gap="1"
     >
       <GridItem area ={'designer'}>
-        <DesignerView />
+        <DesignerView icon={<DragHandleIcon />} />
       </GridItem>
       <GridItem area ={'dimensionSelect'}>
         <DimensionSelectView />
