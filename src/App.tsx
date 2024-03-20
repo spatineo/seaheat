@@ -14,9 +14,9 @@ function App() {
                       "designer map             selectedPoint"
                       "layers   map             selectedPoint"
                       "graph    graph           graph"`}
-      templateColumns={'2fr 2fr 3fr'}
+      templateColumns={'1fr 2fr 2fr'}
       h="100%"
-      gap="1"
+      gap="3"
     >
       <GridItem area ={'designer'}>
         <DesignerView />
