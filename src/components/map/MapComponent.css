@@ -1,5 +1,4 @@
 .map-component {
-    min-width: 40em;
-    width: 100%;
+    position: relative;
     height: 30em;
 }

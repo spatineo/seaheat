@@ -38,8 +38,10 @@ export const BasicMap: Story = {
   },
   render: () => {
     return (
-      <MapComponent view={defaultView}>
-      </MapComponent>
+      <div style={{ width: '30em'}}>
+        <MapComponent view={defaultView}>
+        </MapComponent>
+      </div>
     );
   }
 };
@@ -52,9 +54,11 @@ export const HelsinkiFeature: Story = {
   },
   render: () => {
     return (
-      <MapComponent view={defaultView}>
-        <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={helsinki} zIndex={100} />
-      </MapComponent>
+      <div style={{ width: '30em'}}>
+        <MapComponent view={defaultView}>
+          <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={helsinki} zIndex={100} />
+        </MapComponent>
+      </div>
     );
   }
 };
@@ -67,9 +71,11 @@ export const ArrowHelsinkiTallinn: Story = {
   },
   render: () => {
     return (
-      <MapComponent view={{ center: [(helsinki[0]+tallinn[0])/2, (helsinki[1]+tallinn[1])/2], zoom: 8 }} onClickFeature={(evt) => console.log(evt)}>
-        <LineStringArrowLayer lineString={[helsinki, tallinn]} zIndex={100} />
-      </MapComponent>
+      <div style={{ width: '30em'}}>
+        <MapComponent view={{ center: [(helsinki[0]+tallinn[0])/2, (helsinki[1]+tallinn[1])/2], zoom: 8 }} onClickFeature={(evt) => console.log(evt)}>
+          <LineStringArrowLayer lineString={[helsinki, tallinn]} zIndex={100} />
+        </MapComponent>
+      </div>
     );
   }
 };
@@ -80,9 +86,11 @@ export const XYZBathymetryLayer: Story = {
   },
   render: () => {
     return (
-      <MapComponent view={defaultView}>
-        <XYZLayer url='https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png' zIndex={10} opacity={1} />
-      </MapComponent>
+      <div style={{ width: '30em'}}>
+        <MapComponent view={defaultView}>
+          <XYZLayer url='https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png' zIndex={10} opacity={1} />
+        </MapComponent>
+      </div>
     );
   }
 };
@@ -93,9 +101,11 @@ export const WMSBathymetryLayer: Story = {
   },
   render: () => {
     return (
-      <MapComponent view={defaultView}>
-        <WMSLayer url='https://geo.vliz.be/geoserver/ows' layerName='MARSPEC:bathy_30s1' zIndex={10} opacity={0.5} />
-      </MapComponent>
+      <div style={{ width: '30em'}}>
+        <MapComponent view={defaultView}>
+          <WMSLayer url='https://geo.vliz.be/geoserver/ows' layerName='MARSPEC:bathy_30s1' zIndex={10} opacity={0.5} />
+        </MapComponent>
+      </div>
     );
   }
 };

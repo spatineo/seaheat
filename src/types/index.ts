@@ -20,3 +20,18 @@ export interface MapView {
     center: number[],
     zoom: number
 }
+
+export interface LayerConfiguration {
+    id: string,
+    url: string,
+    title: string,
+    layer: string,
+    type: string,
+    isDatalayer: boolean,
+    legend?: {
+        url: string,
+        width: number,
+        height: number,
+        scale: number
+    }
+}

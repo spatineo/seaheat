@@ -74,7 +74,7 @@ export const MapComponent = ({ view, onClickFeature,  onMapViewChange, children 
     useEffect(() => {
         if (!map || !onClickFeature) return;
 
-        const eventKey = map.on('click', (evt : MapBrowserEvent<UIEvent>) => {
+        const eventKey = map.on('singleclick', (evt : MapBrowserEvent<UIEvent>) => {
             if (!onClickFeature) return;
 
             const foundFeatures : Array<ClickEvent> = [];
@@ -90,7 +90,7 @@ export const MapComponent = ({ view, onClickFeature,  onMapViewChange, children 
                     location: f.getGeometry()?.getCoordinates() as number[]
                 })
                 
-            });
+            }, { hitTolerance: 5});
 
             if (foundFeatures.length > 0) {
                 onClickFeature(foundFeatures[0]);
