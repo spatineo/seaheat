@@ -1,32 +1,32 @@
-import { ChangeEvent, FC } from "react"
-import { Box, Input,FormLabel, Flex } from "@chakra-ui/react"
+import { useRef } from "react"
+import { Box, Input,InputGroup, Button, Text } from "@chakra-ui/react"
 import { DragHandleIcon } from '@chakra-ui/icons'
 
 interface UploadViewProps {
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+    accept?: string
+    multiple?: boolean
 }
 
-export const UploadView: FC<UploadViewProps> = ({ onChange }) => {    
+export const UploadView = ({ onChange, accept, multiple }: UploadViewProps) => {  
+    const inputRef = useRef<HTMLInputElement | null>(null)  
+    const handleClick = () => inputRef.current?.click()
     return (
         <Box>
-            <FormLabel sx={{ cursor: "pointer" }}>
-            <Flex alignItems="center">
-                <Box sx={{  
-                    borderRadius: '8px',
-                    border: '1px solid transparent',
-                    padding: '0.4em 1.2em',
-                    marginLeft: '0.6em',
-                    marginRight: '0.2em',
-                    fontSize: '1em',
-                    fontWeight: '500',
-                    fontFamily: 'inherit',
-                    backgroundColor: '#f9f9f9;',
-                    cursor: 'pointer',
-                    transition: 'border-color 0.25s'
-                    }}>Import</Box><DragHandleIcon pr="2"/>Drag and Drop
-                <Input type='file' value='' onChange={onChange} display="none" />
-            </Flex>
-            </FormLabel>
-        </Box>
+        <InputGroup onClick={handleClick} display="flex" alignItems="center">
+            <Button>Import</Button> 
+            <DragHandleIcon pr="2" pl="2"/>
+            <Text>Drag and Drop</Text>
+            <Input 
+                type='file'
+                value='' 
+                onChange={onChange}
+                hidden 
+                accept={accept} 
+                multiple={multiple || false}
+                ref={inputRef}
+            />
+        </InputGroup>
+    </Box>
     )
 }
