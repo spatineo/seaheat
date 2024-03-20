@@ -14,7 +14,7 @@ export const DesignerView = () => {
         <Box>
             <Heading>SeaHeat Designer</Heading>
             <Flex alignItems="center">
-                <Button onClick={() => dispatch(exportState())}>Export</Button>
+                <Button onClick={() => dispatch(exportState())} mr="2">Export</Button>
                 <UploadView  onChange={(evt) => loadFileForImport(evt.target.files && evt.target.files[0])} accept={'image/*'}/>
             </Flex>
         </Box>
