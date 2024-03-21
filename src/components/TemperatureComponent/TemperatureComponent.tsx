@@ -119,13 +119,25 @@ export const TemperatureComponent = (options: TemperatureProps) => {
       flexWrap="wrap"
       >
         {options.legend.map(({ color, minValue, maxValue }, index) => (
-            <Box key={index}  w="24%" sx={{ display: "flex", alignItems: "center"}} mb="2" boxSizing='border-box'>
-              <Box bgColor={color} w="16%" h="60%" mr="2">
+            <Flex key={index}  w="24%" mb="2" boxSizing='border-box' alignItems="center" textAlign="center">
+              <Box bgColor={color} w="16%" h="60%" mr="4">
               </Box>
               <Flex w="70%"> 
                 {maxValue < 0 ? 
-                  (<Box>{'< 0 °C'}</Box>) : minValue >= 26 ? 
-                  (<Box> {'> 25 °C'}</Box>) : 
+                  (
+                  <Flex flexWrap="nowrap" w="100%" alignItems="center" >
+                    <Box flex="30%">{`<`}</Box>
+                    <Box flex="20%" mr="1%"></Box> 
+                    <Box flex="30%">{`0`}</Box>
+                    <Box flex="19%">{'°C'}</Box>
+                  </Flex>
+                  ) : minValue >= 26 ? 
+                  ( <Flex flexWrap="nowrap" w="100%" alignItems="center" >
+                  <Box flex="30%">{`>`}</Box>
+                  <Box flex="20%" mr="1%"></Box> 
+                  <Box flex="30%">{`25`}</Box>
+                  <Box flex="19%">{'°C'}</Box>
+                </Flex>) : 
                   (<Flex flexWrap="nowrap" w="100%" alignItems="center">
                   <Box flex="30%" mr="1%">{`${minValue}`}</Box> 
                   <Box flex="20%" mr="1%">-</Box> 
@@ -134,7 +146,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                 </Flex>)
                 }
               </Flex>
-            </Box>
+            </Flex>
         ))}
     </Flex>
   );
