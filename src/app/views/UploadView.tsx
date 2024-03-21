@@ -3,7 +3,7 @@ import { Box, Input,InputGroup, Button, Text } from "@chakra-ui/react"
 import { DragHandleIcon } from '@chakra-ui/icons'
 
 interface UploadViewProps {
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: (file: File) => void
     accept?: string
     multiple?: boolean
 }
@@ -12,7 +12,7 @@ export const UploadView = ({ onChange, accept, multiple }: UploadViewProps) => {
     const inputRef = useRef<HTMLInputElement | null>(null)  
     const handleClick = () => inputRef.current?.click()
     const loadFile = (file: File) => {
-        console.log("File dropped:", file);
+        onChange(file)
     };
     const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -40,11 +40,15 @@ export const UploadView = ({ onChange, accept, multiple }: UploadViewProps) => {
             <Input 
                 type='file'
                 value='' 
-                onChange={onChange}
+                onChange={() => onChange}
                 hidden 
                 accept={accept} 
                 multiple={multiple || false}
-                ref={inputRef}
+                ref={(event) => {
+                    if(event) {
+                        inputRef.current = event
+                    }
+                }}
             />
         </InputGroup>
     </Box>
