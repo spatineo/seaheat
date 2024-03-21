@@ -20,7 +20,7 @@ export const DesignerView = () => {
                     onChange={loadFileForImport} 
                     accept={'application/json'} 
                     buttonText="Import" 
-                    dragNDropText="Drag and Drop"
+                    dragDropText="Drag and Drop"
                 />
             </Flex>
         </Box>
