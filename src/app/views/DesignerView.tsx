@@ -16,7 +16,12 @@ export const DesignerView = () => {
             <Heading>SeaHeat Designer</Heading>
             <Flex alignItems="center">
                 <Button onClick={() => dispatch(exportState())} mr="2">Export</Button>
-                <UploadView  onChange={loadFileForImport} accept={'application/json'}/>
+                <UploadView  
+                    onChange={loadFileForImport} 
+                    accept={'application/json'} 
+                    buttonText="Import" 
+                    dragNDropText="Drag and Drop"
+                />
             </Flex>
         </Box>
     )
