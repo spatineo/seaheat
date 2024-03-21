@@ -119,11 +119,20 @@ export const TemperatureComponent = (options: TemperatureProps) => {
       flexWrap="wrap"
       >
         {options.legend.map(({ color, minValue, maxValue }, index) => (
-            <Box key={index}  w="24%" sx={{ display: "flex", alignItems: "center"}} mb="2" >
-              <Box mr={2} bgColor={color} w="16%" h="60%">
+            <Box key={index}  w="24%" sx={{ display: "flex", alignItems: "center"}} mb="2" boxSizing='border-box'>
+              <Box bgColor={color} w="16%" h="60%" mr="2">
               </Box>
-              <Flex>
-                {maxValue < 0 ? (<Box>{'< 0 °C'}</Box>): minValue >= 26 ? '> 25 °C' : (<Box>{`${minValue} - ${maxValue} °C`}</Box>)}
+              <Flex w="70%"> 
+                {maxValue < 0 ? 
+                  (<Box>{'< 0 °C'}</Box>) : minValue >= 26 ? 
+                  (<Box> {'> 25 °C'}</Box>) : 
+                  (<Flex flexWrap="nowrap" w="100%" alignItems="center">
+                  <Box flex="30%" mr="1%">{`${minValue}`}</Box> 
+                  <Box flex="20%" mr="1%">-</Box> 
+                  <Box flex="30%" mr="1%">{`${maxValue}`}</Box> 
+                  <Box flex="19%">{`°C`}</Box> 
+                </Flex>)
+                }
               </Flex>
             </Box>
         ))}
