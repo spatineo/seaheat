@@ -7,10 +7,10 @@ interface UploadViewProps {
     accept?: string;
     multiple?: boolean;
     buttonText: string;
-    dragNDropText: string
+    dragDropText: string
 }
 
-export const UploadView = ({ onChange, accept, multiple,  buttonText, dragNDropText }: UploadViewProps) => {  
+export const UploadView = ({ onChange, accept, multiple,  buttonText, dragDropText }: UploadViewProps) => {  
     const inputRef = useRef<HTMLInputElement | null>(null);  
 
     const handleClick = () => inputRef.current?.click();
@@ -48,7 +48,7 @@ export const UploadView = ({ onChange, accept, multiple,  buttonText, dragNDropT
             >
                 <Button>{buttonText}</Button> 
                 <DragHandleIcon pr="2" pl="2"/>
-                <Text>{dragNDropText}</Text>
+                <Text>{dragDropText}</Text>
                 <Input 
                     type='file'
                     value='' 
