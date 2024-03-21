@@ -1,7 +1,9 @@
 import { useDispatch } from "react-redux";
-import { Box, Button, Heading, Input, Stack } from "@chakra-ui/react"
+import { Box, Button, Heading, Flex } from "@chakra-ui/react"
+
 import { exportState } from "../../middleware/ImportExportMiddleware";
 import { useFileImport } from "../hooks/useFileImport";
+import { UploadView } from "./UploadView";
 
 
 export const DesignerView = () => {
@@ -10,18 +12,12 @@ export const DesignerView = () => {
     const { loadFileForImport } = useFileImport();
 
     return (
-        <>
-            <Heading size='lg'>SeaHeat Designer</Heading>
-            <Box borderWidth='1px' borderRadius='lg' padding={5}>
-                <Stack direction={['column']}>
-                    <Heading size='md'>Save/load</Heading>
-
-                    <Stack direction={['row']}>
-                        <Button onClick={() => dispatch(exportState())}>Export</Button>
-                        <Input type='file' value='' onChange={(evt) => loadFileForImport(evt.target.files && evt.target.files[0])}></Input>
-                    </Stack>
-                </Stack>
-            </Box>
-        </>
+      <Box>
+            <Heading>SeaHeat Designer</Heading>
+            <Flex alignItems="center">
+                <Button onClick={() => dispatch(exportState())} mr="2">Export</Button>
+                <UploadView  onChange={loadFileForImport} accept={'application/json'}/>
+            </Flex>
+        </Box>
     )
 }
