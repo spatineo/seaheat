@@ -58,9 +58,9 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         height,
         cells: options.axes.x.values.map((xValue, xIndex) => {
           const cellValue = options.data.find(d => d.x === xIndex && d.y === yIndex)?.value;
-          if(!cellValue) return;
+          if(cellValue === null || cellValue === undefined) return;
           const legendItem = options.legend.find(l => l.minValue <= cellValue && cellValue <= l.maxValue);
-          const bgColor = legendItem && legendItem.color;
+          const bgColor = legendItem && legendItem.color ;
           return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
         })
       };
