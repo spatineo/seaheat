@@ -34,6 +34,8 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     onChange: processfile,
-    accept: 'application/json'
+    accept: 'application/json',
+    buttonText: 'Import',
+    dragDropText: 'Drag and Drop'
   },
 };
