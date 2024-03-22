@@ -1,5 +1,5 @@
 import { useRef, ChangeEvent } from "react";
-import { Box, Input, InputGroup, Button, Text } from "@chakra-ui/react";
+import { Box, Input, InputGroup, Button, Text, Flex } from "@chakra-ui/react";
 import { DragHandleIcon } from '@chakra-ui/icons';
 
 interface UploadViewProps {
@@ -35,7 +35,7 @@ export const UploadView = ({ onChange, accept, multiple,  buttonText, dragDropTe
     };
 
     return (
-        <Box>
+        <Box m="2">
             <InputGroup 
                 onClick={handleClick} 
                 display="flex" 
@@ -45,9 +45,17 @@ export const UploadView = ({ onChange, accept, multiple,  buttonText, dragDropTe
                     event.stopPropagation();
                 }}
                 onDrop={handleDrop}
-            >
+                >
                 <Button>{buttonText}</Button> 
-                <DragHandleIcon pr="2" pl="2"/>
+                <Flex 
+                    sx={{ height: "6vh", width: "calc(3vw + 80px)", fontSize: "calc(0.6vw + 0.38rem)"}}
+                    border="1px dashed #666666" 
+                    alignItems="center" p="0" 
+                    ml="2" 
+                    borderRadius="3" 
+                    bgColor="#f9f9f9"
+                >
+                <DragHandleIcon  pl="1" pt="0.8"/>
                 <Text>{dragDropText}</Text>
                 <Input 
                     type='file'
@@ -58,6 +66,8 @@ export const UploadView = ({ onChange, accept, multiple,  buttonText, dragDropTe
                     multiple={multiple || false}
                     ref={inputRef}
                 />
+                </Flex>
+                
             </InputGroup>
         </Box>
     );
