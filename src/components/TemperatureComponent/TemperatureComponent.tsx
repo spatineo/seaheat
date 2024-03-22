@@ -68,21 +68,42 @@ export const TemperatureComponent = (options: TemperatureProps) => {
     return { calculatedData };
   }, [options]);
 
+  const xLabelWithDataValue = useMemo(() => {
+    const labelsWithValues = options.axes.x.values.map((x, index) => {
+      return {
+        xLabels: x,
+        value: options.data.filter(val => val.x === index && val)
+      }
+    })
+    return labelsWithValues
+  }, [options])
 
+  console.log(xLabelWithDataValue)
   const tableContent = (
     <Box>
       <Table className='temperature-component-table' variant="simple" w="100%" p="0" m="0">
         <Thead>
-          <Tr>
-            {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
+          <Tr w="100%">
+            {xLabelWithDataValue.map((month, index) => (
+              <Th className="temperature-component-x-labels" key={index} m={8}>
+                {month.xLabels}
+                <Flex className='tooltip'>
+                {month.xLabels} :
+                  {month.value.map((val, idx) => (
+                    <span key={idx}>{val.value} </span>
+                  ))}
+                </Flex>
+              </Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody h={heightInPixel} p="0" m="0">
-          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {          
+          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {    
             return(
               <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
                 {rowData.cells.map((cell, cellIndex) => (
-                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
+                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>
+                  </Td>
                 ))}
 
                { rowIndex === 0 && (<Th className='temperature-component-th' rowSpan={calculatedData.length}>
