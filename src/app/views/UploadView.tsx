@@ -35,7 +35,7 @@ export const UploadView = ({ onChange, accept, multiple,  buttonText, dragDropTe
     };
 
     return (
-        <Box p="0">
+        <Box m="2">
             <InputGroup 
                 onClick={handleClick} 
                 display="flex" 
@@ -48,15 +48,15 @@ export const UploadView = ({ onChange, accept, multiple,  buttonText, dragDropTe
                 >
                 <Button>{buttonText}</Button> 
                 <Flex 
+                    sx={{ height: "6vh", width: "calc(3vw + 80px)", fontSize: "calc(0.6vw + 0.38rem)"}}
                     border="1px dashed #666666" 
                     alignItems="center" p="0" 
-                    maxHeight="36px" 
                     ml="2" 
                     borderRadius="3" 
                     bgColor="#f9f9f9"
                 >
-                <DragHandleIcon pr="2" pl="2"/>
-                <Text mr="4">{dragDropText}</Text>
+                <DragHandleIcon  pl="1" pt="0.8"/>
+                <Text>{dragDropText}</Text>
                 <Input 
                     type='file'
                     value='' 
