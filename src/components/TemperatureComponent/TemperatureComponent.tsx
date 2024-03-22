@@ -58,9 +58,9 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         height,
         cells: options.axes.x.values.map((xValue, xIndex) => {
           const cellValue = options.data.find(d => d.x === xIndex && d.y === yIndex)?.value;
-          if(!cellValue) return;
+          if(cellValue === null || cellValue === undefined) return;
           const legendItem = options.legend.find(l => l.minValue <= cellValue && cellValue <= l.maxValue);
-          const bgColor = legendItem && legendItem.color;
+          const bgColor = legendItem && legendItem.color ;
           return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
         })
       };
@@ -68,21 +68,42 @@ export const TemperatureComponent = (options: TemperatureProps) => {
     return { calculatedData };
   }, [options]);
 
+  const xLabelWithDataValue = useMemo(() => {
+    const labelsWithValues = options.axes.x.values.map((x, index) => {
+      return {
+        xLabels: x,
+        value: options.data.filter(val => val.x === index && val)
+      }
+    })
+    return labelsWithValues
+  }, [options])
 
+  console.log(xLabelWithDataValue)
   const tableContent = (
     <Box>
       <Table className='temperature-component-table' variant="simple" w="100%" p="0" m="0">
         <Thead>
-          <Tr>
-            {options.axes.x.values.map((value, index) => <Th key={index} m={8}>{value}</Th>)}
+          <Tr w="100%">
+            {xLabelWithDataValue.map((month, index) => (
+              <Th className="temperature-component-x-labels" key={index} m={8}>
+                {month.xLabels}
+                <Flex className='tooltip'>
+                {month.xLabels} :
+                  {month.value.map((val, idx) => (
+                    <span key={idx}>{val.value} </span>
+                  ))}
+                </Flex>
+              </Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody h={heightInPixel} p="0" m="0">
-          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {          
+          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {    
             return(
               <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
                 {rowData.cells.map((cell, cellIndex) => (
-                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}></Td>
+                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>
+                  </Td>
                 ))}
 
                { rowIndex === 0 && (<Th className='temperature-component-th' rowSpan={calculatedData.length}>
@@ -103,7 +124,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
           )
           }
           <Tr className='temperature-component-tr'>
-            <Td colSpan={options.axes.x.values.length} bgColor="#949494" textAlign="center">{options.seabedDepth}</Td>
+            <Td colSpan={options.axes.x.values.length} bgColor="#949494" textAlign="center">- {options.seabedDepth}</Td>
             <Th></Th>
           </Tr>
         </Tbody>
@@ -119,13 +140,34 @@ export const TemperatureComponent = (options: TemperatureProps) => {
       flexWrap="wrap"
       >
         {options.legend.map(({ color, minValue, maxValue }, index) => (
-            <Box key={index}  w="24%" sx={{ display: "flex", alignItems: "center"}} mb="2" >
-              <Box mr={2} bgColor={color} w="16%" h="60%">
+            <Flex key={index}  w="24%" mb="2" boxSizing='border-box' alignItems="center" textAlign="center">
+              <Box bgColor={color} w="16%" h="60%" mr="4">
               </Box>
-              <Flex>
-                {maxValue < 0 ? (<Box>{'< 0 °C'}</Box>): minValue >= 26 ? '> 25 °C' : (<Box>{`${minValue} - ${maxValue} °C`}</Box>)}
+              <Flex w="70%"> 
+                {maxValue < 0 ? 
+                  (
+                  <Flex flexWrap="nowrap" w="100%" alignItems="center" >
+                    <Box flex="30%">{`<`}</Box>
+                    <Box flex="20%" mr="1%"></Box> 
+                    <Box flex="30%">{`0`}</Box>
+                    <Box flex="19%">{'°C'}</Box>
+                  </Flex>
+                  ) : minValue >= 26 ? 
+                  ( <Flex flexWrap="nowrap" w="100%" alignItems="center" >
+                  <Box flex="30%">{`>`}</Box>
+                  <Box flex="20%" mr="1%"></Box> 
+                  <Box flex="30%">{`25`}</Box>
+                  <Box flex="19%">{'°C'}</Box>
+                </Flex>) : 
+                  (<Flex flexWrap="nowrap" w="100%" alignItems="center">
+                  <Box flex="30%" mr="1%">{`${minValue}`}</Box> 
+                  <Box flex="20%" mr="1%">-</Box> 
+                  <Box flex="30%" mr="1%">{`${maxValue}`}</Box> 
+                  <Box flex="19%">{`°C`}</Box> 
+                </Flex>)
+                }
               </Flex>
-            </Box>
+            </Flex>
         ))}
     </Flex>
   );
