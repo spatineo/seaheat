@@ -78,7 +78,6 @@ export const TemperatureComponent = (options: TemperatureProps) => {
     return labelsWithValues
   }, [options])
 
-  console.log(xLabelWithDataValue)
   const tableContent = (
     <Box>
       <Table className='temperature-component-table' variant="simple" w="100%" p="0" m="0">
