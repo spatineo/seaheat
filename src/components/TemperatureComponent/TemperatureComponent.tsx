@@ -84,14 +84,8 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         <Thead>
           <Tr w="100%">
             {xLabelWithDataValue.map((month, index) => (
-              <Th className="temperature-component-x-labels" key={index} m={8}>
+              <Th key={index} m={8}>
                 {month.xLabels}
-                <Flex className='tooltip'>
-                {month.xLabels} :
-                  {month.value.map((val, idx) => (
-                    <span key={idx}>{val.value} </span>
-                  ))}
-                </Flex>
               </Th>
             ))}
           </Tr>
@@ -102,6 +96,9 @@ export const TemperatureComponent = (options: TemperatureProps) => {
               <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
                 {rowData.cells.map((cell, cellIndex) => (
                   <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>
+                   {cell?.value && (
+                    <span className="tooltip">{cell.value} value</span>
+                  )}
                   </Td>
                 ))}
 
@@ -116,8 +113,6 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                     </Box>)}
                 </Box>
                </Th>)}
-
-
               </Tr>
             )}
           )
