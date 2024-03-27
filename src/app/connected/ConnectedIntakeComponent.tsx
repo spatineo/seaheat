@@ -41,7 +41,7 @@ export const ConnectedIntakeComponent = () => {
     return (
         <>
             <SelectedPointComponent {...intakeProps} {...intakeCallbacks} distanceToFacility={distanceToFacility} />
-            {!isLoading && !error && data?.axes ? <TemperatureComponent {...data} /> : <></>}
+            {!isLoading && !error && data && data.data.length > 0 ? <TemperatureComponent {...data} /> : <></>}
         </>
     )
 }

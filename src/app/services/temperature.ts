@@ -3,6 +3,7 @@ import { toLonLat } from 'ol/proj';
 import { config } from '../../config/app';
 import { TemperatureProps } from '../../types';
 import { transformCoverageJSONToTemperatureProps } from '../../processing/util/transformCoverageJSON';
+import { emptyTemperatureData } from '../../types/temperature';
 
 interface TemperatureProfileQuery {
     location: number[] | null
@@ -17,8 +18,7 @@ export const edrApi = createApi({
       queryFn: async (q, _api, _extraOptions, baseQuery) => {
 
         if (q.location === null) {
-          const fakeData : TemperatureProps = { axes: { x: { label: 'N/A', values: [] }, y: { label: 'N/A', values: [] }}, ticks: [], data: [], legend: [], seabedDepth: 0};
-          return new Promise((resolve) => resolve({ data: fakeData }));
+          return new Promise((resolve) => resolve({ data: emptyTemperatureData() }));
         }
 
         const lonLat = toLonLat(q.location, config.projection);
@@ -34,7 +34,7 @@ export const edrApi = createApi({
           if (ret.error) { resolve({ error: ret.error }) }
 
           try {
-            const converted = transformCoverageJSONToTemperatureProps(ret.data) as TemperatureProps;
+            const converted = transformCoverageJSONToTemperatureProps(ret.data);
 
             resolve({ data: converted })
           } catch(err) {

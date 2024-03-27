@@ -27,3 +27,14 @@ interface Axis <T>{
     legend: Legend[]
     seabedDepth: number,
   }
+
+  export const emptyTemperatureData = () : TemperatureProps => ({
+    axes: {
+      x: { label: 'N/A', values: [] },
+      y: { label: 'N/A', values: [] }
+    },
+    ticks: [],
+    data: [],
+    legend: [],
+    seabedDepth: 0
+  });
