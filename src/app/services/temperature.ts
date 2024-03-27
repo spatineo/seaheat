@@ -5,6 +5,8 @@ import { TemperatureProps } from '../../types';
 import { transformCoverageJSONToTemperatureProps } from '../../processing/util/transformCoverageJSON';
 import { emptyTemperatureData } from '../../types/temperature';
 
+import { roundToNearestHours, addHours } from 'date-fns'
+
 interface TemperatureProfileQuery {
     location: number[] | null
 }
@@ -26,15 +28,25 @@ export const edrApi = createApi({
         const qs = new URLSearchParams();
         qs.append('coords', `POINT(${lonLat.join(' ')})`)
         qs.append('parameter-name', 'geomheight,temperature,humidity')
-        qs.append('datetime', new Date().toISOString().substring(0,10)+'T12:00Z')
-        const query = `position?${qs.toString()}`
         
-        const ret = await baseQuery(query)
+        const now = roundToNearestHours(new Date(), { roundingMethod: 'ceil' });
+        const datetimes = [0,1,2,3,4,5,6,7,8,9,10,11].map((n) => addHours(now, n*4))
+
+        const queries = datetimes.map((datetime) => {
+          const tmp = new URLSearchParams(qs)
+          tmp.append('datetime', datetime.toISOString())
+          const query = `position?${tmp.toString()}`
+          return baseQuery(query);
+        })
+
+        const ret = await Promise.all(queries);
+
         return new Promise((resolve, reject) => {
-          if (ret.error) { resolve({ error: ret.error }) }
+          const error = ret.find((r) => r.error)?.error;
+          if (error) { resolve({ error }) }
 
           try {
-            const converted = transformCoverageJSONToTemperatureProps(ret.data);
+            const converted = transformCoverageJSONToTemperatureProps(ret.map((r) => r.data));
 
             resolve({ data: converted })
           } catch(err) {

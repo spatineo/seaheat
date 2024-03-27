@@ -1,25 +1,27 @@
 import { TemperatureProps } from "../../types";
 
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const transformCoverageJSONToTemperatureProps = (data: any) : TemperatureProps => {
-    const numYAxis = data.domain.axes.z.values.length
+export const transformCoverageJSONToTemperatureProps = (data: any[]) : TemperatureProps => {
+    const numYAxis = data[0].domain.axes.z.values.length
     const ret = {
         axes: {
             x: {
-                label: 'Month', // TODO: not really though
-                values: [...data.domain.axes.t.values].sort()
+                label: 'Time', // TODO: not really though
+                values: data.map((d) => d.domain.axes.t.values).flat().map((_v, i) => months[i])
             },
             y: {
                 label: 'Depth',
                 // geomheight values are available for the entire data cube, only grab the unique ones
                 // NOTE!! This relies on the ordering of axis in the geomheight dataset
-                values: [...data.ranges.geomheight.values.slice(0, numYAxis)].sort((a,b) => a-b)
+                values: [...data[0].ranges.geomheight.values.slice(0, numYAxis)].sort((a,b) => a-b)
             }
         },
         ticks: [7500, 10000, 15000, 30000],
-        data: data.ranges.temperature.values.map((value: number, idx: number) => ({
-            x: Math.floor(idx / numYAxis), y : (numYAxis - idx - 1) % numYAxis, value
-        })),
+        data: data.map((d, xIdx) => d.ranges.temperature.values.map((value: number, yIdx: number) => ({
+            x: xIdx, y : numYAxis - yIdx - 1, value
+        }))).flat(),
         legend: [
             { minValue: -100, maxValue: -50, color: '#440000' },
             { minValue: -50,  maxValue: -40, color: '#660000' },
