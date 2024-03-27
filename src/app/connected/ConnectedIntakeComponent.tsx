@@ -6,6 +6,7 @@ import { distanceBetweenPoints, wrapAction } from "./utils"
 import { useEffect, useMemo } from "react"
 import { useGetTemperatureProfileQuery } from "../services/temperature"
 import { useToast } from "@chakra-ui/react"
+import { TemperatureComponent } from "../../components/TemperatureComponent/TemperatureComponent"
 
 export const ConnectedIntakeComponent = () => {
     const intakeProps = useSelector((state: RootState) => state.intake)
@@ -37,11 +38,10 @@ export const ConnectedIntakeComponent = () => {
         })
     }, [toast, error, isLoading])
 
-    console.log('output', data)
-
     return (
         <>
             <SelectedPointComponent {...intakeProps} {...intakeCallbacks} distanceToFacility={distanceToFacility} />
+            {!isLoading && !error && data?.axes ? <TemperatureComponent {...data} /> : <></>}
         </>
     )
 }

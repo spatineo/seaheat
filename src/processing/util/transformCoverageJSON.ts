@@ -16,7 +16,7 @@ export const transformCoverageJSONToTemperatureProps = (data: any) : Temperature
                 values: [...data.ranges.geomheight.values.slice(0, numYAxis)].sort((a,b) => a-b)
             }
         },
-        ticks: [0.5],
+        ticks: [7500, 10000, 15000, 30000],
         data: data.ranges.temperature.values.map((value: number, idx: number) => ({
             x: Math.floor(idx / numYAxis), y : (numYAxis - idx - 1) % numYAxis, value
         })),
