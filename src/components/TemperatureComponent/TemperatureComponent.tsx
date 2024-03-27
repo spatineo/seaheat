@@ -96,7 +96,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
             return(
               <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
                 {rowData.cells.map((cell, cellIndex) => (
-                  <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>
+                  <Td key={`${rowIndex}-${cellIndex}`} className={'temperature-component-td'} bgColor={cell?.bgColor}>
                    {cell?.value && (
                     <span className="tooltip">{xLabelWithDataValue[cellIndex].xLabels}, -{Number(rowData.height).toFixed(1)}m, {cell.value}°C</span>
                   )}
@@ -105,8 +105,9 @@ export const TemperatureComponent = (options: TemperatureProps) => {
 
                { rowIndex === 0 && (<Th className='temperature-component-th' rowSpan={calculatedData.length}>
                 <Box position="absolute" top="0" h="100%">
-                {options.ticks.map(tick => 
+                {options.ticks.map((tick, tickIndex) => 
                 <Box 
+                  key={tickIndex}
                   position="absolute"
                   boxSizing='border-box'
                   top={(tick / options.seabedDepth) * (heightInPixel - (20/2))}>
