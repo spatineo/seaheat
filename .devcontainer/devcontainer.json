@@ -6,6 +6,16 @@
 	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bullseye",
 
 	"postCreateCommand": "bash .devcontainer/prepare-devcontainer.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint"
+			],
+			"settings": {
+				"eslint.enable": true
+			}
+		}
+	},
 
 	"features": {
 		"ghcr.io/devcontainers/features/aws-cli:1": {},
