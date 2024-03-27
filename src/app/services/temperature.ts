@@ -9,7 +9,7 @@ interface TemperatureProfileQuery {
 // Define a service using a base URL and expected endpoints
 export const edrApi = createApi({
   reducerPath: 'edrApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://data.fmi.fi/fmi-apikey/2d20c98c-41be-4c51-a8c9-3e65b811b2ba/edr/collections/harmonie_skandinavia_mallipinta/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: `https://data.fmi.fi/fmi-apikey/${config.fmiApiKey}/edr/collections/harmonie_skandinavia_mallipinta/` }),
   endpoints: (builder) => ({
     getTemperatureProfile: builder.query<unknown, TemperatureProfileQuery>({
       queryFn: async (q, _api, _extraOptions, baseQuery) => {
