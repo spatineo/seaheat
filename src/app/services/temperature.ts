@@ -23,7 +23,6 @@ export const edrApi = createApi({
         qs.append('coords', `POINT(${lonLat.join(' ')})`)
         qs.append('parameter-name', 'geomheight,temperature,humidity')
         qs.append('datetime', new Date().toISOString().substring(0,10)+'T12:00Z')
-        qs.append('foo', q.location.join(' '))
         const query = `position?${qs.toString()}`
         
         return await baseQuery(query);
