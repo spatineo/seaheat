@@ -83,11 +83,12 @@ export const TemperatureComponent = (options: TemperatureProps) => {
       <Table className='temperature-component-table' variant="simple" w="100%" p="0" m="0">
         <Thead>
           <Tr w="100%">
-            {xLabelWithDataValue.map((month, index) => (
+            {xLabelWithDataValue.map((month, index) => {
+              return(
               <Th key={index} m={8}>
                 {month.xLabels}
               </Th>
-            ))}
+            )})}
           </Tr>
         </Thead>
         <Tbody h={heightInPixel} p="0" m="0">
@@ -97,7 +98,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                 {rowData.cells.map((cell, cellIndex) => (
                   <Td key={cellIndex} className={'temperature-component-td'} bgColor={cell?.bgColor}>
                    {cell?.value && (
-                    <span className="tooltip">{cell.value} value</span>
+                    <span className="tooltip">{xLabelWithDataValue[cellIndex].xLabels}, -{Number(rowData.height).toFixed(1)}m, {cell.value}°C</span>
                   )}
                   </Td>
                 ))}
