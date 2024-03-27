@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toLonLat } from 'ol/proj';
-import { config } from '../../config';
+import { config } from '../../config/app';
+import { TemperatureProps } from '../../types';
+import { transformCoverageJSONToTemperatureProps } from '../../processing/util/transformCoverageJSONToTemperatureProps';
 
 interface TemperatureProfileQuery {
     location: number[] | null
@@ -25,7 +27,11 @@ export const edrApi = createApi({
         qs.append('datetime', new Date().toISOString().substring(0,10)+'T12:00Z')
         const query = `position?${qs.toString()}`
         
-        return await baseQuery(query);
+        const ret = await baseQuery(query)
+        if (!ret.error && ret.data) {
+          ret.data = transformCoverageJSONToTemperatureProps(ret.data);
+        }
+        return ret;
       }
     }),
   }),

@@ -15,7 +15,7 @@ import { MapView, SeaheatFeatureType } from '../../types';
 import { Point } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
 
-import { config } from '../../config';
+import { config } from '../../config/app';
 
 export interface ClickEvent {
     type?: SeaheatFeatureType;
