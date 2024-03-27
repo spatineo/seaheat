@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { toLonLat } from 'ol/proj';
+import { config } from '../../config';
 
-interface TemperaturProfileQuery {
-    location: number[]
+interface TemperatureProfileQuery {
+    location: number[] | null
 }
 
 // Define a service using a base URL and expected endpoints
@@ -9,14 +11,22 @@ export const edrApi = createApi({
   reducerPath: 'edrApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://data.fmi.fi/fmi-apikey/2d20c98c-41be-4c51-a8c9-3e65b811b2ba/edr/collections/harmonie_skandinavia_mallipinta/' }),
   endpoints: (builder) => ({
-    getTemperatureProfile: builder.query<object, TemperaturProfileQuery>({
-      query: (q) => {
+    getTemperatureProfile: builder.query<unknown, TemperatureProfileQuery>({
+      queryFn: async (q, _api, _extraOptions, baseQuery) => {
+        if (q.location === null) {
+          return new Promise((resolve) => resolve({ data: {} }));
+        }
+
+        const lonLat = toLonLat(q.location, config.projection);
+
         const qs = new URLSearchParams();
-        qs.append('coords', 'POINT(24 60)') // TODO: reproject point
+        qs.append('coords', `POINT(${lonLat.join(' ')})`)
         qs.append('parameter-name', 'geomheight,temperature,humidity')
         qs.append('datetime', new Date().toISOString().substring(0,10)+'T12:00Z')
-
-        return `position?${qs.toString()}`
+        qs.append('foo', q.location.join(' '))
+        const query = `position?${qs.toString()}`
+        
+        return await baseQuery(query);
       }
     }),
   }),

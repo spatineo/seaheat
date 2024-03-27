@@ -13,7 +13,7 @@ export const ConnectedIntakeComponent = () => {
     const dispatch = useDispatch();
     const toast = useToast();
 
-    const { data, error, isLoading } = useGetTemperatureProfileQuery({ location: intakeProps.location || [0,0] })
+    const { data, error, isLoading } = useGetTemperatureProfileQuery({ location: intakeProps.location })
 
     const intakeCallbacks = {
         setName: wrapAction(setName, dispatch),
