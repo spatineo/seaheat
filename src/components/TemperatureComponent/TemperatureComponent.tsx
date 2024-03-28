@@ -62,7 +62,6 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         {calculatedData
           .filter((rowData) => rowData.yValueNumber < options.seabedDepth)
           .map((rowData, rowIndex) => {
-            console.log(rowData.yValueNumber)
             return (
               <tr
                 key={rowIndex}
