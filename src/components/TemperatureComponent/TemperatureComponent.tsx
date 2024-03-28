@@ -75,6 +75,54 @@ export const TemperatureComponent = (options: TemperatureProps) => {
   }, [options]);
 
   const tableContent = (
+    <Box>
+      <Table className='temperature-component-table' variant="simple" w="100%" p="0" m="0">
+        <Thead>
+          <Tr w="100%">
+            {xLabelWithDataValue.map((month, index) => {
+              return(
+              <Th key={index} m={8}>
+                {month.xLabels}
+              </Th>
+            )})}
+          </Tr>
+        </Thead>
+        <Tbody h={heightInPixel} p="0" m="0">
+          {calculatedData.filter(rowData => rowData.yValueNumber < options.seabedDepth).map((rowData, rowIndex) => {    
+            return(
+              <Tr key={rowIndex} className='temperature-component-tr' style={{ height: `${rowData.height/options.seabedDepth*heightInPixel}px` }}>
+                {rowData.cells.map((cell, cellIndex) => (
+                  <Td key={`${rowIndex}-${cellIndex}`} className={'temperature-component-td'} bgColor={cell?.bgColor}>
+                   {cell?.value && (
+                    <span className="tooltip">{xLabelWithDataValue[cellIndex].xLabels}, -{Number(rowData.height).toFixed(1)}m, {cell.value}°C</span>
+                  )}
+                  </Td>
+                ))}
+
+               { rowIndex === 0 && (<Th className='temperature-component-th' rowSpan={calculatedData.length}>
+                <Box position="absolute" top="0" h="100%">
+                {options.ticks.map((tick, tickIndex) => 
+                <Box 
+                  key={tickIndex}
+                  position="absolute"
+                  boxSizing='border-box'
+                  top={(tick / options.seabedDepth) * (heightInPixel - (20/2))}>
+                    -{tick}
+                    </Box>)}
+                </Box>
+               </Th>)}
+              </Tr>
+            )}
+          )
+          }
+          <Tr className='temperature-component-tr'>
+            <Td colSpan={options.axes.x.values.length} bgColor="#949494" textAlign="center">- {options.seabedDepth}</Td>
+            <Th></Th>
+          </Tr>
+        </Tbody>
+      </Table>
+    </Box>
+
     <table style={{ width: "100%" }}>
       <thead>
         {xLabelWithDataValue.map((month, index) => (
