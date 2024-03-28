@@ -15,6 +15,8 @@ import { MapView, SeaheatFeatureType } from '../../types';
 import { Point } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
 
+import { config } from '../../config/app';
+
 export interface ClickEvent {
     type?: SeaheatFeatureType;
     location: number[];
@@ -36,7 +38,7 @@ export const MapComponent = ({ view, onClickFeature,  onMapViewChange, children 
 
         const mapObject: Map = new Map({
             view: new View({
-                projection: "EPSG:3857",
+                projection: config.projection,
             }),
             layers: [new TileLayer({
                 source: new OSM()

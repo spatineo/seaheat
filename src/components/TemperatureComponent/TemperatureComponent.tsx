@@ -1,34 +1,7 @@
-import { useMemo } from "react";
-import { Box, Flex } from "@chakra-ui/react";
-import "./TemperatureComponent.css";
-
-interface Axis<T> {
-  label: string;
-  values: T[];
-}
-
-interface Value {
-  x: number;
-  y: number;
-  value: number;
-}
-
-interface Legend {
-  minValue: number;
-  maxValue: number;
-  color: string;
-}
-
-interface TemperatureProps {
-  axes: {
-    x: Axis<string>;
-    y: Axis<number>;
-  };
-  ticks: number[];
-  data: Value[];
-  legend: Legend[];
-  seabedDepth: number;
-}
+import { useMemo } from 'react';
+import { Box, Flex } from '@chakra-ui/react'
+import './TemperatureComponent.css';
+import { TemperatureProps } from '../../types';
 
 function heightOfStep(depth: number[], step: number) {
   if (step < 0 || step >= depth.length) throw new Error("illegal step " + step);

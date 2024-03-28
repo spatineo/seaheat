@@ -3,12 +3,18 @@ import { RootState } from "../../store"
 import { SelectedPointComponent } from "../../components/selectedPoint/SelectedPointComponent"
 import { setName, setDepth } from "../slices/intake"
 import { distanceBetweenPoints, wrapAction } from "./utils"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
+import { useGetTemperatureProfileQuery } from "../services/temperature"
+import { useToast } from "@chakra-ui/react"
+import { TemperatureComponent } from "../../components/TemperatureComponent/TemperatureComponent"
 
 export const ConnectedIntakeComponent = () => {
     const intakeProps = useSelector((state: RootState) => state.intake)
     const facilityLocation = useSelector((state: RootState) => state.facility.location)
     const dispatch = useDispatch();
+    const toast = useToast();
+
+    const { data, error, isLoading } = useGetTemperatureProfileQuery({ location: intakeProps.location })
 
     const intakeCallbacks = {
         setName: wrapAction(setName, dispatch),
@@ -22,5 +28,20 @@ export const ConnectedIntakeComponent = () => {
 
     }, [intakeProps, facilityLocation])
 
-    return (<SelectedPointComponent {...intakeProps} {...intakeCallbacks} distanceToFacility={distanceToFacility} /> )
+    useEffect(() => {
+        if (isLoading || !error || !toast) return;
+
+        toast({
+            title: 'Unable to load temperature data',
+            status: 'error',
+            isClosable: true
+        })
+    }, [toast, error, isLoading])
+
+    return (
+        <>
+            <SelectedPointComponent {...intakeProps} {...intakeCallbacks} distanceToFacility={distanceToFacility} />
+            {!isLoading && !error && data && data.data.length > 0 ? <TemperatureComponent {...data} /> : <></>}
+        </>
+    )
 }

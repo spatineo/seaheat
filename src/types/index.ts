@@ -1,4 +1,6 @@
 
+export type { TemperatureProps } from './temperature'
+
 export enum SeaheatFeatureType {
     INTAKE = "intake",
     DISCHARGE = "discharge",
