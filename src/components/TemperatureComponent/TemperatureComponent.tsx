@@ -91,18 +91,17 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                   <th
                     className="temperature-component-th"
                     rowSpan={calculatedData.length}
+                    style={{'position': 'relative', 'padding': '0'}}
                   >
                     <Box position="absolute" top="0" h="100%">
                       {options.ticks.map((tick) => (
                         <Box
                           key={tick}
                           position="absolute"
-                          top={
-                            (tick / options.seabedDepth) *
-                            (heightInPixel - 20 / 2)
-                          }
+                          top={`${(tick / options.seabedDepth)*100}%`}
+                          height={0}
                         >
-                          <Box position="relative" top="7">-{tick}</Box>
+                          <Box position="relative" top={0} height={0} lineHeight={0}>-{tick}</Box>
                         </Box>
                       ))}
                     </Box>
