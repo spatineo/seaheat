@@ -62,6 +62,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         {calculatedData
           .filter((rowData) => rowData.yValueNumber < options.seabedDepth)
           .map((rowData, rowIndex) => {
+            console.log(rowData.yValueNumber)
             return (
               <tr
                 key={rowIndex}
@@ -80,7 +81,11 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                       backgroundColor: `${cell?.bgColor}`,
                       borderRight: "4px solid white",
                     }}
-                  ></td>
+                  >
+                     {cell?.value && (
+                    <span className="tooltip">{xLabelWithDataValue[cellIndex].xLabels}: -{Number(rowData.yValueNumber).toFixed(1)}m, {cell.value}{"°C"}</span>
+                  )}
+                  </td>
                 ))}
 
                 {rowIndex === 0 && (
@@ -98,7 +103,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                             (heightInPixel - 20 / 2)
                           }
                         >
-                          -{tick}
+                          <Box position="relative" top="7">-{tick}</Box>
                         </Box>
                       ))}
                     </Box>
