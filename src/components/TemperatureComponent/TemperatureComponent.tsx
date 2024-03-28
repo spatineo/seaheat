@@ -50,11 +50,13 @@ export const TemperatureComponent = (options: TemperatureProps) => {
   const tableContent = (
     <table style={{ width: "100%" }}>
       <thead>
+        <tr>
         {xLabelWithDataValue.map((month, index) => (
           <th className="temperature-component-x-labels" key={index}>
             {month.xLabels}
           </th>
         ))}
+        </tr>
       </thead>
       <tbody style={{ height: `${heightInPixel}` }}>
         {calculatedData
