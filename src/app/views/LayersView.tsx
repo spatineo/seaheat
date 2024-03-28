@@ -1,4 +1,4 @@
-import { Box, Checkbox, CheckboxGroup, Heading, Spacer, Stack, Text } from "@chakra-ui/react"
+import { Box, Checkbox, CheckboxGroup, Heading, Stack, Text } from "@chakra-ui/react"
 import { availableLayers } from "../../config/layers"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
