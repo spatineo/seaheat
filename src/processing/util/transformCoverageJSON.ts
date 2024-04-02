@@ -1,11 +1,11 @@
-import { TemperatureProps } from "../../types";
+import { TemperatureData } from "../../types";
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const transformCoverageJSONToTemperatureProps = (data: any[]) : TemperatureProps => {
+export const transformCoverageJSONToTemperatureProps = (data: any[]) : TemperatureData => {
     const numYAxis = data[0].domain.axes.z.values.length
-    const ret = {
+    const ret: TemperatureData = {
         axes: {
             x: {
                 label: 'Time', // TODO: not really though
@@ -19,7 +19,7 @@ export const transformCoverageJSONToTemperatureProps = (data: any[]) : Temperatu
             }
         },
         ticks: [7500, 10000, 15000, 30000],
-        data: data.map((d, xIdx) => d.ranges.temperature.values.map((value: number, yIdx: number) => ({
+        temperatureValues: data.map((d, xIdx) => d.ranges.temperature.values.map((value: number, yIdx: number) => ({
             x: xIdx, y : numYAxis - yIdx - 1, value
         }))).flat(),
         legend: [
@@ -36,10 +36,10 @@ export const transformCoverageJSONToTemperatureProps = (data: any[]) : Temperatu
     }
 
     const firstYAxisWithNoData = ret.axes.y.values.find((_yAxisValue, idx) => {
-        return !(ret.data.find((v : {x:number, y: number, value: number}) => v.y === idx && v.value !== null && v.value !== undefined));
+        return !(ret.temperatureValues.find((v : {x:number, y: number, value: number}) => v.y === idx && v.value !== null && v.value !== undefined));
     })
 
     ret.seabedDepth = firstYAxisWithNoData || ret.axes.y.values[ret.axes.y.values.length-1];
 
-    return ret as TemperatureProps;
+    return ret;
 }

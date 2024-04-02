@@ -1,9 +1,7 @@
-
 interface Axis <T>{
     label: string,
     values: T[];
   }
-  
   
   interface Value {
     x: number,
@@ -17,24 +15,32 @@ interface Axis <T>{
     color: string
   }
   
-  export interface TemperatureProps {
+  export interface TemperatureData {
     axes: {
       x: Axis<string>,
       y: Axis<number>
     },
     ticks: number[]
-    data: Value[],
+    temperatureValues: Value[],
     legend: Legend[]
-    seabedDepth: number,
+    seabedDepth: number | null,
+  }
+
+  export interface TemperatureProps {
+    data: TemperatureData
+    height: number
   }
 
   export const emptyTemperatureData = () : TemperatureProps => ({
-    axes: {
+    data: {
+      axes: {
       x: { label: 'N/A', values: [] },
       y: { label: 'N/A', values: [] }
     },
     ticks: [],
-    data: [],
+    temperatureValues: [],
     legend: [],
-    seabedDepth: 0
+    seabedDepth: 0,
+  },
+    height: 300
   });
