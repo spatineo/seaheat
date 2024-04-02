@@ -4,10 +4,12 @@ import { SelectedPointComponent } from "../../components/selectedPoint/SelectedP
 import { setName, setDepth } from "../slices/discharge"
 import { distanceBetweenPoints, wrapAction } from "./utils"
 import { useMemo } from "react"
+import { TemperatureComponent } from "../../components/TemperatureComponent/TemperatureComponent"
 
 export const ConnectedDischargeComponent = () => {
     const dischargeProps = useSelector((state: RootState) => state.discharge)
     const facilityLocation = useSelector((state: RootState) => state.facility.location)
+    const dischargeTemperature = useSelector((state: RootState) => state.data.dischargeTemperature)
     const dispatch = useDispatch();
 
     const dischargeCallbacks = {
@@ -23,5 +25,10 @@ export const ConnectedDischargeComponent = () => {
     }, [dischargeProps, facilityLocation])
 
 
-    return (<SelectedPointComponent {...dischargeProps} {...dischargeCallbacks} distanceToFacility={distanceToFacility} /> )
+    return (
+        <>
+            <SelectedPointComponent {...dischargeProps} {...dischargeCallbacks} distanceToFacility={distanceToFacility} />
+            {dischargeTemperature.temperatureValues.length > 0 ? <TemperatureComponent data={dischargeTemperature} height={300} /> : <></>}
+        </>
+    )
 }

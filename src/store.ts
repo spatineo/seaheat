@@ -4,6 +4,7 @@ import intakeReducer from './app/slices/intake';
 import dischargeReducer from './app/slices/discharge';
 import facilityReducer from './app/slices/facility';
 
+import dataReducer from './app/slices/data';
 import uiStateReducer from './app/slices/uiState';
 
 import { importExportMiddleware } from './middleware/ImportExportMiddleware';
@@ -16,6 +17,7 @@ export const store = configureStore({
     discharge: dischargeReducer,
     facility: facilityReducer,
 
+    data: dataReducer,
     uiState: uiStateReducer,
     [edrApi.reducerPath]: edrApi.reducer
   },

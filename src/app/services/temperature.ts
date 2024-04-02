@@ -20,7 +20,7 @@ export const edrApi = createApi({
       queryFn: async (q, _api, _extraOptions, baseQuery) => {
 
         if (q.location === null) {
-          return new Promise((resolve) => resolve({ data: emptyTemperatureData().data }));
+          return new Promise((resolve) => resolve({ data: emptyTemperatureData() }));
         }
 
         const lonLat = toLonLat(q.location, config.projection);
