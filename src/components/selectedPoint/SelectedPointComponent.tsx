@@ -2,7 +2,7 @@ import { Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 import { SelectedPointProps } from "../../types";
 
 interface SelectedPointComponentProps extends SelectedPointProps {
-    distanceToFacility?: number,
+    distanceToFacility: number | null,
     setName?: (name: string | null) => void,
     setDepth?: (depth: number | null) => void,
 }

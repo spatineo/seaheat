@@ -1,9 +1,9 @@
-import { TemperatureData } from "../../types";
+import { TemperatureData } from "../types";
 import { toLonLat } from "ol/proj";
-import { config } from "../../config/app";
+import { config } from "../config/app";
 
 import { roundToNearestHours, addHours } from 'date-fns'
-import { transformCoverageJSONToTemperatureProps } from "../../processing/util/transformCoverageJSON";
+import { transformCoverageJSONToTemperatureProps } from "../processing/util/transformCoverageJSON";
 
 const baseUrl = `https://data.fmi.fi/fmi-apikey/${config.fmiApiKey}/edr/collections/harmonie_skandinavia_mallipinta/`;
 

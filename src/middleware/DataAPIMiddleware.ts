@@ -2,7 +2,7 @@ import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { setLocation as setIntakeLocation } from "../app/slices/intake";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
-import { requestTemperatureData } from "./edr/EDRQuery";
+import { requestTemperatureData } from "../services/EDRQuery";
 import { setDischargeTemperature, setIntakeTemperature } from "../app/slices/data";
 import { emptyTemperatureData } from "../types/temperature";
 
