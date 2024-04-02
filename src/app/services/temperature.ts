@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toLonLat } from 'ol/proj';
 import { config } from '../../config/app';
-import { TemperatureProps } from '../../types';
+import { TemperatureData } from '../../types';
 import { transformCoverageJSONToTemperatureProps } from '../../processing/util/transformCoverageJSON';
 import { emptyTemperatureData } from '../../types/temperature';
 
@@ -16,11 +16,11 @@ export const edrApi = createApi({
   reducerPath: 'edrApi',
   baseQuery: fetchBaseQuery({ baseUrl: `https://data.fmi.fi/fmi-apikey/${config.fmiApiKey}/edr/collections/harmonie_skandinavia_mallipinta/` }),
   endpoints: (builder) => ({
-    getTemperatureProfile: builder.query<TemperatureProps, TemperatureProfileQuery>({
+    getTemperatureProfile: builder.query<TemperatureData, TemperatureProfileQuery>({
       queryFn: async (q, _api, _extraOptions, baseQuery) => {
 
         if (q.location === null) {
-          return new Promise((resolve) => resolve({ data: emptyTemperatureData() }));
+          return new Promise((resolve) => resolve({ data: emptyTemperatureData().data }));
         }
 
         const lonLat = toLonLat(q.location, config.projection);
@@ -48,7 +48,7 @@ export const edrApi = createApi({
           try {
             const converted = transformCoverageJSONToTemperatureProps(ret.map((r) => r.data));
 
-            resolve({ data: converted })
+            resolve({ data: converted.data })
           } catch(err) {
             reject(err);
           }
