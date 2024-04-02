@@ -13,8 +13,8 @@ export interface FacilityState {
 const initialState: FacilityState = {
   location: null,
   name: null,
-  intakeVolume:     [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 ],
-  temperatureDelta: [  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2 ],
+  intakeVolume:     Array(12).fill(10),
+  temperatureDelta: Array(12).fill(2),
   facilityEffectivenessFactor: 0.7
 }
 

@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { TemperatureData } from '../../types'
-import { emptyTemperatureData } from '../../types/temperature'
+import { GraphData, TemperatureData, emptyGraphData, emptyTemperatureData } from '../../types'
 
 export interface DataState {
     intakeTemperature: TemperatureData,
@@ -9,6 +8,9 @@ export interface DataState {
     distances: {
       intakeToFacility: number | null,
       facilityToDischarge: number | null
+    },
+    output: {
+      monthlyAveragePowerOutput: GraphData
     }
 }
 
@@ -18,6 +20,9 @@ const initialState: DataState = {
     distances: {
       intakeToFacility: null,
       facilityToDischarge: null
+    },
+    output: {
+      monthlyAveragePowerOutput: emptyGraphData()
     }
 }
 

@@ -14,7 +14,7 @@ interface MonthlySliderProps {
 export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeValue, sliderIcon } : MonthlySliderProps) => {
 
     return values.map((value, mon : number) => {
-        const d = new Date(2000, mon, 1)
+        const d = new Date(2001, mon, 1)
         return (
             <Flex w='34px' key={mon}>
                 <VStack alignContent={'center'}>

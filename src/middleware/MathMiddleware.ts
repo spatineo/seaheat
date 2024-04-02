@@ -1,11 +1,13 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { setLocation as setIntakeLocation } from "../app/slices/intake";
-import { setLocation as setFacilityLocation } from "../app/slices/facility";
+import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
 import { restoreDataState, setFacilityToDischargeDistance, setIntakeToFacilityDistance } from "../app/slices/data";
 import { getLength } from "ol/sphere";
 import { LineString } from "ol/geom";
+import { secondsInDay } from "date-fns/constants";
+import { format, getDaysInMonth } from "date-fns";
 
 export const mathMiddleware = createListenerMiddleware()
 const startAppListening = mathMiddleware.startListening.withTypes<RootState, AppDispatch>()
@@ -48,3 +50,26 @@ startAppListening({
     }
 });
 
+// Calculate monthly power output
+startAppListening({
+    matcher: isAnyOf(restoreDataState, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor),
+    effect: async (_action, listenerApi) => {
+        const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
+
+        const series = { values: [] as Array<number> };
+        const xAxis = { label: 'Month', values: [] as Array<string> }
+
+        Array(12).fill(0).forEach((_v, month : number) => {
+            const d = new Date(2001, month, 1)
+            series.values[month] = intakeVolume[month] * temperatureDelta[month] * 1.1639 * 0.997 *
+                facilityEffectivenessFactor * secondsInDay * getDaysInMonth(d) / 1000000;
+            xAxis.values[month] = format(d, 'LLL');
+        });
+
+        listenerApi.getState().data.output.monthlyAveragePowerOutput = {
+            unit: 'MW',
+            axes: { x : xAxis },
+            series: [series]
+        }
+    }
+})
