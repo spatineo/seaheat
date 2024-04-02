@@ -78,6 +78,7 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
                     style={{
                       backgroundColor: `${cell?.bgColor}`,
                       borderRight: "4px solid white",
+                      position: "relative"
                     }}
                   >
                      {cell?.value && (
