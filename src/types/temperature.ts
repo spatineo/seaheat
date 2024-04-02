@@ -23,7 +23,7 @@ interface Axis <T>{
     ticks: number[]
     temperatureValues: Value[],
     legend: Legend[]
-    seabedDepth: number,
+    seabedDepth: number | null,
   }
 
   export interface TemperatureProps {
