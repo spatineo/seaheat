@@ -15,7 +15,6 @@ startAppListening({
         const state = listenerApi.getState();
         let data;
         if (state.intake.location !== null) {
-            console.log('This is an intake', action, listenerApi);
             data = await requestTemperatureData(state.intake.location);
         } else {
             data = emptyTemperatureData();
@@ -30,7 +29,6 @@ startAppListening({
         const state = listenerApi.getState();
         let data;
         if (state.discharge.location !== null) {
-            console.log('This is an discharge', action, listenerApi);
             data = await requestTemperatureData(state.discharge.location);
         } else {
             data = emptyTemperatureData();
