@@ -11,7 +11,7 @@ const startAppListening = dataAPIMiddleware.startListening.withTypes<RootState, 
 
 startAppListening({
     matcher: isAnyOf(setIntakeLocation),
-    effect: async (action, listenerApi) => {
+    effect: async (_action, listenerApi) => {
         const state = listenerApi.getState();
         let data;
         if (state.intake.location !== null) {
@@ -25,7 +25,7 @@ startAppListening({
 
 startAppListening({
     matcher: isAnyOf(setDischargeLocation),
-    effect: async (action, listenerApi) => {
+    effect: async (_action, listenerApi) => {
         const state = listenerApi.getState();
         let data;
         if (state.discharge.location !== null) {
