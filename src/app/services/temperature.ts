@@ -48,7 +48,7 @@ export const edrApi = createApi({
           try {
             const converted = transformCoverageJSONToTemperatureProps(ret.map((r) => r.data));
 
-            resolve({ data: converted.data })
+            resolve({ data: converted })
           } catch(err) {
             reject(err);
           }
