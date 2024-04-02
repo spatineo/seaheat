@@ -4,10 +4,16 @@ import { setLocation as setFacilityLocation } from "../app/slices/facility";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
 import { restoreDataState, setFacilityToDischargeDistance, setIntakeToFacilityDistance } from "../app/slices/data";
-import { distanceBetweenPoints } from "../app/connected/utils";
+import { getLength } from "ol/sphere";
+import { LineString } from "ol/geom";
 
 export const mathMiddleware = createListenerMiddleware()
 const startAppListening = mathMiddleware.startListening.withTypes<RootState, AppDispatch>()
+
+
+function distanceBetweenPoints(p1 : number[], p2 : number[]){
+    return getLength(new LineString([p1,p2]));
+}
 
 // Calculate distances between intake, facility and discharge
 startAppListening({

@@ -15,7 +15,10 @@ export interface SelectedPointProps {
 
 export interface FacilityProps {
     location: Array<number> | null,
-    name: string | null
+    name: string | null,
+    intakeVolume: number[],
+    temperatureDelta: number[],
+    facilityEffectivenessFactor: number
 }
 
 export interface MapView {
@@ -37,3 +40,9 @@ export interface LayerConfiguration {
         scale: number
     }
 }
+
+export interface MonthValue<T> {
+    month: number,
+    value: T
+}
+  
