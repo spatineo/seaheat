@@ -34,7 +34,7 @@ export const facilitySlice = createSlice({
     setTemperatureDelta: (state, action: PayloadAction<MonthValue<number>>) => {
       state.temperatureDelta[action.payload.month] = action.payload.value
     },
-    setFacilityEffectivenessFactory: (state, action: PayloadAction<number>) => {
+    setFacilityEffectivenessFactor: (state, action: PayloadAction<number>) => {
       state.facilityEffectivenessFactor = action.payload
     },
     restoreFacilityState: (state, action: PayloadAction<FacilityState>) => {
@@ -48,6 +48,6 @@ export const facilitySlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setLocation, setName, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactory, restoreFacilityState } = facilitySlice.actions
+export const { setLocation, setName, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor, restoreFacilityState } = facilitySlice.actions
 
 export default facilitySlice.reducer
