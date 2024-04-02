@@ -40,7 +40,7 @@ export const FacilityComponent = ({ location, name, intakeVolume, temperatureDel
                     }
                 </Flex>
             </Flex>
-            <Flex>
+            <Flex marginTop={3}>
                 <Text>Set intake volume&nbsp;</Text>
                 <Text fontSize='xs'>(m<span style={{verticalAlign: 'super', fontSize: '60%'}}>3</span>/s)</Text>
             </Flex>
@@ -55,7 +55,7 @@ export const FacilityComponent = ({ location, name, intakeVolume, temperatureDel
                         changeValue={setIntakeVolume}
                         sliderIcon={RepeatIcon} />}
             </Flex>
-            <Flex>
+            <Flex marginTop={3}>
                 <Text>Temperature difference&nbsp;</Text>
                 <Text fontSize='xs'>(C)</Text>
             </Flex>

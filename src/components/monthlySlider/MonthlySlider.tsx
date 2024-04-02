@@ -18,7 +18,7 @@ export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeV
         return (
             <Flex w='34px' key={mon}>
                 <VStack alignContent={'center'}>
-                    <Text fontSize='sm'>{format(d, 'LLL')}</Text>
+                    <Text fontSize='sm' color={'#777'}>{format(d, 'LLL')}</Text>
                     <Slider 
                         orientation='vertical'
                         min={minValue}
