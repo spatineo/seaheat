@@ -14,7 +14,7 @@ function heightOfStep(depth: number[], step: number) {
 export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
   const { calculatedData } = useMemo(() => {
     const calculatedData = data.axes.y.values
-      .filter((yValue) => yValue < data.seabedDepth)
+      .filter((yValue) => (data.seabedDepth !== null) && yValue < data.seabedDepth)
       .map((yValue, yIndex) => {
         const totalHeightOfSteps = heightOfStep( data.axes.y.values, yIndex);
         return {
@@ -59,7 +59,7 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
       </thead>
       <tbody style={{ height: `${height}` }}>
         {calculatedData
-          .filter((rowData) => rowData.yValueNumber < data.seabedDepth)
+          .filter((rowData) => (data.seabedDepth) != null && rowData.yValueNumber < data.seabedDepth)
           .map((rowData, rowIndex) => {
             return (
               <tr
@@ -67,7 +67,7 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
                 className="temperature-component-tr"
                 style={{
                   height: `${
-                    (rowData.totalHeightOfSteps / data.seabedDepth) * height
+                    (data.seabedDepth !== null) && (rowData.totalHeightOfSteps / data.seabedDepth) * height
                   }px`,
                 }}
               >
@@ -98,7 +98,7 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
                         <Box
                           key={tick}
                           position="absolute"
-                          top={`${(tick / data.seabedDepth)*100}%`}
+                          top={`${(data.seabedDepth !== null)&&(tick / data.seabedDepth)*100}%`}
                           height={0}
                         >
                           <Box position="relative" top={0} height={0} lineHeight={0}>-{tick}</Box>
