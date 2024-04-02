@@ -11,22 +11,22 @@ function heightOfStep(depth: number[], step: number) {
   return (b - a) / 2 + (c - b) / 2;
 }
 
-export const TemperatureComponent = (options: TemperatureProps) => {
+export const TemperatureComponent = ({ data }: TemperatureProps) => {
   const heightInPixel = 300;
   const { calculatedData } = useMemo(() => {
-    const calculatedData = options.axes.y.values
-      .filter((yValue) => yValue < options.seabedDepth)
+    const calculatedData = data.axes.y.values
+      .filter((yValue) => yValue < data.seabedDepth)
       .map((yValue, yIndex) => {
-        const height = heightOfStep(options.axes.y.values, yIndex);
+        const height = heightOfStep( data.axes.y.values, yIndex);
         return {
           yValueNumber: yValue,
           height,
-          cells: options.axes.x.values.map((xValue, xIndex) => {
-            const cellValue = options.data.find(
+          cells: data.axes.x.values.map((xValue, xIndex) => {
+            const cellValue = data.temperatureValues.find(
               (d) => d.x === xIndex && d.y === yIndex
             )?.value;
             if (cellValue === null || cellValue === undefined) return;
-            const legendItem = options.legend.find(
+            const legendItem = data.legend.find(
               (l) => l.minValue <= cellValue && cellValue <= l.maxValue
             );
             const bgColor = legendItem && legendItem.color;
@@ -35,17 +35,17 @@ export const TemperatureComponent = (options: TemperatureProps) => {
         };
       });
     return { calculatedData };
-  }, [options]);
+  }, [data]);
 
   const xLabelWithDataValue = useMemo(() => {
-    const labelsWithValues = options.axes.x.values.map((x, index) => {
+    const labelsWithValues = data.axes.x.values.map((x, index) => {
       return {
         xLabels: x,
-        value: options.data.filter((val) => val.x === index && val),
+        value: data.temperatureValues.filter((val) => val.x === index && val),
       };
     });
     return labelsWithValues;
-  }, [options]);
+  }, [ data ]);
 
   const tableContent = (
     <table style={{ width: "100%" }}>
@@ -60,7 +60,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
       </thead>
       <tbody style={{ height: `${heightInPixel}` }}>
         {calculatedData
-          .filter((rowData) => rowData.yValueNumber < options.seabedDepth)
+          .filter((rowData) => rowData.yValueNumber < data.seabedDepth)
           .map((rowData, rowIndex) => {
             return (
               <tr
@@ -68,7 +68,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                 className="temperature-component-tr"
                 style={{
                   height: `${
-                    (rowData.height / options.seabedDepth) * heightInPixel
+                    (rowData.height / data.seabedDepth) * heightInPixel
                   }px`,
                 }}
               >
@@ -94,11 +94,11 @@ export const TemperatureComponent = (options: TemperatureProps) => {
                     style={{'position': 'relative', 'padding': '0'}}
                   >
                     <Box position="absolute" top="0" h="100%">
-                      {options.ticks.map((tick) => (
+                      {data.ticks.map((tick) => (
                         <Box
                           key={tick}
                           position="absolute"
-                          top={`${(tick / options.seabedDepth)*100}%`}
+                          top={`${(tick / data.seabedDepth)*100}%`}
                           height={0}
                         >
                           <Box position="relative" top={0} height={0} lineHeight={0}>-{tick}</Box>
@@ -112,14 +112,14 @@ export const TemperatureComponent = (options: TemperatureProps) => {
           })}
         <tr className="temperature-component-tr">
           <td
-            colSpan={options.axes.x.values.length}
+            colSpan={data.axes.x.values.length}
             style={{
               backgroundColor: "#949494",
               textAlign: "center",
               borderRight: "4px solid white",
             }}
           >
-            - {options.seabedDepth}
+            - {data.seabedDepth}
           </td>
           <th></th>
         </tr>
@@ -128,7 +128,7 @@ export const TemperatureComponent = (options: TemperatureProps) => {
   );
   const legendsContent = (
     <Flex boxSizing="border-box" w="100%" mt="4" flexWrap="wrap" gap="4">
-      {options.legend.map(({ color, minValue, maxValue }, index) => (
+      {data.legend.map(({ color, minValue, maxValue }, index) => (
         <Flex
           key={index}
           minW="20%"
