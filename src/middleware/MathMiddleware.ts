@@ -9,24 +9,36 @@ import { distanceBetweenPoints } from "../app/connected/utils";
 export const mathMiddleware = createListenerMiddleware()
 const startAppListening = mathMiddleware.startListening.withTypes<RootState, AppDispatch>()
 
+// Calculate distances between intake, facility and discharge
 startAppListening({
-    matcher: isAnyOf(setIntakeLocation, setDischargeLocation, setFacilityLocation),
+    matcher: isAnyOf(setIntakeLocation, setFacilityLocation),
     effect: async (_action, listenerApi) => {
-        console.log('calculating disssstances');
-        const state = listenerApi.getState();
+        const state = listenerApi.getState()
 
         let intakeToFacility = null
         if (state.intake.location && state.facility.location) {
-            intakeToFacility = distanceBetweenPoints(state.intake.location, state.facility.location);
+            intakeToFacility = distanceBetweenPoints(state.intake.location, state.facility.location)
         }
+
+        if (intakeToFacility !== state.data.distances.intakeToFacility) {
+            listenerApi.dispatch(setIntakeToFacilityDistance(intakeToFacility))
+        }
+    }
+});
+
+startAppListening({
+    matcher: isAnyOf(setFacilityLocation, setDischargeLocation),
+    effect: async (_action, listenerApi) => {
+        const state = listenerApi.getState()
 
         let facilityToDischarge = null;
         if (state.facility.location && state.discharge.location) {
-            facilityToDischarge = distanceBetweenPoints(state.facility.location, state.discharge.location);
+            facilityToDischarge = distanceBetweenPoints(state.facility.location, state.discharge.location)
         }
 
-        listenerApi.dispatch(setIntakeToFacilityDistance(intakeToFacility));
-        listenerApi.dispatch(setFacilityToDischargeDistance(facilityToDischarge));
+        if (facilityToDischarge !== state.data.distances.facilityToDischarge) {
+            listenerApi.dispatch(setFacilityToDischargeDistance(facilityToDischarge))
+        }
     }
 });
 
