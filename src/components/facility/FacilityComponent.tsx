@@ -1,9 +1,9 @@
-import { Box, Flex, FormControl, FormLabel, Input, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 import { FacilityProps, MonthValue } from "../../types";
 
-import { format } from 'date-fns';
 import { facilityParameters } from '../../config/parameters';
-import { RepeatIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, RepeatIcon } from '@chakra-ui/icons';
+import { MonthlySlider } from '../monthlySlider/MonthlySlider';
 
 interface FacilityComponentProps extends FacilityProps {
     setName?: (name: string | null) => void,
@@ -12,7 +12,7 @@ interface FacilityComponentProps extends FacilityProps {
     setFacilityEffectivenessFactory?: (value: number) => void
 }
 
-export const FacilityComponent = ({ location, name, intakeVolume, setName, setIntakeVolume } : FacilityComponentProps) => {
+export const FacilityComponent = ({ location, name, intakeVolume, temperatureDelta, setName, setIntakeVolume, setTemperatureDelta } : FacilityComponentProps) => {
     function callIf<T>(fn: ((v: T) => void) | undefined, value : T) {
         if (fn) fn(value);
     }
@@ -45,33 +45,30 @@ export const FacilityComponent = ({ location, name, intakeVolume, setName, setIn
                 <Text fontSize='xs'>(m<span style={{verticalAlign: 'super', fontSize: '60%'}}>3</span>/s)</Text>
             </Flex>
             <Flex>
-                {setIntakeVolume && intakeVolume.map((value, mon : number) => {
-                    const d = new Date(2000, mon, 1)
-                    return (
-                        <Flex w='34px'>
-                            <VStack alignContent={'center'}>
-                                <Text fontSize='sm'>{format(d, 'LLL')}</Text>
-                                <Slider 
-                                    orientation='vertical'
-                                    min={facilityParameters.intakeMinimum}
-                                    max={facilityParameters.intakeMaximum}
-                                    value={value}
-                                    minH={75}
-                                    onChange={(newValue) => setIntakeVolume({month: mon, value: newValue})}>
-                                    <SliderTrack>
-                                        <SliderFilledTrack />
-                                    </SliderTrack>
-                                    <Tooltip hasArrow placement='top' label={`${value} m3/s`}>
-                                        <SliderThumb>
-                                            <Box color='tomato' as={RepeatIcon} />
-                                        </SliderThumb>
-                                    </Tooltip>
-                                </Slider>
-                                <Text fontSize='xs'>{value}</Text>
-                            </VStack>
-                        </Flex>
-                    )
-                })}
+                {setIntakeVolume && 
+                    <MonthlySlider
+                        values={intakeVolume}
+                        minValue={facilityParameters.intakeMinimum}
+                        maxValue={facilityParameters.intakeMaximum}
+                        unit='m3/s'
+                        color='#d41200'
+                        changeValue={setIntakeVolume}
+                        sliderIcon={RepeatIcon} />}
+            </Flex>
+            <Flex>
+                <Text>Temperature difference&nbsp;</Text>
+                <Text fontSize='xs'>(C)</Text>
+            </Flex>
+            <Flex>
+                {setTemperatureDelta && 
+                    <MonthlySlider
+                        values={temperatureDelta}
+                        minValue={facilityParameters.temperatureDeltaMinimum}
+                        maxValue={facilityParameters.temperatureDeltaMaximum}
+                        unit='C'
+                        color='#1a2fed'
+                        changeValue={setTemperatureDelta}
+                        sliderIcon={ChevronDownIcon} />}
             </Flex>
         </>
     )
