@@ -8,6 +8,7 @@ import uiStateReducer from './app/slices/uiState';
 
 import { importExportMiddleware } from './middleware/ImportExportMiddleware';
 import { edrApi } from './app/services/temperature';
+import { dataAPIMiddleware } from './middleware/DataAPIMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -20,7 +21,7 @@ export const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(importExportMiddleware.middleware).concat(edrApi.middleware)
+    getDefaultMiddleware().prepend(importExportMiddleware.middleware).prepend(dataAPIMiddleware.middleware).concat(edrApi.middleware)
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
