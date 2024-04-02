@@ -3,7 +3,7 @@ import { setLocation as setIntakeLocation } from "../app/slices/intake";
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
-import { restoreDataState, setFacilityToDischargeDistance, setIntakeToFacilityDistance } from "../app/slices/data";
+import { restoreDataState, setFacilityToDischargeDistance, setIntakeToFacilityDistance, setMonthlyAveragePowerOutput } from "../app/slices/data";
 import { getLength } from "ol/sphere";
 import { LineString } from "ol/geom";
 import { secondsInDay } from "date-fns/constants";
@@ -64,12 +64,12 @@ startAppListening({
             series.values[month] = intakeVolume[month] * temperatureDelta[month] * 1.1639 * 0.997 *
                 facilityEffectivenessFactor * secondsInDay * getDaysInMonth(d) / 1000000;
             xAxis.values[month] = format(d, 'LLL');
-        });
+        })
 
-        listenerApi.getState().data.output.monthlyAveragePowerOutput = {
+        listenerApi.dispatch(setMonthlyAveragePowerOutput({
             unit: 'MW',
             axes: { x : xAxis },
             series: [series]
-        }
+        }))
     }
 })

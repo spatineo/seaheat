@@ -42,6 +42,9 @@ export const dataSlice = createSlice({
       setFacilityToDischargeDistance: (state, action: PayloadAction<number|null>) => {
         state.distances.facilityToDischarge = action.payload
       },
+      setMonthlyAveragePowerOutput: (state, action: PayloadAction<GraphData>) => {
+        state.output.monthlyAveragePowerOutput = action.payload
+      },
       restoreDataState: () => {
         // NOP, this action is declared here so that data and math middleware can hitch on to these events
       }
@@ -49,6 +52,7 @@ export const dataSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance, setFacilityToDischargeDistance, restoreDataState } = dataSlice.actions
+export const { setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance, 
+  setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, restoreDataState } = dataSlice.actions
 
 export default dataSlice.reducer
