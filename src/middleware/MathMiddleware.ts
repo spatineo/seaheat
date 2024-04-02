@@ -3,7 +3,7 @@ import { setLocation as setIntakeLocation } from "../app/slices/intake";
 import { setLocation as setFacilityLocation } from "../app/slices/facility";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
-import { setFacilityToDischargeDistance, setIntakeToFacilityDistance } from "../app/slices/data";
+import { restoreDataState, setFacilityToDischargeDistance, setIntakeToFacilityDistance } from "../app/slices/data";
 import { distanceBetweenPoints } from "../app/connected/utils";
 
 export const mathMiddleware = createListenerMiddleware()
@@ -11,7 +11,7 @@ const startAppListening = mathMiddleware.startListening.withTypes<RootState, App
 
 // Calculate distances between intake, facility and discharge
 startAppListening({
-    matcher: isAnyOf(setIntakeLocation, setFacilityLocation),
+    matcher: isAnyOf(restoreDataState, setIntakeLocation, setFacilityLocation),
     effect: async (_action, listenerApi) => {
         const state = listenerApi.getState()
 
@@ -27,7 +27,7 @@ startAppListening({
 });
 
 startAppListening({
-    matcher: isAnyOf(setFacilityLocation, setDischargeLocation),
+    matcher: isAnyOf(restoreDataState, setFacilityLocation, setDischargeLocation),
     effect: async (_action, listenerApi) => {
         const state = listenerApi.getState()
 

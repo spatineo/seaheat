@@ -3,14 +3,14 @@ import { setLocation as setIntakeLocation } from "../app/slices/intake";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
 import { requestTemperatureData } from "../services/EDRQuery";
-import { setDischargeTemperature, setIntakeTemperature } from "../app/slices/data";
+import { restoreDataState, setDischargeTemperature, setIntakeTemperature } from "../app/slices/data";
 import { emptyTemperatureData } from "../types/temperature";
 
 export const dataAPIMiddleware = createListenerMiddleware()
 const startAppListening = dataAPIMiddleware.startListening.withTypes<RootState, AppDispatch>()
 
 startAppListening({
-    matcher: isAnyOf(setIntakeLocation),
+    matcher: isAnyOf(restoreDataState, setIntakeLocation),
     effect: async (_action, listenerApi) => {
         const state = listenerApi.getState();
         let data;
@@ -24,7 +24,7 @@ startAppListening({
 });
 
 startAppListening({
-    matcher: isAnyOf(setDischargeLocation),
+    matcher: isAnyOf(restoreDataState, setDischargeLocation),
     effect: async (_action, listenerApi) => {
         const state = listenerApi.getState();
         let data;

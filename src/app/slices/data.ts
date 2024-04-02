@@ -37,10 +37,8 @@ export const dataSlice = createSlice({
       setFacilityToDischargeDistance: (state, action: PayloadAction<number|null>) => {
         state.distances.facilityToDischarge = action.payload
       },
-      restoreDataState: (state, action: PayloadAction<DataState>) => {
-        state.intakeTemperature = action.payload.intakeTemperature
-        state.dischargeTemperature = action.payload.dischargeTemperature
-        state.distances = action.payload.distances
+      restoreDataState: () => {
+        // NOP, this action is declared here so that data and math middleware can hitch on to these events
       }
     }
 })
