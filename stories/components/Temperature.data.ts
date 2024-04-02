@@ -1,5 +1,6 @@
 export const data = {
   one:  {
+    data: {
     axes: {
       x: {
         label: 'Month',
@@ -16,7 +17,7 @@ export const data = {
       }
     },
     ticks: [10, 20, 30, 40, 50],
-    data: [
+    temperatureValues: [
       { x: 0, y: 0, value: 1 },
       { x: 0, y: 1, value: 1 },
       { x: 0, y: 2, value: 3 },
@@ -318,6 +319,8 @@ export const data = {
     ],
     seabedDepth: 51,
    },
+   height: 300
+  },
    /*
    two:{
     axes: {
