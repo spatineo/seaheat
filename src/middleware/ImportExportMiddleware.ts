@@ -3,6 +3,7 @@ import { IntakeState, restoreIntakeState } from "../app/slices/intake";
 import { DischargeState, restoreDischargeState } from "../app/slices/discharge";
 import { UIState, restoreUIState } from "../app/slices/uiState";
 import { FacilityState, restoreFacilityState } from "../app/slices/facility";
+import { DataState, restoreDataState } from "../app/slices/data";
 
 export interface ExportFile {
     application: string,
@@ -12,6 +13,8 @@ export interface ExportFile {
         intake: IntakeState,
         discharge: DischargeState,
         facility: FacilityState,
+
+        data: DataState,
         uiState: UIState
     }
 }
@@ -19,7 +22,7 @@ export interface ExportFile {
 export const exportState = createAction('EXPORT_STATE');
 export const importState = createAction<ExportFile>('IMPORT_STATE');
 
-export const FORMAT_VERSION = "0.0.2"
+export const FORMAT_VERSION = "0.0.3"
 
 export const importExportMiddleware = createListenerMiddleware()
 importExportMiddleware.startListening({
@@ -62,6 +65,7 @@ importExportMiddleware.startListening({
         listenerApi.dispatch(restoreDischargeState(action.payload.state.discharge))
         listenerApi.dispatch(restoreFacilityState(action.payload.state.facility))
 
+        listenerApi.dispatch(restoreDataState(action.payload.state.data))
         listenerApi.dispatch(restoreUIState(action.payload.state.uiState))
     }
 })

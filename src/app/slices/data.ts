@@ -23,10 +23,14 @@ export const dataSlice = createSlice({
       setDischargeTemperature: (state, action: PayloadAction<TemperatureData>) => {
         state.dischargeTemperature = action.payload
       },
+      restoreDataState: (state, action: PayloadAction<DataState>) => {
+        state.intakeTemperature = action.payload.intakeTemperature
+        state.dischargeTemperature = action.payload.dischargeTemperature
+      }
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { setIntakeTemperature, setDischargeTemperature } = dataSlice.actions
+export const { setIntakeTemperature, setDischargeTemperature, restoreDataState } = dataSlice.actions
 
 export default dataSlice.reducer
