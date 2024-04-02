@@ -8,7 +8,7 @@ interface MonthlySliderProps {
     maxValue: number,
     unit: string,
     color: string,
-    changeValue: (value: MonthValue<number>) => void,
+    changeValue?: (value: MonthValue<number>) => void,
     sliderIcon: As
 }
 export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeValue, sliderIcon } : MonthlySliderProps) => {
@@ -25,7 +25,7 @@ export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeV
                         max={maxValue}
                         value={value}
                         minH={75}
-                        onChange={(newValue) => changeValue({month: mon, value: newValue}) }>
+                        onChange={(newValue) => changeValue && changeValue({month: mon, value: newValue}) }>
                         <SliderTrack>
                             <SliderFilledTrack bg={color}/>
                         </SliderTrack>

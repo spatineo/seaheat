@@ -45,30 +45,28 @@ export const FacilityComponent = ({ location, name, intakeVolume, temperatureDel
                 <Text fontSize='xs'>(m<span style={{verticalAlign: 'super', fontSize: '60%'}}>3</span>/s)</Text>
             </Flex>
             <Flex>
-                {setIntakeVolume && 
-                    <MonthlySlider
-                        values={intakeVolume}
-                        minValue={facilityParameters.intakeMinimum}
-                        maxValue={facilityParameters.intakeMaximum}
-                        unit='m3/s'
-                        color='#d41200'
-                        changeValue={setIntakeVolume}
-                        sliderIcon={RepeatIcon} />}
+                <MonthlySlider
+                    values={intakeVolume}
+                    minValue={facilityParameters.intakeMinimum}
+                    maxValue={facilityParameters.intakeMaximum}
+                    unit='m3/s'
+                    color='#d41200'
+                    changeValue={setIntakeVolume}
+                    sliderIcon={RepeatIcon} />
             </Flex>
             <Flex marginTop={3}>
                 <Text>Temperature difference&nbsp;</Text>
                 <Text fontSize='xs'>(C)</Text>
             </Flex>
             <Flex>
-                {setTemperatureDelta && 
-                    <MonthlySlider
-                        values={temperatureDelta}
-                        minValue={facilityParameters.temperatureDeltaMinimum}
-                        maxValue={facilityParameters.temperatureDeltaMaximum}
-                        unit='C'
-                        color='#1a2fed'
-                        changeValue={setTemperatureDelta}
-                        sliderIcon={ChevronDownIcon} />}
+                <MonthlySlider
+                    values={temperatureDelta}
+                    minValue={facilityParameters.temperatureDeltaMinimum}
+                    maxValue={facilityParameters.temperatureDeltaMaximum}
+                    unit='C'
+                    color='#1a2fed'
+                    changeValue={setTemperatureDelta}
+                    sliderIcon={ChevronDownIcon} />
             </Flex>
         </>
     )
