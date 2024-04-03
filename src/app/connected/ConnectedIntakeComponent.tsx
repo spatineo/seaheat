@@ -19,7 +19,9 @@ export const ConnectedIntakeComponent = () => {
     return (
         <>
             <SelectedPointComponent {...intakeProps} {...intakeCallbacks} distanceToFacility={distanceToFacility} />
-            {intakeTemperature.temperatureValues.length > 0 ? <TemperatureComponent data={intakeTemperature} height={300} /> : <></>}
+            {intakeTemperature.temperatureValues.length > 0 ?
+                <TemperatureComponent data={intakeTemperature} height={300} marker={intakeProps.depth || undefined}/>
+            : <></>}
         </>
     )
 }

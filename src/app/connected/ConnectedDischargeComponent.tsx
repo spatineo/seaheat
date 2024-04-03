@@ -16,11 +16,12 @@ export const ConnectedDischargeComponent = () => {
         setDepth: wrapAction(setDepth, dispatch),
     }
 
-
     return (
         <>
             <SelectedPointComponent {...dischargeProps} {...dischargeCallbacks} distanceToFacility={distanceToFacility} />
-            {dischargeTemperature.temperatureValues.length > 0 ? <TemperatureComponent data={dischargeTemperature} height={300} /> : <></>}
+            {dischargeTemperature.temperatureValues.length > 0 ?
+                <TemperatureComponent data={dischargeTemperature} height={300} marker={dischargeProps.depth || undefined}/>
+            : <></>}
         </>
     )
 }
