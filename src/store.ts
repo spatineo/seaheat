@@ -10,6 +10,7 @@ import uiStateReducer from './app/slices/uiState';
 import { importExportMiddleware } from './middleware/ImportExportMiddleware';
 import { dataAPIMiddleware } from './middleware/DataAPIMiddleware';
 import { mathMiddleware } from './middleware/MathMiddleware';
+import { errorMiddleware } from './middleware/ErrorMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -22,7 +23,7 @@ export const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(importExportMiddleware.middleware).prepend(dataAPIMiddleware.middleware).prepend(mathMiddleware.middleware)
+    getDefaultMiddleware().prepend(importExportMiddleware.middleware).prepend(dataAPIMiddleware.middleware).prepend(mathMiddleware.middleware).prepend(errorMiddleware.middleware)
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
