@@ -11,7 +11,7 @@ function heightOfStep(depth: number[], step: number) {
   return (b - a) / 2 + (c - b) / 2;
 }
 
-export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
+export const TemperatureComponent = ({ data, height, marker }: TemperatureProps) => {
  
   const { calculatedData } = useMemo(() => {
     const calculatedData = data.axes.y.values
@@ -47,6 +47,11 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
     return labelsWithValues;
   }, [ data ]);
 
+  const closest = calculatedData.reduce(function(prev, curr) {
+    return (Math.abs(curr.yValueNumber - marker) < Math.abs(prev.yValueNumber - marker) ? curr : prev);
+  });
+
+  console.log('closet to marker',closest, marker)
   const tableContent = (
     <table style={{ width: "100%" }}>
       <thead>
@@ -59,7 +64,17 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
         </tr>
       </thead>
       <tbody style={{ height: `${height}`, width:"100%"}}>
-        <tr style={{ height: '1px', borderTop:"1px dashed red", minWidth: "100%", position: "absolute", top: 130, zIndex: 300}}></tr>
+        {closest && (
+                <tr style={{
+                    height: '1px',
+                    borderTop: "2px dashed red",
+                    width: "100%",
+                    position: "absolute",
+                    top: data.seabedDepth !== null ? (closest.yValueNumber / data.seabedDepth )* height : 0,
+                    zIndex: 300 
+                }}>
+                </tr>
+            )}
         {calculatedData
           .filter((rowData) => (data.seabedDepth) !== null && rowData.yValueNumber < data.seabedDepth)
           .map((rowData, rowIndex) => {
