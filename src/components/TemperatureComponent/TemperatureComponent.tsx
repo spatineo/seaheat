@@ -111,6 +111,18 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
                     style={{'position': 'relative', 'padding': '0'}}
                   >
                     <Box position="absolute" top="0" h="100%" w="100%">
+                    {closest && (
+                <div style={{
+                    height: '1px',
+                    borderTop: "2px dashed red",
+                    width: "100%",
+                    position: "absolute",
+                    padding: "0px",
+                    top: data.seabedDepth !== null ? Math.round((closest.yValueNumber / data.seabedDepth )* height) : 0,
+                    zIndex: 300 
+                }}>
+                </div>
+            )}
                       { data.ticks.map((tick) => {
                         return(
                           <Box
