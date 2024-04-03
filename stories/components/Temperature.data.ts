@@ -1,5 +1,6 @@
 export const data = {
   one:  {
+    marker: 25,
     data: {
     axes: {
       x: {
