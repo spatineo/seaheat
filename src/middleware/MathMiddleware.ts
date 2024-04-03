@@ -8,6 +8,7 @@ import { getLength } from "ol/sphere";
 import { LineString } from "ol/geom";
 import { secondsInDay } from "date-fns/constants";
 import { format, getDaysInMonth } from "date-fns";
+import { processingError } from "./ErrorMiddleware";
 
 export const mathMiddleware = createListenerMiddleware()
 const startAppListening = mathMiddleware.startListening.withTypes<RootState, AppDispatch>()
@@ -21,15 +22,19 @@ function distanceBetweenPoints(p1 : number[], p2 : number[]){
 startAppListening({
     matcher: isAnyOf(restoreDataState, setIntakeLocation, setFacilityLocation),
     effect: async (_action, listenerApi) => {
-        const state = listenerApi.getState()
+        try {
+            const state = listenerApi.getState()
 
-        let intakeToFacility = null
-        if (state.intake.location && state.facility.location) {
-            intakeToFacility = distanceBetweenPoints(state.intake.location, state.facility.location)
-        }
+            let intakeToFacility = null
+            if (state.intake.location && state.facility.location) {
+                intakeToFacility = distanceBetweenPoints(state.intake.location, state.facility.location)
+            }
 
-        if (intakeToFacility !== state.data.distances.intakeToFacility) {
-            listenerApi.dispatch(setIntakeToFacilityDistance(intakeToFacility))
+            if (intakeToFacility !== state.data.distances.intakeToFacility) {
+                listenerApi.dispatch(setIntakeToFacilityDistance(intakeToFacility))
+            }
+        } catch(error) {
+            listenerApi.dispatch(processingError(`Error calculating distance intake->facility: ${error}`));
         }
     }
 });
@@ -37,16 +42,21 @@ startAppListening({
 startAppListening({
     matcher: isAnyOf(restoreDataState, setFacilityLocation, setDischargeLocation),
     effect: async (_action, listenerApi) => {
-        const state = listenerApi.getState()
+        try {
+            const state = listenerApi.getState()
 
-        let facilityToDischarge = null;
-        if (state.facility.location && state.discharge.location) {
-            facilityToDischarge = distanceBetweenPoints(state.facility.location, state.discharge.location)
+            let facilityToDischarge = null;
+            if (state.facility.location && state.discharge.location) {
+                facilityToDischarge = distanceBetweenPoints(state.facility.location, state.discharge.location)
+            }
+
+            if (facilityToDischarge !== state.data.distances.facilityToDischarge) {
+                listenerApi.dispatch(setFacilityToDischargeDistance(facilityToDischarge))
+            }
+        } catch(error) {
+            listenerApi.dispatch(processingError(`Error calculating distance facility->discharge: ${error}`));
         }
 
-        if (facilityToDischarge !== state.data.distances.facilityToDischarge) {
-            listenerApi.dispatch(setFacilityToDischargeDistance(facilityToDischarge))
-        }
     }
 });
 
@@ -54,22 +64,26 @@ startAppListening({
 startAppListening({
     matcher: isAnyOf(restoreDataState, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor),
     effect: async (_action, listenerApi) => {
-        const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
+        try {
+            const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
 
-        const series = { label: "Monthly output", values: [] as Array<number> };
-        const xAxis = { label: 'Month', values: [] as Array<string> }
+            const series = { label: "Monthly output", values: [] as Array<number> };
+            const xAxis = { label: 'Month', values: [] as Array<string> }
 
-        Array(12).fill(0).forEach((_v, month : number) => {
-            const d = new Date(2001, month, 1)
-            series.values[month] = intakeVolume[month] * temperatureDelta[month] * 1.1639 * 0.997 *
-                facilityEffectivenessFactor * secondsInDay * getDaysInMonth(d) / 1000000;
-            xAxis.values[month] = format(d, 'LLL');
-        })
+            Array(12).fill(0).forEach((_v, month : number) => {
+                const d = new Date(2001, month, 1)
+                series.values[month] = intakeVolume[month] * temperatureDelta[month] * 1.1639 * 0.997 *
+                    facilityEffectivenessFactor * secondsInDay * getDaysInMonth(d) / 1000000;
+                xAxis.values[month] = format(d, 'LLL');
+            })
 
-        listenerApi.dispatch(setMonthlyAveragePowerOutput({
-            unit: 'MW',
-            axes: { x : xAxis },
-            series: [series]
-        }))
+            listenerApi.dispatch(setMonthlyAveragePowerOutput({
+                unit: 'MW',
+                axes: { x : xAxis },
+                series: [series]
+            }))
+        } catch(error) {
+            listenerApi.dispatch(processingError(`Error calculating monthlyAveragePowerOutput: ${error}`));
+        }
     }
 })

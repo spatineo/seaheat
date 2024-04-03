@@ -5,6 +5,7 @@ import { UIState, restoreUIState } from "../app/slices/uiState";
 import { FacilityState, restoreFacilityState } from "../app/slices/facility";
 import { DataState, restoreDataState } from "../app/slices/data";
 import { AppDispatch, RootState } from "../store";
+import { processingError } from "./ErrorMiddleware";
 
 export interface ExportFile {
     application: string,
@@ -32,25 +33,29 @@ startAppListening({
     actionCreator: exportState,
     effect: async (_action, listenerApi) => {
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { data: _ignore, ...exportableState } = listenerApi.getState();
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { data: _ignore, ...exportableState } = listenerApi.getState();
 
-        const dataToExport = {
-            "application": "fmi-seaheat",
-            "version": FORMAT_VERSION,
-            "exportedAt": new Date().toISOString(),
-            "state": exportableState
-        };
+            const dataToExport = {
+                "application": "fmi-seaheat",
+                "version": FORMAT_VERSION,
+                "exportedAt": new Date().toISOString(),
+                "state": exportableState
+            };
 
-        const textBlob = new Blob([JSON.stringify(dataToExport, null, 4)], { type: 'application/json'} );
+            const textBlob = new Blob([JSON.stringify(dataToExport, null, 4)], { type: 'application/json'} );
 
-        const url = URL.createObjectURL(textBlob);
-    
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = 'export.json';
+            const url = URL.createObjectURL(textBlob);
+        
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = 'export.json';
 
-        link.click();
+            link.click();
+        } catch(error) {
+            listenerApi.dispatch(processingError(`Error exporting application state: ${error}`));
+        }
     }
 })
 
@@ -66,14 +71,18 @@ export const validateImportFile = (data : ExportFile) => {
 startAppListening({
     actionCreator: importState,
     effect: async (action, listenerApi) => {
-        validateImportFile(action.payload);
-        
-        listenerApi.dispatch(restoreIntakeState(action.payload.state.intake))
-        listenerApi.dispatch(restoreDischargeState(action.payload.state.discharge))
-        listenerApi.dispatch(restoreFacilityState(action.payload.state.facility))
+        try {
+            validateImportFile(action.payload);
+            
+            listenerApi.dispatch(restoreIntakeState(action.payload.state.intake))
+            listenerApi.dispatch(restoreDischargeState(action.payload.state.discharge))
+            listenerApi.dispatch(restoreFacilityState(action.payload.state.facility))
 
-        listenerApi.dispatch(restoreUIState(action.payload.state.uiState))
+            listenerApi.dispatch(restoreUIState(action.payload.state.uiState))
 
-        listenerApi.dispatch(restoreDataState())
+            listenerApi.dispatch(restoreDataState())
+        } catch(error) {
+            listenerApi.dispatch(processingError(`Error importing application state: ${error}`));
+        }
     }
 })
