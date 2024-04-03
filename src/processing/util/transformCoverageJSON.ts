@@ -3,7 +3,7 @@ import { TemperatureData } from "../../types";
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const transformCoverageJSONToTemperatureProps = (data: any[]) : TemperatureData => {
+export const transformCoverageJSONToTemperatureData = (data: any[]) : TemperatureData => {
     const numYAxis = data[0].domain.axes.z.values.length
     const ret: TemperatureData = {
         axes: {

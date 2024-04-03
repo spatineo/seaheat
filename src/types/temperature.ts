@@ -32,9 +32,8 @@ interface Axis <T>{
     marker: number
   }
 
-  export const emptyTemperatureData = () : TemperatureProps => ({
-    data: {
-      axes: {
+  export const emptyTemperatureData = () : TemperatureData => ({
+    axes: {
       x: { label: 'N/A', values: [] },
       y: { label: 'N/A', values: [] }
     },

@@ -4,10 +4,12 @@ import intakeReducer from './app/slices/intake';
 import dischargeReducer from './app/slices/discharge';
 import facilityReducer from './app/slices/facility';
 
+import dataReducer from './app/slices/data';
 import uiStateReducer from './app/slices/uiState';
 
 import { importExportMiddleware } from './middleware/ImportExportMiddleware';
-import { edrApi } from './app/services/temperature';
+import { dataAPIMiddleware } from './middleware/DataAPIMiddleware';
+import { mathMiddleware } from './middleware/MathMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -15,12 +17,12 @@ export const store = configureStore({
     discharge: dischargeReducer,
     facility: facilityReducer,
 
-    uiState: uiStateReducer,
-    [edrApi.reducerPath]: edrApi.reducer
+    data: dataReducer,
+    uiState: uiStateReducer
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(importExportMiddleware.middleware).concat(edrApi.middleware)
+    getDefaultMiddleware().prepend(importExportMiddleware.middleware).prepend(dataAPIMiddleware.middleware).prepend(mathMiddleware.middleware)
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

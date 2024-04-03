@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toLonLat } from 'ol/proj';
 import { config } from '../../config/app';
 import { TemperatureData } from '../../types';
-import { transformCoverageJSONToTemperatureProps } from '../../processing/util/transformCoverageJSON';
+import { transformCoverageJSONToTemperatureData } from '../../processing/util/transformCoverageJSON';
 import { emptyTemperatureData } from '../../types/temperature';
 
 import { roundToNearestHours, addHours } from 'date-fns'
@@ -20,7 +20,7 @@ export const edrApi = createApi({
       queryFn: async (q, _api, _extraOptions, baseQuery) => {
 
         if (q.location === null) {
-          return new Promise((resolve) => resolve({ data: emptyTemperatureData().data }));
+          return new Promise((resolve) => resolve({ data: emptyTemperatureData() }));
         }
 
         const lonLat = toLonLat(q.location, config.projection);
@@ -46,7 +46,7 @@ export const edrApi = createApi({
           if (error) { resolve({ error }) }
 
           try {
-            const converted = transformCoverageJSONToTemperatureProps(ret.map((r) => r.data));
+            const converted = transformCoverageJSONToTemperatureData(ret.map((r) => r.data));
 
             resolve({ data: converted })
           } catch(err) {
