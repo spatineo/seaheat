@@ -31,9 +31,8 @@ interface Axis <T>{
     height: number
   }
 
-  export const emptyTemperatureData = () : TemperatureProps => ({
-    data: {
-      axes: {
+  export const emptyTemperatureData = () : TemperatureData => ({
+    axes: {
       x: { label: 'N/A', values: [] },
       y: { label: 'N/A', values: [] }
     },
@@ -41,6 +40,4 @@ interface Axis <T>{
     temperatureValues: [],
     legend: [],
     seabedDepth: 0,
-  },
-    height: 300
   });

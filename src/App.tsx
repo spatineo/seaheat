@@ -11,10 +11,10 @@ function App() {
   return (
     <Grid
       templateAreas={`"designer dimensionSelect selectedPoint"
-                      "designer map             selectedPoint"
                       "layers   map             selectedPoint"
                       "graph    graph           graph"`}
       templateColumns={'1fr 2fr 2fr'}
+      templateRows={'0fr 3fr 1fr'}
       h="100%"
       gap="3"
     >

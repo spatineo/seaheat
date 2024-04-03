@@ -10,7 +10,7 @@ export interface DischargeState {
 const initialState: DischargeState = {
   location: null,
   depth: null,
-  name: null
+  name: null,
 }
 
 export const dischargeSlice = createSlice({
@@ -26,10 +26,11 @@ export const dischargeSlice = createSlice({
     setName: (state, action: PayloadAction<string | null>) => {
       state.name = action.payload
     },
+
     restoreDischargeState: (state, action: PayloadAction<DischargeState>) => {
-      state.name = action.payload.name;
-      state.depth = action.payload.depth;
-      state.location = action.payload.location;
+      state.name = action.payload.name
+      state.depth = action.payload.depth
+      state.location = action.payload.location
     }
   },
 })
