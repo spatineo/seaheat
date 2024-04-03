@@ -18,7 +18,7 @@ export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeV
             {values.map((value, mon : number) => {
             const d = new Date(2001, mon, 1)
             return (
-                <VStack alignContent={'center'} width={`${100/values.length}%`}>
+                <VStack alignContent={'center'} width={`${100/values.length}%`} key={mon}>
                     <Text fontSize='sm' color={'#777'}>{format(d, 'LLL')}</Text>
                     <Slider 
                         orientation='vertical'
