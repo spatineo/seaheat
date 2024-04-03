@@ -32,7 +32,7 @@ export const transformCoverageJSONToTemperatureData = (data: any[]) : Temperatur
             { minValue:   0,  maxValue:  10, color: '#cc0000' },
             { minValue:  10,  maxValue:  20, color: '#ee0000' }
         ],
-        seabedDepth: null as null | number,
+        seabedDepth: 0,
     }
 
     const firstYAxisWithNoData = ret.axes.y.values.find((_yAxisValue, idx) => {

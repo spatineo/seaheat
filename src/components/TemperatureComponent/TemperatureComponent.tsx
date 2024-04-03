@@ -47,11 +47,8 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
     return labelsWithValues;
   }, [ data ]);
 
-  const closest = calculatedData.reduce(function(prev, curr) {
-    return (Math.abs(curr.yValueNumber - marker) < Math.abs(prev.yValueNumber - marker) ? curr : prev);
-  });
+  const markerHeight = marker !== undefined ? ( Math.max(Math.min(marker,data.seabedDepth), 0) / data.seabedDepth) * height : null;
 
-  console.log('closet to marker',closest, marker)
   const tableContent = (
     <table style={{ width: "100%" }}>
       <thead>
@@ -63,15 +60,16 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
         ))}
         </tr>
       </thead>
-      <tbody style={{ height: `${height}`, width:"100%"}}>
-        {closest && (
+      <tbody style={{ height: `${height}`, width:"100%", position: 'relative'}}>
+        {markerHeight !== null && (
             <tr style={{
                 height: '1px',
                 borderTop: "2px dashed red",
-                width: "100%",
+                
                 position: "absolute",
-                left: 0,
-                top: data.seabedDepth !== null ? (closest.yValueNumber / data.seabedDepth )* height : 0,
+                left: '-5px',
+                right: '0px',
+                top: markerHeight,
                 zIndex: 300 
             }}>
             </tr>

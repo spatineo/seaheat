@@ -23,13 +23,13 @@ interface Axis <T>{
     ticks: number[]
     temperatureValues: Value[],
     legend: Legend[]
-    seabedDepth: number | null,
+    seabedDepth: number,
   }
 
   export interface TemperatureProps {
     data: TemperatureData
     height: number
-    marker: number
+    marker?: number
   }
 
   export const emptyTemperatureData = () : TemperatureData => ({
@@ -41,7 +41,4 @@ interface Axis <T>{
     temperatureValues: [],
     legend: [],
     seabedDepth: 0,
-  },
-    height: 300,
-    marker: 25
   });
