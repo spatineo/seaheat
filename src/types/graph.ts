@@ -6,6 +6,7 @@ interface Axis <T>{
 
 
 export interface Series {
+    label: string,
     values: Array<number>
 }
 

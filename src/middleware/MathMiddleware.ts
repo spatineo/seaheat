@@ -56,7 +56,7 @@ startAppListening({
     effect: async (_action, listenerApi) => {
         const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
 
-        const series = { values: [] as Array<number> };
+        const series = { label: "Monthly output", values: [] as Array<number> };
         const xAxis = { label: 'Month', values: [] as Array<string> }
 
         Array(12).fill(0).forEach((_v, month : number) => {
