@@ -3,7 +3,7 @@ import { toLonLat } from "ol/proj";
 import { config } from "../config/app";
 
 import { roundToNearestHours, addHours } from 'date-fns'
-import { transformCoverageJSONToTemperatureProps } from "../processing/util/transformCoverageJSON";
+import { transformCoverageJSONToTemperatureData } from "../processing/util/transformCoverageJSON";
 
 const baseUrl = `https://data.fmi.fi/fmi-apikey/${config.fmiApiKey}/edr/collections/harmonie_skandinavia_mallipinta/`;
 
@@ -28,5 +28,5 @@ export const requestTemperatureData = async (location : number[]) : Promise<Temp
     const responses = await Promise.all(queries);
     const data = await Promise.all(responses.map((r) => r.json()))
 
-    return transformCoverageJSONToTemperatureProps(data);
+    return transformCoverageJSONToTemperatureData(data);
 }
