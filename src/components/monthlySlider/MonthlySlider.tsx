@@ -1,4 +1,4 @@
-import { As, Box, Flex, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, Tooltip, VStack } from "@chakra-ui/react"
+import { As, Box, HStack, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text, Tooltip, VStack } from "@chakra-ui/react"
 import { format } from "date-fns"
 import { MonthValue } from "../../types"
 
@@ -12,12 +12,13 @@ interface MonthlySliderProps {
     sliderIcon: As
 }
 export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeValue, sliderIcon } : MonthlySliderProps) => {
-
-    return values.map((value, mon : number) => {
-        const d = new Date(2001, mon, 1)
-        return (
-            <Flex w='34px' key={mon}>
-                <VStack alignContent={'center'}>
+    
+    return (
+        <HStack width='100%'>
+            {values.map((value, mon : number) => {
+            const d = new Date(2001, mon, 1)
+            return (
+                <VStack alignContent={'center'} width={`${100/values.length}%`}>
                     <Text fontSize='sm' color={'#777'}>{format(d, 'LLL')}</Text>
                     <Slider 
                         orientation='vertical'
@@ -37,7 +38,7 @@ export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeV
                     </Slider>
                     <Text fontSize='xs'>{value}</Text>
                 </VStack>
-            </Flex>
-        )
-    })
+            )})}
+        </HStack>
+    )
 }
