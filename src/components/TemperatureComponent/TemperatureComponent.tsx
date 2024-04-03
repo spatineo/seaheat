@@ -11,7 +11,8 @@ function heightOfStep(depth: number[], step: number) {
   return (b - a) / 2 + (c - b) / 2;
 }
 
-export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
+export const TemperatureComponent = ({ data, height, marker }: TemperatureProps) => {
+ 
   const { calculatedData } = useMemo(() => {
     const calculatedData = data.axes.y.values
       .filter((yValue) => (data.seabedDepth !== null) && yValue < data.seabedDepth)
@@ -46,6 +47,8 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
     return labelsWithValues;
   }, [ data ]);
 
+  const markerHeight = marker !== undefined ? ( Math.max(Math.min(marker,data.seabedDepth), 0) / data.seabedDepth) * height : null;
+
   const tableContent = (
     <table style={{ width: "100%" }}>
       <thead>
@@ -57,9 +60,22 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
         ))}
         </tr>
       </thead>
-      <tbody style={{ height: `${height}` }}>
+      <tbody style={{ height: `${height}`, width:"100%", position: 'relative'}}>
+        {markerHeight !== null && (
+            <tr style={{
+                height: '1px',
+                borderTop: "2px dashed red",
+                
+                position: "absolute",
+                left: '-5px',
+                right: '0px',
+                top: markerHeight,
+                zIndex: 300 
+            }}>
+            </tr>
+            )}
         {calculatedData
-          .filter((rowData) => (data.seabedDepth) != null && rowData.yValueNumber < data.seabedDepth)
+          .filter((rowData) => (data.seabedDepth) !== null && rowData.yValueNumber < data.seabedDepth)
           .map((rowData, rowIndex) => {
             return (
               <tr
@@ -93,17 +109,19 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
                     rowSpan={calculatedData.length}
                     style={{'position': 'relative', 'padding': '0'}}
                   >
-                    <Box position="absolute" top="0" h="100%">
-                      {data.ticks.map((tick) => (
-                        <Box
+                    <Box position="absolute" top="0" h="100%" w="100%">
+                      { data.ticks.map((tick) => {
+                        return(
+                          <Box
                           key={tick}
                           position="absolute"
                           top={`${(data.seabedDepth !== null)&&(tick / data.seabedDepth)*100}%`}
                           height={0}
                         >
-                          <Box position="relative" top={0} height={0} lineHeight={0}>-{tick}</Box>
+                          <Box position="absolute" top={0} height={0} lineHeight={0}>-{tick}</Box> 
                         </Box>
-                      ))}
+                      )}
+                      )}
                     </Box>
                   </th>
                 )}
