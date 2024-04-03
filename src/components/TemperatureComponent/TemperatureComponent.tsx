@@ -65,15 +65,16 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
       </thead>
       <tbody style={{ height: `${height}`, width:"100%"}}>
         {closest && (
-                <tr style={{
-                    height: '1px',
-                    borderTop: "2px dashed red",
-                    width: "100%",
-                    position: "absolute",
-                    top: data.seabedDepth !== null ? (closest.yValueNumber / data.seabedDepth )* height : 0,
-                    zIndex: 300 
-                }}>
-                </tr>
+            <tr style={{
+                height: '1px',
+                borderTop: "2px dashed red",
+                width: "100%",
+                position: "absolute",
+                left: 0,
+                top: data.seabedDepth !== null ? (closest.yValueNumber / data.seabedDepth )* height : 0,
+                zIndex: 300 
+            }}>
+            </tr>
             )}
         {calculatedData
           .filter((rowData) => (data.seabedDepth) !== null && rowData.yValueNumber < data.seabedDepth)
@@ -111,18 +112,6 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
                     style={{'position': 'relative', 'padding': '0'}}
                   >
                     <Box position="absolute" top="0" h="100%" w="100%">
-                    {closest && (
-                <div style={{
-                    height: '1px',
-                    borderTop: "2px dashed red",
-                    width: "100%",
-                    position: "absolute",
-                    padding: "0px",
-                    top: data.seabedDepth !== null ? Math.round((closest.yValueNumber / data.seabedDepth )* height) : 0,
-                    zIndex: 300 
-                }}>
-                </div>
-            )}
                       { data.ticks.map((tick) => {
                         return(
                           <Box
