@@ -12,6 +12,7 @@ function heightOfStep(depth: number[], step: number) {
 }
 
 export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
+ 
   const { calculatedData } = useMemo(() => {
     const calculatedData = data.axes.y.values
       .filter((yValue) => (data.seabedDepth !== null) && yValue < data.seabedDepth)
@@ -57,9 +58,10 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
         ))}
         </tr>
       </thead>
-      <tbody style={{ height: `${height}` }}>
+      <tbody style={{ height: `${height}`, width:"100%"}}>
+        <tr style={{ height: '1px', borderTop:"1px dashed red", minWidth: "100%", position: "absolute", top: 130, zIndex: 300}}></tr>
         {calculatedData
-          .filter((rowData) => (data.seabedDepth) != null && rowData.yValueNumber < data.seabedDepth)
+          .filter((rowData) => (data.seabedDepth) !== null && rowData.yValueNumber < data.seabedDepth)
           .map((rowData, rowIndex) => {
             return (
               <tr
@@ -93,17 +95,19 @@ export const TemperatureComponent = ({ data, height }: TemperatureProps) => {
                     rowSpan={calculatedData.length}
                     style={{'position': 'relative', 'padding': '0'}}
                   >
-                    <Box position="absolute" top="0" h="100%">
-                      {data.ticks.map((tick) => (
-                        <Box
+                    <Box position="absolute" top="0" h="100%" w="100%">
+                      { data.ticks.map((tick) => {
+                        return(
+                          <Box
                           key={tick}
                           position="absolute"
                           top={`${(data.seabedDepth !== null)&&(tick / data.seabedDepth)*100}%`}
                           height={0}
                         >
-                          <Box position="relative" top={0} height={0} lineHeight={0}>-{tick}</Box>
+                          <Box position="absolute" top={0} height={0} lineHeight={0}>-{tick}</Box> 
                         </Box>
-                      ))}
+                      )}
+                      )}
                     </Box>
                   </th>
                 )}
