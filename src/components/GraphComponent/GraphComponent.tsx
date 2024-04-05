@@ -5,10 +5,9 @@ import { EChartOption } from "echarts";
 
 interface GraphOptions {
   option: EChartOption
-  height: number
 }
 
-export const GraphComponent = ({ option, height }: GraphOptions) => {
+export const GraphComponent = ({ option }: GraphOptions) => {
   const graphRef = useRef<HTMLDivElement>(null)
   const [graph, setGraph] = useState<echarts.ECharts | null>(null);
 
@@ -18,6 +17,7 @@ export const GraphComponent = ({ option, height }: GraphOptions) => {
     }
 
     const g = echarts.init(graphRef.current, null, {
+      height: 300,
       renderer: 'canvas',
       useDirtyRect: false
     });
@@ -51,7 +51,9 @@ export const GraphComponent = ({ option, height }: GraphOptions) => {
   }, [option, graph]);
 
   return (
-    <Box ref={graphRef} style={{ width: "auto",height: `${height}px`, margin: "auto" }}>
+    <Box sx={{ minW: "100%", border: "1px solid black"}}>
+      <Box ref={graphRef}>
+      </Box>
     </Box>
   )
 }
