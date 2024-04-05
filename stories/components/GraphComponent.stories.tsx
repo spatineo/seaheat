@@ -2,9 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { GraphComponent } from '../../src/components/GraphComponent/GraphComponent';
-import { emptyGraphData } from '../../src/types';
-import { EChartOption } from "echarts";
-
+import { emptyGraphData } from '../../src/types'
 
 
 const meta = {
@@ -21,8 +19,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-console.log(emptyGraphData())
 
 const data = {
   "unit": "MW",
@@ -80,43 +76,15 @@ const newSeriesValues = [
   43.512526270079995,
 ]
 
-const options: EChartOption = {
-  tooltip: {
-    trigger: 'axis'
-  },
-  legend: {
-    data: data.series.map(serie => serie.label)
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'category',
-    boundaryGap: false,
-    data: data.axes.x.values
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: data.series.map(serie => ({
-    name: serie.label,
-    type: 'line',
-    data: serie.values
-  }))
-};
-
 export const SingleSeriesGraph: Story = {
   args: {
-    option: options,
+    optionData: data,
 
   },
   render: () => {
     return (
       <div style={{ width: "30em"}}>
-        <GraphComponent option={options} />
+        <GraphComponent optionData={data} />
       </div>
     );
   }
@@ -124,28 +92,21 @@ export const SingleSeriesGraph: Story = {
 
 export const DoubleSeriesGraph: Story = {
   args: {
-    option: options,
+    optionData: data,
   },
   render: () => {
     return (
       <div style={{ width: "50vw", height: "5em"}}>
-        <GraphComponent option={{...options,  
-        legend: {
-          data: ["Monthly output", "Month"]
-        },
-        series: [
-          ...data.series.map(serie => ({
-            name: serie.label,
-            type: 'line',
-            data: serie.values
-          })),
-          {
-            name: 'Month',
-            type: 'line',
-            data: newSeriesValues
-          }
-        ]
-        ,}} />
+        <GraphComponent optionData={{
+          ...data,
+          series: [{
+            label: "Month",
+            values: newSeriesValues
+          },{
+            label: data.series[0].label,
+            values: data.series[0].values
+          }]}} 
+          />
       </div>
     );
   }
@@ -154,13 +115,13 @@ export const DoubleSeriesGraph: Story = {
 
 export const EmptySeriesGraph: Story = {
   args: {
-    option: options,
+    optionData: data,
    
   },
   render: () => {
     return (
       <div style={{ width: "40em"}}>
-        <GraphComponent option={{}}/>
+        <GraphComponent optionData={emptyGraphData()}/>
       </div>
     );
   }
