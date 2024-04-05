@@ -157,12 +157,12 @@ const newSeriesValues = [
 export const SingleSeriesGraph: Story = {
   args: {
     data: data,
-
+    height: 300
   },
   render: () => {
     return (
-      <div style={{ width: "30em"}}>
-        <GraphComponent data={data} />
+      <div style={{ width: "60vw"}}>
+        <GraphComponent data={data} height={300} />
       </div>
     );
   }
@@ -171,11 +171,14 @@ export const SingleSeriesGraph: Story = {
 export const DoubleSeriesGraph: Story = {
   args: {
     data: data,
+    height: 300
   },
   render: () => {
     return (
-      <div style={{ width: "50vw", height: "5em"}}>
-        <GraphComponent data={{
+      <div style={{ width: "50vw"}}>
+        <GraphComponent
+          height={300}
+         data={{
           ...data,
           series: [{
             label: "Month",
@@ -194,11 +197,12 @@ export const DoubleSeriesGraph: Story = {
 export const TripleSeriesGraph: Story = {
   args: {
     data: tripleSeriesData,
+    height: 300
   },
   render: () => {
     return (
-      <div style={{ width: "30em"}}>
-        <GraphComponent data={tripleSeriesData} />
+      <div style={{ width: "30vw"}}>
+        <GraphComponent data={tripleSeriesData} height={300}/>
       </div>
     );
   }
@@ -207,12 +211,12 @@ export const TripleSeriesGraph: Story = {
 export const EmptySeriesGraph: Story = {
   args: {
     data: data,
-   
+    height: 300
   },
   render: () => {
     return (
       <div style={{ width: "40em"}}>
-        <GraphComponent data={emptyGraphData()}/>
+        <GraphComponent data={emptyGraphData()} height={300}/>
       </div>
     );
   }
