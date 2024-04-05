@@ -61,6 +61,84 @@ const data = {
       }
   ]
 }
+
+const tripleSeriesData = {
+  "unit": "MW",
+  "axes": {
+      "x": {
+          "label": "Month",
+          "values": [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+          ]
+      }
+  },
+  "series": [
+      {
+          "label": "Month One",
+          "values": [
+              60.917536778111995,
+              98.2540915776,
+              34.810021016064,
+              25.26533783424,
+              43.512526270079995,
+              84.21779278079998,
+              43.512526270079995,
+              34.810021016064,
+              42.10889639039999,
+              113.13256830220797,
+              42.10889639039999,
+              60.917536778111995
+          ]
+      },
+      {
+        "label": "Monthly Two",
+        "values": [
+          43.512526270079995,
+            60.917536778111995,
+            98.2540915776,
+            34.810021016064,
+            25.26533783424,
+            34.810021016064,
+            84.21779278079998,
+            43.512526270079995,
+            60.917536778111995,
+            42.10889639039999,
+            113.13256830220797,
+            42.10889639039999,
+            60.917536778111995
+        ]
+    },
+    {
+      "label": "Monthly Three",
+      "values": [
+          43.512526270079995,
+          60.917536778111995,
+          48.2540915776,
+          34.810021016064,
+          25.26533783424,
+          34.810021016064,
+          74.21779278079998,
+          43.512526270079995,
+          20.917536778111995,
+          42.10889639039999,
+          13.13256830220797,
+          42.10889639039999,
+          60.917536778111995
+      ]
+  }
+  ]
+}
 const newSeriesValues = [
   84.21779278079998,
   43.512526270079995,
@@ -78,13 +156,13 @@ const newSeriesValues = [
 
 export const SingleSeriesGraph: Story = {
   args: {
-    optionData: data,
+    data: data,
 
   },
   render: () => {
     return (
       <div style={{ width: "30em"}}>
-        <GraphComponent optionData={data} />
+        <GraphComponent data={data} />
       </div>
     );
   }
@@ -92,12 +170,12 @@ export const SingleSeriesGraph: Story = {
 
 export const DoubleSeriesGraph: Story = {
   args: {
-    optionData: data,
+    data: data,
   },
   render: () => {
     return (
       <div style={{ width: "50vw", height: "5em"}}>
-        <GraphComponent optionData={{
+        <GraphComponent data={{
           ...data,
           series: [{
             label: "Month",
@@ -113,15 +191,28 @@ export const DoubleSeriesGraph: Story = {
 };
 
 
+export const TripleSeriesGraph: Story = {
+  args: {
+    data: tripleSeriesData,
+  },
+  render: () => {
+    return (
+      <div style={{ width: "30em"}}>
+        <GraphComponent data={tripleSeriesData} />
+      </div>
+    );
+  }
+};
+
 export const EmptySeriesGraph: Story = {
   args: {
-    optionData: data,
+    data: data,
    
   },
   render: () => {
     return (
       <div style={{ width: "40em"}}>
-        <GraphComponent optionData={emptyGraphData()}/>
+        <GraphComponent data={emptyGraphData()}/>
       </div>
     );
   }
