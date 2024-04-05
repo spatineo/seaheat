@@ -9,7 +9,7 @@ import uiStateReducer from './app/slices/uiState';
 
 import { importExportMiddleware } from './middleware/ImportExportMiddleware';
 import { dataAPIMiddleware } from './middleware/DataAPIMiddleware';
-import { mathMiddleware } from './middleware/MathMiddleware';
+import { initMathAction, mathMiddleware } from './middleware/MathMiddleware';
 import { errorMiddleware } from './middleware/ErrorMiddleware';
 
 export const store = configureStore({
@@ -25,6 +25,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(importExportMiddleware.middleware).prepend(dataAPIMiddleware.middleware).prepend(mathMiddleware.middleware).prepend(errorMiddleware.middleware)
 })
+
+// initialize math
+store.dispatch(initMathAction())
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

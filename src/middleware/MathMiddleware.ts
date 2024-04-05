@@ -1,4 +1,4 @@
-import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
+import { createAction, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { setLocation as setIntakeLocation } from "../app/slices/intake";
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
@@ -10,6 +10,8 @@ import { secondsInDay } from "date-fns/constants";
 import { format, getDaysInMonth } from "date-fns";
 import { processingError } from "./ErrorMiddleware";
 
+export const initMathAction = createAction('INIT_MATH');
+
 export const mathMiddleware = createListenerMiddleware()
 const startAppListening = mathMiddleware.startListening.withTypes<RootState, AppDispatch>()
 
@@ -20,7 +22,7 @@ function distanceBetweenPoints(p1 : number[], p2 : number[]){
 
 // Calculate distances between intake, facility and discharge
 startAppListening({
-    matcher: isAnyOf(restoreDataState, setIntakeLocation, setFacilityLocation),
+    matcher: isAnyOf(initMathAction, restoreDataState, setIntakeLocation, setFacilityLocation),
     effect: async (_action, listenerApi) => {
         try {
             const state = listenerApi.getState()
@@ -40,7 +42,7 @@ startAppListening({
 });
 
 startAppListening({
-    matcher: isAnyOf(restoreDataState, setFacilityLocation, setDischargeLocation),
+    matcher: isAnyOf(initMathAction, restoreDataState, setFacilityLocation, setDischargeLocation),
     effect: async (_action, listenerApi) => {
         try {
             const state = listenerApi.getState()
@@ -62,7 +64,7 @@ startAppListening({
 
 // Calculate monthly power output
 startAppListening({
-    matcher: isAnyOf(restoreDataState, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor),
+    matcher: isAnyOf(initMathAction, restoreDataState, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor),
     effect: async (_action, listenerApi) => {
         try {
             const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
