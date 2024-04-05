@@ -2,27 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import * as echarts from 'echarts';
 import { Box } from '@chakra-ui/react';
 import { EChartOption } from "echarts";
+import { GraphData } from '../../types';
+import { convertGraphDataToECharts } from '../../processing/util/convertGraphDataToECharts'
 
-interface Axis <T>{
-  label: string,
-  values: T[];
+interface GraphProps {
+  data: GraphData
 }
 
-export interface Series {
-  label: string,
-  values: Array<number>
-}
-interface GraphOptions {
-  optionData: {
-    unit: string,
-    axes: {
-        x: Axis<string>
-    },
-    series: Array<Series>
-  }
-}
-
-export const GraphComponent = ({ optionData }: GraphOptions) => {
+export const GraphComponent = ({ data }: GraphProps) => {
   const graphRef = useRef<HTMLDivElement>(null)
   const [graph, setGraph] = useState<echarts.ECharts | null>(null);
 
@@ -58,16 +45,14 @@ export const GraphComponent = ({ optionData }: GraphOptions) => {
   }, []);
 
   useEffect(() => {
-    if (!graph || !optionData || !Array.isArray(optionData.series) || optionData.series.length === 0) {
+    if (!graph || !data || !Array.isArray(data.series) || data.series.length === 0) {
       return;
   }
-    if ((optionData !== null && optionData !== undefined )&& (typeof optionData === 'object' && optionData.series !== undefined)) {
+    if ((data !== null && data !== undefined )&& (typeof data === 'object' && data.series !== undefined)) {
       const options: EChartOption = {
+        ...convertGraphDataToECharts(data),
         tooltip: {
           trigger: 'axis'
-        },
-        legend: {
-          data: optionData.series.map(serie => serie.label)
         },
         grid: {
           left: '3%',
@@ -78,21 +63,16 @@ export const GraphComponent = ({ optionData }: GraphOptions) => {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: optionData.axes.x.values
+          data: data.axes.x.values
         },
         yAxis: {
           type: 'value'
-        },
-        series: optionData.series.map(serie => ({
-          name: serie.label,
-          type: 'line',
-          data: serie.values
-        }))
+        }
       };
       graph.setOption(options);
     }
   
-  }, [optionData, graph]);
+  }, [data, graph]);
 
   return (
     <Box sx={{minW: "100%", border: "1px solid #DCDCDC", borderRadius: "6px"}}>
