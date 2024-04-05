@@ -108,28 +108,27 @@ const options: EChartOption = {
   }))
 };
 
-export const Primary: Story = {
+export const SingleSeriesGraph: Story = {
   args: {
     option: options,
-    height: 300
+
   },
   render: () => {
     return (
       <div style={{ width: "30em"}}>
-        <GraphComponent option={options} height={300} />
+        <GraphComponent option={options} />
       </div>
     );
   }
 };
 
-export const Secondary: Story = {
+export const DoubleSeriesGraph: Story = {
   args: {
     option: options,
-    height: 300
   },
   render: () => {
     return (
-      <div style={{ width: "30em"}}>
+      <div style={{ width: "50vw", height: "5em"}}>
         <GraphComponent option={{...options,  
         legend: {
           data: ["Monthly output", "Month"]
@@ -146,7 +145,22 @@ export const Secondary: Story = {
             data: newSeriesValues
           }
         ]
-        ,}} height={300}/>
+        ,}} />
+      </div>
+    );
+  }
+};
+
+
+export const EmptySeriesGraph: Story = {
+  args: {
+    option: options,
+   
+  },
+  render: () => {
+    return (
+      <div style={{ width: "40em"}}>
+        <GraphComponent option={{}}/>
       </div>
     );
   }
