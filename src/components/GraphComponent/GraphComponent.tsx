@@ -7,9 +7,10 @@ import { convertGraphDataToECharts } from '../../processing/util/convertGraphDat
 
 interface GraphProps {
   data: GraphData
+  height: number
 }
 
-export const GraphComponent = ({ data }: GraphProps) => {
+export const GraphComponent = ({ data, height }: GraphProps) => {
   const graphRef = useRef<HTMLDivElement>(null)
   const [graph, setGraph] = useState<echarts.ECharts | null>(null);
 
@@ -19,14 +20,11 @@ export const GraphComponent = ({ data }: GraphProps) => {
     }
 
     const g = echarts.init(graphRef.current, null, {
-      height: 300,
+      height,
       renderer: 'canvas',
       useDirtyRect: false,
     });
-
-    if (!g.isDisposed()) {
-      setGraph(g);
-    }
+    setGraph(g);
 
     const handleResize = () => {
       if (g && !g.isDisposed()) {
@@ -37,18 +35,15 @@ export const GraphComponent = ({ data }: GraphProps) => {
 
     return () => {
       window.removeEventListener("resize", handleResize);
-
-      if (g) {
-        g.dispose();
-      }
+      g.dispose();
     };
-  }, []);
+  }, [graphRef, height]);
 
   useEffect(() => {
-    if (!graph || !data || !Array.isArray(data.series) || data.series.length === 0) {
+    if (!graph) {
       return;
-  }
-    if ((data !== null && data !== undefined )&& (typeof data === 'object' && data.series !== undefined)) {
+    }
+
       const options: EChartOption = {
         ...convertGraphDataToECharts(data),
         tooltip: {
@@ -56,8 +51,9 @@ export const GraphComponent = ({ data }: GraphProps) => {
         },
         grid: {
           left: '3%',
-          right: '4%',
+          right: '140',
           bottom: '3%',
+          top: 30,
           containLabel: true
         },
         xAxis: {
@@ -69,13 +65,12 @@ export const GraphComponent = ({ data }: GraphProps) => {
           type: 'value'
         }
       };
-      graph.setOption(options);
-    }
+      graph.setOption(options)
   
   }, [data, graph]);
 
   return (
-    <Box sx={{minW: "100%", border: "1px solid #DCDCDC", borderRadius: "6px"}}>
+    <Box borderWidth='1px' borderRadius='lg' padding={0} height='100%'>
       <Box ref={graphRef}>
       </Box>
     </Box>
