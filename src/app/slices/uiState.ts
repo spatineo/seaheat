@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { MapView, SeaheatFeatureType } from '../../types'
 import { availableLayers } from '../../config/layers';
+import { OutputType } from './data';
 
 interface VisibleLayer {
   id: string,
@@ -12,7 +13,10 @@ export interface UIState {
   selectedPointTab: SeaheatFeatureType;
   map: {
     view: MapView,
-    visibleLayers: Array<VisibleLayer>
+    visibleLayers: Array<VisibleLayer>,
+  },
+  graph: {
+    visibleGraph: OutputType
   }
 }
 
@@ -24,6 +28,9 @@ const initialState: UIState = {
       zoom: 5
     },
     visibleLayers: []
+  },
+  graph: {
+    visibleGraph: OutputType.monthlyAveragePowerOutput
   }
 }
 
@@ -61,15 +68,20 @@ export const uiStateSlice = createSlice({
       }
     },
 
+    setVisibleGraph: (state, action: PayloadAction<OutputType>) => {
+      state.graph.visibleGraph = action.payload
+    },
+
     restoreUIState: (state, action: PayloadAction<UIState>) => {
       state.selectedPointTab = action.payload.selectedPointTab
       state.map.view = action.payload.map.view
       state.map.visibleLayers = action.payload.map.visibleLayers
+      state.graph = action.payload.graph;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedPointTab, setMapView, toggleLayer, restoreUIState } = uiStateSlice.actions
+export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, restoreUIState } = uiStateSlice.actions
 
 export default uiStateSlice.reducer
