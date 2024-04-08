@@ -3,7 +3,7 @@ import { setLocation as setIntakeLocation } from "../app/slices/intake";
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
-import { restoreDataState, setFacilityToDischargeDistance, setIntakeToFacilityDistance, setMonthlyAveragePowerOutput } from "../app/slices/data";
+import { restoreDataState, setFacilityToDischargeDistance, setMonthlyPowerRating, setIntakeToFacilityDistance, setMonthlyAveragePowerOutput } from "../app/slices/data";
 import { getLength } from "ol/sphere";
 import { LineString } from "ol/geom";
 import { secondsInDay } from "date-fns/constants";
@@ -69,7 +69,7 @@ startAppListening({
         try {
             const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
 
-            const series = { label: "Monthly output", values: [] as Array<number> };
+            const series = { label: "Total output", values: [] as Array<number> };
             const xAxis = { label: 'Month', values: [] as Array<string> }
 
             Array(12).fill(0).forEach((_v, month : number) => {
@@ -80,12 +80,39 @@ startAppListening({
             })
 
             listenerApi.dispatch(setMonthlyAveragePowerOutput({
-                unit: 'MW',
+                unit: 'MWh',
                 axes: { x : xAxis },
                 series: [series]
             }))
         } catch(error) {
             listenerApi.dispatch(processingError(`Error calculating monthlyAveragePowerOutput: ${error}`));
+        }
+    }
+})
+
+startAppListening({
+    matcher: isAnyOf(initMathAction, restoreDataState, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor),
+    effect: async (_action, listenerApi) => {
+        try {
+            const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
+
+            const series = { label: "Power", values: [] as Array<number> };
+            const xAxis = { label: 'Month', values: [] as Array<string> }
+
+            Array(12).fill(0).forEach((_v, month : number) => {
+                const d = new Date(2001, month, 1)
+                series.values[month] = intakeVolume[month] * temperatureDelta[month] * 1.1639 * 0.997 *
+                    facilityEffectivenessFactor;
+                xAxis.values[month] = format(d, 'LLL');
+            })
+
+            listenerApi.dispatch(setMonthlyPowerRating({
+                unit: 'MW',
+                axes: { x : xAxis },
+                series: [series]
+            }))
+        } catch(error) {
+            listenerApi.dispatch(processingError(`Error calculating monthlyPowerRating: ${error}`));
         }
     }
 })
