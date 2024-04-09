@@ -25,7 +25,9 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             const cellValue = data.temperatureValues.find(
               (d) => d.x === xIndex && d.y === yIndex
             )?.value;
-            if (cellValue === null || cellValue === undefined) return;
+            if (cellValue === null || cellValue === undefined) {
+              return { x: xValue, y: yValue };
+            }
             const legendItem = data.legend.find(
               (l) => l.minValue <= cellValue && cellValue <= l.maxValue
             );
@@ -60,7 +62,7 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
         ))}
         </tr>
       </thead>
-      <tbody style={{ height: `${height}`, width:"100%", position: 'relative'}}>
+      <tbody style={{ height: `0px`, width:"100%", position: 'relative'}}>
         {markerHeight !== null && (
             <tr style={{
                 height: '1px',
@@ -74,6 +76,9 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             }}>
             </tr>
             )}
+      </tbody>
+      <tbody style={{ height: `${height}px`, width:"100%", position: 'relative'}}>
+
         {calculatedData
           .filter((rowData) => (data.seabedDepth) !== null && rowData.yValueNumber < data.seabedDepth)
           .map((rowData, rowIndex) => {
@@ -82,6 +87,12 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
                 key={rowIndex}
                 className="temperature-component-tr"
                 style={{
+                  minHeight: `${
+                    (data.seabedDepth !== null) && (rowData.totalHeightOfSteps / data.seabedDepth) * height
+                  }px`,
+                  maxHeight: `${
+                    (data.seabedDepth !== null) && (rowData.totalHeightOfSteps / data.seabedDepth) * height
+                  }px`,
                   height: `${
                     (data.seabedDepth !== null) && (rowData.totalHeightOfSteps / data.seabedDepth) * height
                   }px`,
@@ -92,14 +103,13 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
                     key={cellIndex}
                     className={"temperature-component-td"}
                     style={{
+                      padding: 0,
                       backgroundColor: `${cell?.bgColor}`,
                       borderRight: "4px solid white",
                       position: "relative"
                     }}
                   >
-                     {cell?.value && (
                     <span className="tooltip">{xLabelWithDataValue[cellIndex].xLabels}: -{Number(rowData.yValueNumber).toFixed(1)}m, {cell.value}{"°C"}</span>
-                  )}
                   </td>
                 ))}
 
@@ -128,6 +138,8 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
               </tr>
             );
           })}
+      </tbody>
+      <tbody>
         <tr className="temperature-component-tr">
           <td
             colSpan={data.axes.x.values.length}
