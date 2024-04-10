@@ -20,7 +20,7 @@ export const SelectedPointView = () => {
     }
 
     return (
-        <Box>
+        <Box w="100%">
             <Tabs index={typePerTab.indexOf(currentTab)} variant='enclosed' colorScheme='green' isFitted onChange={chooseTab}>
                 <TabList>
                     <Tab>Intake</Tab>
