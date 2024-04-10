@@ -16,7 +16,7 @@ export const LayersView = () => {
     }, [visibleLayers])
 
     return (
-        <Box borderWidth='1px' borderRadius='lg' padding={5} height='100%'>
+        <Box borderWidth='1px' borderRadius='lg' padding={5} maxHeight='54%' overflow="auto">
             <Stack direction={['column']} overflowY='auto'>
                 <Heading size='md'>Select Layers</Heading>
                 <Text>Data layers</Text>
