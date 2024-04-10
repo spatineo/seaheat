@@ -24,7 +24,7 @@ export interface ExportFile {
 export const exportState = createAction('EXPORT_STATE');
 export const importState = createAction<ExportFile>('IMPORT_STATE');
 
-export const FORMAT_VERSION = "0.0.4"
+export const FORMAT_VERSION = "0.1"
 
 export const importExportMiddleware = createListenerMiddleware()
 const startAppListening = importExportMiddleware.startListening.withTypes<RootState, AppDispatch>()

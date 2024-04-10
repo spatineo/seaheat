@@ -2,6 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { GraphData, TemperatureData, emptyGraphData, emptyTemperatureData } from '../../types'
 
+export enum OutputType {
+  monthlyAveragePowerOutput = "monthlyAveragePowerOutput",
+  monthlyPowerRating = "monthlyPowerRating"
+}
+
 export interface DataState {
     intakeTemperature: TemperatureData,
     dischargeTemperature: TemperatureData
@@ -10,7 +15,7 @@ export interface DataState {
       facilityToDischarge: number | null
     },
     output: {
-      monthlyAveragePowerOutput: GraphData
+      [OutputType : string]: GraphData
     }
 }
 
@@ -22,7 +27,8 @@ const initialState: DataState = {
       facilityToDischarge: null
     },
     output: {
-      monthlyAveragePowerOutput: emptyGraphData()
+      [OutputType.monthlyAveragePowerOutput.toString()]: emptyGraphData(),
+      [OutputType.monthlyPowerRating.toString()]: emptyGraphData()
     }
 }
 
@@ -45,6 +51,9 @@ export const dataSlice = createSlice({
       setMonthlyAveragePowerOutput: (state, action: PayloadAction<GraphData>) => {
         state.output.monthlyAveragePowerOutput = action.payload
       },
+      setMonthlyPowerRating: (state, action: PayloadAction<GraphData>) => {
+        state.output.monthlyPowerRating = action.payload
+      },
       restoreDataState: () => {
         // NOP, this action is declared here so that data and math middleware can hitch on to these events
       }
@@ -53,6 +62,6 @@ export const dataSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance, 
-  setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, restoreDataState } = dataSlice.actions
+  setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, restoreDataState } = dataSlice.actions
 
 export default dataSlice.reducer
