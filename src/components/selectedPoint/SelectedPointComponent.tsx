@@ -58,7 +58,7 @@ export const SelectedPointComponent = ({ location, depth, name, distanceToFacili
                 </Flex>
                 <Flex>
                     {convertedLocation ?
-                        <Text>[{Number(convertedLocation[0]).toFixed(1)}, {Number(convertedLocation[1]).toFixed(1)}]</Text> :
+                        <Text>[{Number(convertedLocation[0]).toFixed(3)}, {Number(convertedLocation[1]).toFixed(3)}]</Text> :
                         <Text><i>unset</i></Text>
                     }
                 </Flex>
