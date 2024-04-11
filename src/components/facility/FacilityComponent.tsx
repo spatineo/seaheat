@@ -1,9 +1,12 @@
 import { Box, Flex, FormControl, FormLabel, Input, Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack, Text, Tooltip } from '@chakra-ui/react';
 import { FacilityProps, MonthValue } from "../../types";
+import { toLonLat } from 'ol/proj';
 
 import { facilityParameters } from '../../config/parameters';
 import { ChevronDownIcon, RepeatIcon, SunIcon } from '@chakra-ui/icons';
 import { MonthlySlider } from '../monthlySlider/MonthlySlider';
+import { config } from '../../config/app';
+
 
 interface FacilityComponentProps extends FacilityProps {
     setName?: (name: string | null) => void,
@@ -16,6 +19,8 @@ export const FacilityComponent = ({ location, name, intakeVolume, temperatureDel
     function callIf<T>(fn: ((v: T) => void) | undefined, value : T) {
         if (fn) fn(value);
     }
+
+    const convertedLocation = location && toLonLat(location, config.projection) 
 
     return (
         <>
@@ -34,8 +39,8 @@ export const FacilityComponent = ({ location, name, intakeVolume, temperatureDel
                     <Text>Location:</Text>
                 </Flex>
                 <Flex>
-                    {location ?
-                        <Text>[{Math.round(location[0])} {Math.round(location[1])}]</Text> :
+                    {convertedLocation ?
+                         <Text>[{Number(convertedLocation[0]).toFixed(1)}, {Number(convertedLocation[1]).toFixed(1)}]</Text> :
                         <Text><i>unset</i></Text>
                     }
                 </Flex>
