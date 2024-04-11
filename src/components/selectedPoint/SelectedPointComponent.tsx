@@ -1,5 +1,7 @@
 import { Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import { toLonLat } from 'ol/proj';
 import { SelectedPointProps } from "../../types";
+import { config } from '../../config/app';
 
 interface SelectedPointComponentProps extends SelectedPointProps {
     distanceToFacility: number | null,
@@ -16,6 +18,8 @@ export const SelectedPointComponent = ({ location, depth, name, distanceToFacili
         if (value === '') return null;
         return Number(value);
     }
+
+    const convertedLocation = location && toLonLat(location, config.projection) 
 
     return (
         <>
@@ -50,11 +54,11 @@ export const SelectedPointComponent = ({ location, depth, name, distanceToFacili
                     }
                 </Flex>
                 <Flex w='150px' paddingLeft={4}>
-                    <Text>Location:</Text>
+                    <Text>Location: </Text>
                 </Flex>
                 <Flex>
-                    {location ?
-                        <Text>[{Math.round(location[0])} {Math.round(location[1])}]</Text> :
+                    {convertedLocation ?
+                        <Text>[{Number(convertedLocation[0]).toFixed(1)}, {Number(convertedLocation[1]).toFixed(1)}]</Text> :
                         <Text><i>unset</i></Text>
                     }
                 </Flex>
