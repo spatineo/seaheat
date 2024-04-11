@@ -24,8 +24,13 @@ function App() {
             <GridItem area={'top'} m="2" >
             <Flex gap={4}>
               <Flex w="24%" flexDirection="column">
+                <Box h="22%">
                 <DesignerView />
+                </Box>
+                <Box h="78%">
                 <LayersView />
+                </Box>
+                
               </Flex>
              <Flex w="40%" flexDirection="column">
               <Box>
