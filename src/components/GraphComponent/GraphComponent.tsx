@@ -51,7 +51,7 @@ export const GraphComponent = ({ data, height }: GraphProps) => {
         },
         grid: {
           left: '3%',
-          right: '140',
+          right: '160',
           bottom: '3%',
           top: 30,
           containLabel: true
