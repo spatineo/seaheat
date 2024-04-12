@@ -155,8 +155,8 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
         return (
           <Flex
             key={index}
-            minW="26%"
-            maxW="26%"
+            minW="30%"
+            maxW="30%"
             boxSizing="border-box"
             alignItems="center"
             textAlign="center"
