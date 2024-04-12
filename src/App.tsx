@@ -10,43 +10,42 @@ import { GraphView } from './app/views/GraphView'
 function App() {
   return (
     <Grid  
-  templateAreas={`"top top top"
+        templateAreas={`"top top top"
                   "bottom bottom bottom"`}
-  templateColumns={'1fr 1fr 1fr'}
-  templateRows={'70vh 30vh'} 
-  boxSizing='border-box'
-  overflowY="hidden"
-  maxHeight="100%"
-  padding="0px"
-  m="0px"
-  gap="3"
->
-            <GridItem area={'top'} m="2" >
-            <Flex gap={4}>
-              <Flex w="24%" flexDirection="column">
-                <Box h="22%">
-                <DesignerView />
+          boxSizing='border-box'
+          gap="3"
+          overflow="hidden"
+          minWidth="100vw"
+          maxWidth="100vw"
+          minHeight="100vh"
+          maxHeight="100vh"
+        >
+          <GridItem area={'top'} maxH="70vh" w="100vw">
+            <Flex flexDirection="row" position="relative" w="100vw" gap="2">
+              <Box width="25%" p="0" m="0" boxSizing="border-box" overflowY="auto" maxH="70vh">
+                <Box>
+                  <DesignerView />
                 </Box>
-                <Box h="78%">
-                <LayersView />
+                <Box>
+                 <LayersView />
                 </Box>
-                
-              </Flex>
-             <Flex w="40%" flexDirection="column">
-              <Box>
-                <DimensionSelectView />
               </Box>
-              <Box>
-              <MapView />
+              <Box width="40%"  p="0" m="0" boxSizing="border-box" overflowY="auto" maxH="70vh">
+                <Box>
+                  <DimensionSelectView />
+                </Box>
+                <Box>
+                  <MapView />
+                </Box>
               </Box>
-             </Flex>
-             <Flex w="30%">
-             <SelectedPointView />
-             </Flex>
+              <Box 
+                width="35%" p="0" m="0" boxSizing="border-box" overflowY="auto" maxH="70vh">
+                <SelectedPointView />
+              </Box>
             </Flex>
-              </GridItem>
-              <GridItem area={'bottom'} overflowY="auto">
-               <GraphView />
+          </GridItem>    
+              <GridItem area={'bottom'} overflowY="auto" minH="20%">
+                <GraphView />
               </GridItem>
         </Grid>
   )
