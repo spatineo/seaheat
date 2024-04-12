@@ -22,7 +22,7 @@ function App() {
         >
           <GridItem area={'top'} maxH="70vh" w="100vw">
             <Flex flexDirection="row" position="relative" w="100vw" gap="2">
-              <Box width="25%" p="0" m="0" boxSizing="border-box" overflowY="auto" maxH="70vh">
+              <Box width="25%" p="0" m="0" boxSizing="border-box" overflowY="auto" minH="70vh" maxH="70vh">
                 <Box>
                   <DesignerView />
                 </Box>
