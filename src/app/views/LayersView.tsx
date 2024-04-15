@@ -16,8 +16,8 @@ export const LayersView = () => {
     }, [visibleLayers])
 
     return (
-        <Box borderWidth='1px' borderRadius='lg' padding={5} maxH="56vh" minH="56vh" overflow="auto" m={0}>
-            <Stack direction={['column']}>
+        <Box borderWidth='1px' borderRadius='lg' padding={5} minHeight="100%" overflow="auto" m={0}>
+            <Stack direction={['column']} height="100%" overflowY="auto">
                 <Heading size='md'>Select Layers</Heading>
                 <Text>Data layers</Text>
                 <CheckboxGroup colorScheme='blue' value={checked}>
