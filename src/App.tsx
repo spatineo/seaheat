@@ -20,12 +20,12 @@ function App() {
       maxHeight="100vh"
         >
       <GridItem area={'top'} minH="70vh" maxH="70vh" m={0}>
-        <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box'>
-          <Box width="25vw" boxSizing="border-box" h="100%">
-            <Box>
+        <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box' height="70vh">
+          <Box width="25vw" boxSizing="border-box" h="70vh">
+            <Box height="20%" overflowY="auto">
               <DesignerView />
             </Box>
-            <Box>
+            <Box height="80%"  overflowY="auto">
               <LayersView />
             </Box>
           </Box>
