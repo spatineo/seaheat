@@ -20,7 +20,7 @@ function App() {
       maxHeight="100vh"
         >
       <GridItem area={'top'} minH="70vh" maxH="70vh" m={0}>
-        <Flex flexDirection="row" position="relative" h="100%" gap="2">
+        <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box'>
           <Box width="25vw" boxSizing="border-box" h="100%">
             <Box>
               <DesignerView />

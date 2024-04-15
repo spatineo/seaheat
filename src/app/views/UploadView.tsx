@@ -47,7 +47,7 @@ export const UploadView = ({
   };
 
   return (
-    <Box m="2">
+    <Box>
       <InputGroup
         onClick={handleClick}
         display="flex"
@@ -62,12 +62,12 @@ export const UploadView = ({
       >
         <Button>{buttonText}</Button>
         <Flex
+          pt="2"
+          pb="2"
           sx={{
-            height: "6vh",
-            width: "calc(3vw + 80px)",
-            fontSize: "calc(0.6vw + 0.38rem)",
+            width: "calc(4vw + 80px)",
+            fontSize:"calc(6px + 0.5vw + 0.5vh)",
             alignItems: "center",
-            padding: "0",
             marginLeft: "2",
             borderRadius: "3",
             backgroundColor: isDraggingOver ? "#A0A0A0" : "#f9f9f9",
