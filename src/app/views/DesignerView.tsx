@@ -12,7 +12,7 @@ export const DesignerView = () => {
     const { loadFileForImport } = useFileImport();
 
     return (
-      <Box>
+      <Box position="relative" height="100%">
             <Heading>SeaHeat Designer</Heading>
             <Flex alignItems="center">
                 <Button onClick={() => dispatch(exportState())} mr="2">Export</Button>
