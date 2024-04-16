@@ -1,4 +1,4 @@
 .map-component {
     position: relative;
-    height: 30em;
+   height: calc(60vh - 4vh)
 }
