@@ -30,8 +30,12 @@ function App() {
             </Box>
           </Box>
           <Box width="40vw" boxSizing="border-box" overflowY="auto" maxH="70vh">
-            <DimensionSelectView />
-            <MapView />
+            <Box height="20%" overflowY="auto">
+              <DimensionSelectView />
+            </Box>
+            <Box h="80%">
+              <MapView />
+            </Box>
           </Box>
           <Box width="35vw" boxSizing="border-box" overflowY="auto">
             <SelectedPointView />
