@@ -43,7 +43,7 @@ function App() {
           </Box>
         </Flex>
       </GridItem>
-      <GridItem area={'bottom'} overflowY="auto" minH="30vh" maxH="30vh">
+      <GridItem area={'bottom'} overflowY="auto" w="100vw">
         <GraphView />
       </GridItem>
     </Grid>
