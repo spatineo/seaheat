@@ -70,7 +70,9 @@ export const GraphComponent = ({ data, height }: GraphProps) => {
   }, [data, graph]);
 
   return (
-      <Box ref={graphRef}>
+    <Box height="100%">
+       <Box ref={graphRef}>
       </Box>
+    </Box>
   )
 }
