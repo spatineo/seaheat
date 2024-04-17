@@ -20,6 +20,7 @@ function App() {
       maxHeight="100vh"
         >
       <GridItem area={'top'} minH="70vh" maxH="70vh" m={0}>
+
         <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box' height="70vh">
           <Box width="25vw" boxSizing="border-box" h="70vh">
             <Box height="20%" overflowY="auto">
@@ -37,7 +38,7 @@ function App() {
               <MapView />
             </Box>
           </Box>
-          <Box width="35vw" boxSizing="border-box" overflowY="auto">
+          <Box width="35vw" boxSizing="border-box" maxH="70vh">
             <SelectedPointView />
           </Box>
         </Flex>
