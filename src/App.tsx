@@ -30,11 +30,11 @@ function App() {
               <LayersView />
             </Box>
           </Box>
-          <Box width="40vw" boxSizing="border-box">
-            <Box height="20%" overflowY="auto">
+          <Box width="40vw" boxSizing="border-box" maxH="calc(100vh - 4hv)">
+            <Box height="6em" overflowY="auto">
               <DimensionSelectView />
             </Box>
-            <Box h="80%">
+            <Box h="calc(100% - 6em)">
               <MapView />
             </Box>
           </Box>
