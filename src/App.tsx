@@ -18,19 +18,19 @@ function App() {
       maxWidth="100vw"
       minHeight="100vh"
       maxHeight="100vh"
+      templateRows="1fr auto"
         >
-      <GridItem area={'top'} minH="70vh" maxH="70vh" m={0}>
-
-        <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box' height="70vh">
-          <Box width="25vw" boxSizing="border-box" h="70vh">
-            <Box height="20%" overflowY="auto">
+      <GridItem area={'top'}  height="calc(100vh - 14em)" m={0}>
+        <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box' height="calc(100vh - 14em)">
+          <Box width="25vw" boxSizing="border-box">
+            <Box height="20%">
               <DesignerView />
             </Box>
             <Box height="80%"  overflowY="auto">
               <LayersView />
             </Box>
           </Box>
-          <Box width="40vw" boxSizing="border-box" overflowY="auto" maxH="70vh">
+          <Box width="40vw" boxSizing="border-box">
             <Box height="20%" overflowY="auto">
               <DimensionSelectView />
             </Box>
@@ -38,14 +38,14 @@ function App() {
               <MapView />
             </Box>
           </Box>
-          <Box width="35vw" boxSizing="border-box" maxH="70vh">
+          <Box width="35vw" boxSizing="border-box">
             <SelectedPointView />
           </Box>
         </Flex>
       </GridItem>
-      <GridItem area={'bottom'} overflowY="auto" w="100vw">
-        <GraphView />
-      </GridItem>
+      <GridItem area={'bottom'} overflowY="auto" h="14em" position="relative" bottom="0">
+      <GraphView />
+    </GridItem>
     </Grid>
   )
 }
