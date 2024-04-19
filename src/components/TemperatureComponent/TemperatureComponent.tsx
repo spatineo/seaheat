@@ -23,6 +23,7 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             const legendItem = data.legend.find(
               (l) => l.minValue <= cellValue && cellValue <= l.maxValue
             );
+            
             const bgColor = legendItem && legendItem.color;
             return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
           }),
@@ -164,11 +165,11 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             <Box bgColor={color} w="16%" h="60%" mr="1"></Box>
             <Flex w="70%">
               <Flex flexWrap="nowrap" w="100%" alignItems="center">
-                <Box flex="30%" mr="1%">{`${minValue}`}</Box>
+                <Box flex="30%" mr="1%">{ (minValue !== null && minValue !== undefined) ? `${minValue}` : ``}</Box>
                 <Box flex="20%" mr="1%">
-                →
+                {(minValue === null || minValue ===  undefined) ? `<` : (maxValue === null || maxValue === undefined) ? '>' :'-'}
               </Box>
-                <Box flex="30%" mr="1%">{`${maxValue}`}</Box>
+                <Box flex="30%" mr="1%">{(maxValue !== null && maxValue !== undefined) ? `${maxValue}` : ``}</Box>
                 <Box flex="19%">{`°C`}</Box>
               </Flex>
             </Flex>
