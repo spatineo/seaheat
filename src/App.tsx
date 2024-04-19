@@ -23,10 +23,10 @@ function App() {
       <GridItem area={'top'}  height="calc(100vh - 14em)" m={0}>
         <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box' height="calc(100vh - 14em)">
           <Box width="25vw" boxSizing="border-box">
-            <Box height="20%">
+            <Box height="6em">
               <DesignerView />
             </Box>
-            <Box height="80%"  overflowY="auto">
+            <Box height="calc(100% - 6em)"  overflowY="auto">
               <LayersView />
             </Box>
           </Box>
