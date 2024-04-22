@@ -154,7 +154,6 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
   const legendsContent = (
     <Flex boxSizing="border-box" w="100%" mt="4" flexWrap="wrap" gap="4">
       {data.legend.map(({ color, minValue, maxValue }, index) => {
-        console.log(color)
         return (
           <Flex
             key={index}
