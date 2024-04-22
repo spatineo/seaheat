@@ -20,26 +20,32 @@ export const SelectedPointView = () => {
     }
 
     return (
-        <Box>
-            <Tabs index={typePerTab.indexOf(currentTab)} variant='enclosed' colorScheme='green' isFitted onChange={chooseTab}>
-                <TabList>
-                    <Tab>Intake</Tab>
-                    <Tab>Facility</Tab>
-                    <Tab>Discharge</Tab>
-                </TabList>
+        <Box minW="100%" position="relative" p="0" m="0" boxSizing="border-box">
+        <Tabs 
+            index={typePerTab.indexOf(currentTab)} 
+            variant='enclosed' 
+            colorScheme='green' 
+            isFitted onChange={chooseTab} 
+            position="relative"
+            >
+        <TabList position="relative">
+            <Tab>Intake</Tab>
+            <Tab>Facility</Tab>
+            <Tab>Discharge</Tab>
+        </TabList>
 
-                <TabPanels>
-                    <TabPanel>
-                        <ConnectedIntakeComponent />
-                    </TabPanel>
-                    <TabPanel>
-                        <ConnectedFacilityComponent />
-                    </TabPanel>
-                    <TabPanel>
-                        <ConnectedDischargeComponent />
-                    </TabPanel>
-                </TabPanels>
-            </Tabs>
-        </Box>
+        <TabPanels position="relative">
+            <TabPanel>
+                <ConnectedIntakeComponent />
+            </TabPanel>
+            <TabPanel>
+                <ConnectedFacilityComponent />
+            </TabPanel>
+            <TabPanel>
+                <ConnectedDischargeComponent />
+            </TabPanel>
+        </TabPanels>
+    </Tabs>
+</Box>
     )
 }

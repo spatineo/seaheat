@@ -1,5 +1,5 @@
-import './App.css'
-import { Grid, GridItem } from '@chakra-ui/react'
+//import './App.css'
+import { Grid, GridItem, Box, Flex } from '@chakra-ui/react'
 import { DesignerView } from './app/views/DesignerView'
 import { DimensionSelectView } from './app/views/DimensionSelectView'
 import { SelectedPointView } from './app/views/SelectedPointView'
@@ -9,33 +9,43 @@ import { GraphView } from './app/views/GraphView'
 
 function App() {
   return (
-    <Grid
-      templateAreas={`"designer dimensionSelect selectedPoint"
-                      "layers   map             selectedPoint"
-                      "graph    graph           graph"`}
-      templateColumns={'1fr 2fr 2fr'}
-      templateRows={'0fr 2fr 1fr'}
-      h="100%"
+    <Grid  
+      templateAreas={`"top top top"
+      "bottom bottom bottom"`}
       gap="3"
-    >
-      <GridItem area ={'designer'}>
-        <DesignerView />
+      overflow="hidden"
+      minWidth="100vw"
+      maxWidth="100vw"
+      minHeight="100vh"
+      maxHeight="100vh"
+      templateRows="1fr auto"
+        >
+      <GridItem area={'top'}  height="calc(100vh - 14em)" m={0}>
+        <Flex flexDirection="row" position="relative" gap="2" boxSizing='border-box' height="calc(100vh - 14em)">
+          <Box width="25vw" boxSizing="border-box">
+            <Box height="6em">
+              <DesignerView />
+            </Box>
+            <Box height="calc(100% - 6em)"  overflowY="auto">
+              <LayersView />
+            </Box>
+          </Box>
+          <Box width="40vw" boxSizing="border-box" maxH="calc(100vh - 4hv)">
+            <Box height="6em" overflowY="auto">
+              <DimensionSelectView />
+            </Box>
+            <Box h="calc(100% - 6em)">
+              <MapView />
+            </Box>
+          </Box>
+          <Box width="35vw" boxSizing="border-box">
+            <SelectedPointView />
+          </Box>
+        </Flex>
       </GridItem>
-      <GridItem area ={'dimensionSelect'}>
-        <DimensionSelectView />
-      </GridItem>
-      <GridItem area ={'selectedPoint'}>
-        <SelectedPointView />
-      </GridItem>
-      <GridItem area ={'map'}>
-        <MapView />
-      </GridItem>
-      <GridItem area ={'layers'}>
-        <LayersView />
-      </GridItem>
-      <GridItem area ={'graph'}>
-        <GraphView />
-      </GridItem>
+      <GridItem area={'bottom'} overflowY="auto" h="14em" position="relative" bottom="0" backgroundColor="white">
+      <GraphView />
+    </GridItem>
     </Grid>
   )
 }

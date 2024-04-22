@@ -4,13 +4,13 @@ export const convertGraphDataToECharts = (data: GraphData) => {
   return {
     title: {
       text: data.unit,
-      right: 80,
+      right: '6%',
       top: 20
     },
     legend: {
       data: data.series.map(serie => serie.label),
       orient: "vertical" as const,
-      right: "0%",
+      right: "2%",
       top: 50
     },
     series: data.series.map(serie => ({

@@ -43,7 +43,12 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
   const markerHeight = marker !== undefined ? ( Math.max(Math.min(marker,data.seabedDepth), 0) / data.seabedDepth) * height : null;
 
   const tableContent = (
-    <table style={{ width: "100%" }}>
+    <table style={{ width: "90%" }}>
+      <colgroup>
+      {data.axes.x.values.map((_, index) => (
+        <col key={index} style={{ width: `${100 / data.axes.x.values.length}%` }} />
+      ))}
+    </colgroup>
       <thead>
         <tr>
         {xLabelWithDataValue.map((month, index) => (
@@ -97,7 +102,7 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
                       margin: 0,
                       backgroundColor: `${cell?.bgColor}`,
                       borderRight: "4px solid white",
-                      position: "relative"
+                      position: "relative",
                     }}
                   >
                     <span className="tooltip">{xLabelWithDataValue[cellIndex].xLabels}: {Number(rowData.startOfDepth).toFixed(1)}-{Number(rowData.endDepth).toFixed(1)}m, {cell.value}{"°C"}</span>
@@ -110,7 +115,7 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
                     rowSpan={calculatedData.length}
                     style={{'position': 'relative', 'padding': '0'}}
                   >
-                    <Box position="absolute" top="0" h="100%" w="100%">
+                    <Box position="absolute" top="0" h="100%" w="10%">
                       { data.ticks.map((tick) => {
                         return(
                           <Box
@@ -119,7 +124,7 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
                           top={`${(data.seabedDepth !== null)&&(tick / data.seabedDepth)*100}%`}
                           height={0}
                         >
-                          <Box position="absolute" top={0} height={0} lineHeight={0}>-{tick}</Box> 
+                          <Box position="absolute" top={0} height={0} lineHeight={0} fontSize="calc(3px + 1vh)">-{tick}</Box> 
                         </Box>
                       )}
                       )}

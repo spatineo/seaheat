@@ -3,7 +3,7 @@ import { ConnectedMapComponent } from "../connected/ConnectedMapComponent"
 
 export const MapView = () => {
     return (
-        <Box>
+        <Box h="100%">
             <ConnectedMapComponent />
         </Box>
     )
