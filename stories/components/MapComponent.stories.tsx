@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { SeaheatFeatureType } from '../../src/types';
 
-
 import { MapComponent } from '../../src/components/map/MapComponent';
 import { WMSLayer } from '../../src/components/map/layer/WMSLayer';
 import { XYZLayer } from '../../src/components/map/layer/XYZLayer';
@@ -38,7 +37,7 @@ export const BasicMap: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
         </MapComponent>
       </div>
@@ -54,7 +53,7 @@ export const HelsinkiFeature: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
           <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={helsinki} zIndex={100} />
         </MapComponent>
@@ -71,7 +70,7 @@ export const ArrowHelsinkiTallinn: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '40em',  height: "30em"}}>
         <MapComponent view={{ center: [(helsinki[0]+tallinn[0])/2, (helsinki[1]+tallinn[1])/2], zoom: 8 }} onClickFeature={(evt) => console.log(evt)}>
           <LineStringArrowLayer lineString={[helsinki, tallinn]} zIndex={100} />
         </MapComponent>
@@ -86,7 +85,7 @@ export const XYZBathymetryLayer: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
           <XYZLayer url='https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png' zIndex={10} opacity={1} />
         </MapComponent>
@@ -101,7 +100,7 @@ export const WMSBathymetryLayer: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
           <WMSLayer url='https://geo.vliz.be/geoserver/ows' layerName='MARSPEC:bathy_30s1' zIndex={10} opacity={0.5} />
         </MapComponent>
