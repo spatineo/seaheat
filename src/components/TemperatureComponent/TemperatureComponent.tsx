@@ -20,12 +20,9 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             if (cellValue === null || cellValue === undefined) {
               return { x: xValue, y: yValue };
             }
-       
             const legendItem = data.legend.find((l) => ((l.minValue === null || l.minValue === undefined) || l.minValue <= cellValue ) && ((l.maxValue === null || l.maxValue === undefined )|| cellValue <= l.maxValue)
             );
-            
             const bgColor = legendItem && legendItem.color;
-            console.log(legendItem)
             return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
           }),
         };
