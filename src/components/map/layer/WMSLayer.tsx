@@ -2,27 +2,28 @@ import { useContext, useEffect, useState } from "react";
 import TileLayer from 'ol/layer/Tile';
 import { TileWMS } from 'ol/source';
 import MapContext from "../MapContext";
+import { WMSLayerType } from "../../../app/slices/data";
 
 interface WMSLayerProps {
-    url: string,
-    layerName: string,
     opacity: number,
+    layerInfo: WMSLayerType,
     zIndex: number
 }
 
-export const WMSLayer = ({url, layerName, opacity, zIndex} : WMSLayerProps) => {
+export const WMSLayer = ({layerInfo, opacity, zIndex} : WMSLayerProps) => {
     const { map } = useContext(MapContext);
 
-    const [ layer, setLayer ] = useState<TileLayer<TileWMS> | null>(null);
+    const [ layer, setLayer ] = useState<TileLayer<TileWMS> | null>(null)
 
+    
     useEffect(() => {
-        if (!map) return;
+        if (!map || !layerInfo) return;
 
         const layer = new TileLayer({
             source: new TileWMS({
-                url,
+                url: layerInfo.url,
                 params: {
-                    'LAYERS': layerName
+                    'LAYERS': layerInfo.layer.Name
                 }
             }),
             zIndex
@@ -35,7 +36,8 @@ export const WMSLayer = ({url, layerName, opacity, zIndex} : WMSLayerProps) => {
             map.removeLayer(layer);
         }
 
-    }, [map, layerName, url, zIndex]);
+    }, [map, layerInfo, zIndex]);
+    
 
     useEffect(() => {
         if (!layer) return;

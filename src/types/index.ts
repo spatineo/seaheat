@@ -1,9 +1,12 @@
 
 export type { TemperatureProps, TemperatureData } from './temperature'
 export type { GraphData } from './graph'
+export type { WMSCapabilitiesType, Layer } from './wms_capabilities'
+
 
 export { emptyGraphData } from './graph'
 export { emptyTemperatureData } from './temperature'
+
 
 export enum SeaheatFeatureType {
     INTAKE = "intake",
