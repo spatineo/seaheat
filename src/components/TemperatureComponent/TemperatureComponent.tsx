@@ -20,8 +20,7 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             if (cellValue === null || cellValue === undefined) {
               return { x: xValue, y: yValue };
             }
-            const legendItem = data.legend.find(
-              (l) => l.minValue <= cellValue && cellValue <= l.maxValue
+            const legendItem = data.legend.find((l) => ((l.minValue === null || l.minValue === undefined) || l.minValue <= cellValue ) && ((l.maxValue === null || l.maxValue === undefined )|| cellValue <= l.maxValue)
             );
             const bgColor = legendItem && legendItem.color;
             return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
@@ -156,46 +155,33 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
 
   const legendsContent = (
     <Flex boxSizing="border-box" w="100%" mt="4" flexWrap="wrap" gap="4">
-      {data.legend.map(({ color, minValue, maxValue }, index) => (
-        <Flex
-          key={index}
-          minW="20%"
-          boxSizing="border-box"
-          alignItems="center"
-          textAlign="center"
-        >
-          <Box bgColor={color} w="16%" h="60%" mr="1"></Box>
-          <Flex w="70%">
-            {maxValue < 0 ? (
+      {data.legend.map(({ color, minValue, maxValue }, index) => {
+        return (
+          <Flex
+            key={index}
+            minW="30%"
+            maxW="30%"
+            boxSizing="border-box"
+            alignItems="center"
+            textAlign="center"
+          >
+            <Box bgColor={color} w="16%" h="60%" mr="1"></Box>
+            <Flex w="70%">
               <Flex flexWrap="nowrap" w="100%" alignItems="center">
-                <Box flex="30%">{`<`}</Box>
-                <Box flex="20%" mr="1%"></Box>
-                <Box flex="30%">{`0`}</Box>
-                <Box flex="19%">{"°C"}</Box>
-              </Flex>
-            ) : minValue >= 26 ? (
-              <Flex flexWrap="nowrap" w="100%" alignItems="center">
-                <Box flex="30%">{`>`}</Box>
-                <Box flex="20%" mr="1%"></Box>
-                <Box flex="30%">{`25`}</Box>
-                <Box flex="19%">{"°C"}</Box>
-              </Flex>
-            ) : (
-              <Flex flexWrap="nowrap" w="100%" alignItems="center">
-                <Box flex="30%" mr="1%">{`${minValue}`}</Box>
+                <Box flex="30%" mr="1%">{ (minValue !== null && minValue !== undefined) ? `${minValue}` : ``}</Box>
                 <Box flex="20%" mr="1%">
-                  -
-                </Box>
-                <Box flex="30%" mr="1%">{`${maxValue}`}</Box>
+                {(minValue === null || minValue ===  undefined) ? `<` : (maxValue === null || maxValue === undefined) ? '<' :'-'}
+              </Box>
+                <Box flex="30%" mr="1%">{(maxValue !== null && maxValue !== undefined) ? `${maxValue}` : ``}</Box>
                 <Box flex="19%">{`°C`}</Box>
               </Flex>
-            )}
+            </Flex>
           </Flex>
-        </Flex>
-      ))}
+        );
+      })}
     </Flex>
   );
-
+  
   return (
     <Box p="4" boxSizing="border-box" style={{ position: "relative" }}>
       <Box>{tableContent}</Box>
