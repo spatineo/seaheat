@@ -35,7 +35,7 @@ startAppListening({
         await Promise.all(availableLayers.map(async (layer) => {
             try {
                 const parser = new WMSCapabilities()
-                const response = await fetch(layer.url+'?SERVICE=WMS&REQUEST=GetCapabilities')
+                const response = await fetch(layer.url+'SERVICE=WMS&REQUEST=GetCapabilities')
                 const xml = await response.text() 
                 const capabilities = parser.read(xml) as WMSCapabilitiesType
 
