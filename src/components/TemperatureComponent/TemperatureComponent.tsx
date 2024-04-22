@@ -20,11 +20,13 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             if (cellValue === null || cellValue === undefined) {
               return { x: xValue, y: yValue };
             }
-            const legendItem = data.legend.find(
-              (l) => l.minValue <= cellValue && cellValue <= l.maxValue
+         /*    const nullBoundsItems = data.legend.filter((l) => (l.minValue === null || l.maxValue === null) || (l.minValue === undefined || l.maxValue === undefined));
+            const nullBoundsColors = nullBoundsItems.map((item) => item.color); */
+            const legendItem = data.legend.find((l) => ((l.minValue === null || l.minValue === undefined) || l.minValue <= cellValue ) && ((l.maxValue === null || l.maxValue === undefined )|| cellValue <= l.maxValue)
             );
             
             const bgColor = legendItem && legendItem.color;
+            console.log(legendItem)
             return { x: xValue, y: yValue, value: cellValue, bgColor: bgColor };
           }),
         };
@@ -153,6 +155,7 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
   const legendsContent = (
     <Flex boxSizing="border-box" w="100%" mt="4" flexWrap="wrap" gap="4">
       {data.legend.map(({ color, minValue, maxValue }, index) => {
+        console.log(color)
         return (
           <Flex
             key={index}
