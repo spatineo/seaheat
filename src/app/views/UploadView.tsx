@@ -47,8 +47,9 @@ export const UploadView = ({
   };
 
   return (
-    <Box m="2">
+    <Box maxW="90%">
       <InputGroup
+        sx={{backgroundColor: "#f9f9f9"}}
         onClick={handleClick}
         display="flex"
         alignItems="center"
@@ -60,21 +61,28 @@ export const UploadView = ({
         onDrop={handleDrop}
         onDragLeave={handleDragLeave}
       >
-        <Button>{buttonText}</Button>
+        <Button fontWeight={400} backgroundColor="#f9f9f9"   fontSize="calc(4px + 0.5vw + 0.5vh)">{buttonText}</Button>
         <Flex
+          pt="2"
+          pb="2"
           sx={{
-            height: "6vh",
-            width: "calc(3vw + 80px)",
-            fontSize: "calc(0.6vw + 0.38rem)",
+            width: "100%",
+            textAlign: "justify",
             alignItems: "center",
-            padding: "0",
             marginLeft: "2",
             borderRadius: "3",
             backgroundColor: isDraggingOver ? "#A0A0A0" : "#f9f9f9",
           }}
         >
-          <DragHandleIcon pl="1" pt="0.8" />
-          <Text>{dragDropText}</Text>
+          <DragHandleIcon pl="1" pt="0.8"  />
+          <Text  
+            sx={{
+              fontSize: "calc(4px + 0.5vw + 0.5vh)",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              width: "calc(100% - 30%)"
+            }}>{dragDropText}</Text>
           <Input
             type="file"
             value=""
