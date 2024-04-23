@@ -9,6 +9,10 @@ interface VisibleLayer {
   opacity: number
 }
 
+interface LayerDimension {
+  values: { [key : string]: string }
+}
+
 export interface UIState {
   selectedPointTab: SeaheatFeatureType;
   map: {
@@ -17,6 +21,9 @@ export interface UIState {
   },
   graph: {
     visibleGraph: OutputType
+  },
+  layerDimensions: {
+    [key : string]: LayerDimension
   }
 }
 
@@ -31,7 +38,14 @@ const initialState: UIState = {
   },
   graph: {
     visibleGraph: OutputType.monthlyAveragePowerOutput
-  }
+  },
+  layerDimensions: {}
+}
+
+interface LayerDimensionPayloadType {
+  layerId: string,
+  dimension: string,
+  value: string
 }
 
 export const uiStateSlice = createSlice({
@@ -68,6 +82,16 @@ export const uiStateSlice = createSlice({
       }
     },
 
+    setLayerDimension: (state, action: PayloadAction<LayerDimensionPayloadType>) => {
+      if (!state.layerDimensions[action.payload.layerId]) {
+        state.layerDimensions[action.payload.layerId] = {
+          values: {}
+        }
+      }
+
+      state.layerDimensions[action.payload.layerId].values[action.payload.dimension] = action.payload.value
+    },
+
     setVisibleGraph: (state, action: PayloadAction<OutputType>) => {
       state.graph.visibleGraph = action.payload
     },
@@ -77,11 +101,12 @@ export const uiStateSlice = createSlice({
       state.map.view = action.payload.map.view
       state.map.visibleLayers = action.payload.map.visibleLayers
       state.graph = action.payload.graph;
+      state.layerDimensions = action.payload.layerDimensions;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, restoreUIState } = uiStateSlice.actions
+export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, restoreUIState } = uiStateSlice.actions
 
 export default uiStateSlice.reducer

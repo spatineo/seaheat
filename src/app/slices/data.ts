@@ -1,10 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { GraphData, TemperatureData, emptyGraphData, emptyTemperatureData } from '../../types'
+import { GraphData, Layer, TemperatureData, emptyGraphData, emptyTemperatureData } from '../../types'
 
 export enum OutputType {
   monthlyAveragePowerOutput = "monthlyAveragePowerOutput",
   monthlyPowerRating = "monthlyPowerRating"
+}
+
+export interface WMSLayerType {
+  id: string,
+  url: string,
+  layer: Layer
 }
 
 export interface DataState {
@@ -16,6 +22,9 @@ export interface DataState {
     },
     output: {
       [OutputType : string]: GraphData
+    },
+    layers: {
+      [key: string]: WMSLayerType
     }
 }
 
@@ -29,7 +38,8 @@ const initialState: DataState = {
     output: {
       [OutputType.monthlyAveragePowerOutput.toString()]: emptyGraphData(),
       [OutputType.monthlyPowerRating.toString()]: emptyGraphData()
-    }
+    },
+    layers: {}
 }
 
 export const dataSlice = createSlice({
@@ -54,6 +64,9 @@ export const dataSlice = createSlice({
       setMonthlyPowerRating: (state, action: PayloadAction<GraphData>) => {
         state.output.monthlyPowerRating = action.payload
       },
+      setLayer: (state, action: PayloadAction<WMSLayerType>) => {
+        state.layers[action.payload.id] = action.payload
+      },
       restoreDataState: () => {
         // NOP, this action is declared here so that data and math middleware can hitch on to these events
       }
@@ -62,6 +75,7 @@ export const dataSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance, 
-  setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, restoreDataState } = dataSlice.actions
+  setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
+  restoreDataState } = dataSlice.actions
 
 export default dataSlice.reducer
