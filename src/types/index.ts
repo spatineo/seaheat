@@ -40,6 +40,7 @@ export interface LayerConfiguration {
     layer: string,
     type: string,
     isDatalayer: boolean,
+    dimensions?: Array<string>,
     legend?: {
         url: string,
         width: number,

@@ -33,5 +33,11 @@ interface Service {
 export interface Layer {
     Title: string,
     Name?: string,
-    Layer: Array<Layer>
+    Layer: Array<Layer>,
+    Dimension?: Array<Dimension>
+}
+
+interface Dimension {
+    name: string,
+    values: string
 }

@@ -45,6 +45,8 @@ startAppListening({
 
                 if (l && dcpType) {
                     listenerApi.dispatch(setLayer({ id: layer.id, url: dcpType.HTTP.Get.OnlineResource, layer: l }))
+                } else {
+                    listenerApi.dispatch(processingError(`Layer ${layer.title}: not available in service Capablities`));
                 }
             } catch(error) {
                 listenerApi.dispatch(processingError(`Error loading layer ${layer.title}: ${error}`));

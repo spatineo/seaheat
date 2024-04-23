@@ -1,9 +1,10 @@
 import { Box, Text } from "@chakra-ui/react"
+import { ConnectedLayerDimensionComponent } from "../connected/ConnectedLayerDimensionComponent"
 
 export const DimensionSelectView = () => {
     return (
         <Box mb="6" mt="2">
-            <Text>Choose your dimension</Text>
+            <ConnectedLayerDimensionComponent />
         </Box>
     )
 }

@@ -51,6 +51,7 @@ export const availableLayers : Array<LayerConfiguration> = [
         url: 'https://geoservices.knmi.nl/adaguc-server?DATASET=HARM_N25&',
         layer: 'air_temperature__at_pl',
         isDatalayer: true,
-        type: 'WMS'
+        type: 'WMS',
+        dimensions: ['elevation']
     }
 ];
