@@ -11,6 +11,7 @@ export const ConnectedLayerDimensionComponent = () => {
 
     const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)
     const layers = useSelector((state: RootState) => state.data.layers)
+    const layerDimensions = useSelector((state: RootState) => state.uiState.layerDimensions);
 
     const data = useMemo(() => {
         return visibleLayers.map((vl) => {
@@ -43,7 +44,9 @@ export const ConnectedLayerDimensionComponent = () => {
                 {opt.dimensions?.map((d, dIdx) => {
                     const options = d.values.split(',')
                     return (
-                        <Select placeholder={`select ${d.name}`} key={`${d.name}-${dIdx}`} onChange={(evt) => onChange(opt.layerId, d.name, evt.target.value)}>
+                        <Select placeholder={`No ${d.name}`} key={`${d.name}-${dIdx} selected`}
+                                onChange={(evt) => onChange(opt.layerId, d.name, evt.target.value)}
+                                value={layerDimensions[opt.layerId]?.values[d.name]}>
                             {options.map((o, oIdx) => (
                                 <option value={o} key={oIdx}>{o}</option>
                             ))}
