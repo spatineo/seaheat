@@ -153,10 +153,19 @@ export const WMSBathymetryLayer: Story = {
     view: defaultView
   },
   render: () => {
+    const layerInfo = {
+      id: 'xx',
+      layer: {
+        Name: 'MARSPEC:bathy_30s1',
+        Title: 'Foo',
+        Layer: []
+      },
+      url: 'https://geo.vliz.be/geoserver/ows'
+    }
     return (
       <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
-          <WMSLayer url='https://geo.vliz.be/geoserver/ows' layerName='MARSPEC:bathy_30s1' zIndex={10} opacity={0.5} />
+          <WMSLayer layerInfo={layerInfo} zIndex={10} opacity={0.5} />
         </MapComponent>
       </div>
     );

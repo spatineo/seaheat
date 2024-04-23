@@ -11,6 +11,7 @@ import { importExportMiddleware } from './middleware/ImportExportMiddleware';
 import { dataAPIMiddleware } from './middleware/DataAPIMiddleware';
 import { initMathAction, mathMiddleware } from './middleware/MathMiddleware';
 import { errorMiddleware } from './middleware/ErrorMiddleware';
+import { initWMSAction, wmsMiddleware } from './middleware/WMSCapabilitiesMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -23,11 +24,17 @@ export const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(importExportMiddleware.middleware).prepend(dataAPIMiddleware.middleware).prepend(mathMiddleware.middleware).prepend(errorMiddleware.middleware)
+    getDefaultMiddleware()
+      .prepend(importExportMiddleware.middleware)
+      .prepend(dataAPIMiddleware.middleware)
+      .prepend(mathMiddleware.middleware)
+      .prepend(wmsMiddleware.middleware)
+      .prepend(errorMiddleware.middleware)
 })
 
-// initialize math
+// initialize math & WMS
 store.dispatch(initMathAction())
+store.dispatch(initWMSAction())
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

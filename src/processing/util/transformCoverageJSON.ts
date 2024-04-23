@@ -4,6 +4,8 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const transformCoverageJSONToTemperatureData = (data: any[]) : TemperatureData => {
+    data = data.map(d => d.coverages[0]) // small hack
+    
     const numYAxis = data[0].domain.axes.z.values.length
     const ret: TemperatureData = {
         axes: {
