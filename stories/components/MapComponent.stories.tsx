@@ -8,7 +8,58 @@ import { WMSLayer } from '../../src/components/map/layer/WMSLayer';
 import { XYZLayer } from '../../src/components/map/layer/XYZLayer';
 import { LineStringArrowLayer } from '../../src/components/map/layer/LineStringArrowLayer';
 import { SingleFeatureLayer } from '../../src/components/map/layer/SingleFeatureLayer';
+import { ImageComponent } from '../../src/components/ImageComponent/ImageComponent';
 
+const al = {
+  height: 468,
+  scale: 0.8,
+  url: "https://paikkatieto.ymparisto.fi/arcgis/services/Velmukartta/Velmukartta/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.026format=image/png26layer=1",
+  width: 90
+}
+
+async function fetchWMSCapabilities(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const text = await response.text();
+    return text;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+    return null;
+  }
+}
+
+function parseWMSCapabilities(capabilitiesXml: string): Array<{ legendUrl: string | null | undefined; name: string | null | undefined; title: string | null | undefined }> {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(capabilitiesXml, "text/xml");
+
+  const layers = Array.from(xmlDoc.querySelectorAll("Layer")).map(layer => ({
+    name: layer.querySelector("Name")?.textContent,
+    title: layer.querySelector("Title")?.textContent,
+    legendUrl: layer.querySelector("LegendURL OnlineResource")?.getAttribute("xlink:href")
+  }))
+  return layers;
+}
+
+async function fetchAndParseWMSCapabilities(url: string): Promise<Array<{ legendUrl: string | null | undefined; name: string | null | undefined; title: string | null | undefined }>> {
+  try {
+    const capabilitiesXml = await fetchWMSCapabilities(url);
+    if (!capabilitiesXml) {
+      console.log("Failed to fetch WMS GetCapabilities.");
+      return [];
+    }
+    return parseWMSCapabilities(capabilitiesXml);
+  } catch (error) {
+    console.error('Failed to fetch and parse WMS capabilities:', error);
+    return [];
+  }
+}
+
+const wmsGetCapabilitiesUrl = "https://ows.terrestris.de/osm/service?request=GetCapabilities&service=WMS";
+const layers = await fetchAndParseWMSCapabilities(wmsGetCapabilitiesUrl);
+console.log(layers.length > 0 && layers);
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -56,6 +107,9 @@ export const HelsinkiFeature: Story = {
       <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
           <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={helsinki} zIndex={100} />
+          {layers.filter(l => l.legendUrl !== null && l.legendUrl !== undefined).map(l => (
+          <ImageComponent key={l.name} url={l.legendUrl!} width={al.width} height={al.height} scale={al.scale} />
+        ))}
         </MapComponent>
       </div>
     );
