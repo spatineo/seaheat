@@ -35,7 +35,7 @@ export interface MapView {
 
 export interface LayerConfiguration {
     id: string,
-    url: string,
+    capabilitiesUrl: string,
     title: string,
     layer: string,
     type: string,

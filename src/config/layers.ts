@@ -4,7 +4,7 @@ export const availableLayers : Array<LayerConfiguration> = [
     {
         id: 'a13e3405-f2a0-46a2-8030-278d76950fe6',
         title: 'Bathymetry',
-        url: 'https://geo.vliz.be/geoserver/ows?',
+        capabilitiesUrl: 'https://geo.vliz.be/geoserver/ows?SERVICE=WMS&REQUEST=GetCapabilities',
         layer: 'MARSPEC:bathy_30s1',
         isDatalayer: false,
         type: 'WMS'
@@ -12,7 +12,7 @@ export const availableLayers : Array<LayerConfiguration> = [
     {
         id: '33385d92-d481-4de7-96d0-a093a74f8349',
         title: 'Ampumahaukka, esiintymät',
-        url: 'https://paikkatiedot.ymparisto.fi/geoserver/inspire_sd2/ows?',
+        capabilitiesUrl: 'https://paikkatiedot.ymparisto.fi/geoserver/inspire_sd2/ows?SERVICE=WMS&REQUEST=GetCapabilities',
         layer: 'SD.Ampuhaukka',
         isDatalayer: false,
         type: 'WMS'
@@ -20,7 +20,7 @@ export const availableLayers : Array<LayerConfiguration> = [
     {
         id: 'a530150a-0e40-4fdc-8087-d50b62404d8a', 
         title: 'Seabed_substrate_250k',
-        url: 'https://gtkdata.gtk.fi/arcgis/services/EMODnet/EMODnet_Geology/MapServer/WmsServer?',
+        capabilitiesUrl: 'https://gtkdata.gtk.fi/arcgis/services/EMODnet/EMODnet_Geology/MapServer/WmsServer?SERVICE=WMS&REQUEST=GetCapabilities',
         layer: 'Seabed_substrate_250k',
         isDatalayer: true,
         type: 'WMS',
@@ -34,7 +34,7 @@ export const availableLayers : Array<LayerConfiguration> = [
     {
         id: '245305de-0385-4c3b-9447-ebe8ab100ee1', 
         title: 'Syvyysmalli / Velmu',
-        url: 'https://paikkatieto.ymparisto.fi/arcgis/services/Velmukartta/Velmukartta/MapServer/WmsServer?',
+        capabilitiesUrl: 'https://paikkatieto.ymparisto.fi/arcgis/services/Velmukartta/Velmukartta/MapServer/WmsServer?SERVICE=WMS&REQUEST=GetCapabilities',
         layer: '1',
         isDatalayer: true,
         type: 'WMS',
@@ -48,7 +48,7 @@ export const availableLayers : Array<LayerConfiguration> = [
     {
         id: '010bce28-29bf-4a87-bdf8-65faa63ebe74',
         title: 'KNMI Temp',
-        url: 'https://geoservices.knmi.nl/adaguc-server?DATASET=HARM_N25&',
+        capabilitiesUrl: 'https://geoservices.knmi.nl/adaguc-server?DATASET=HARM_N25&SERVICE=WMS&REQUEST=GetCapabilities',
         layer: 'air_temperature__at_pl',
         isDatalayer: true,
         type: 'WMS',
