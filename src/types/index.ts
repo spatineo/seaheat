@@ -1,9 +1,12 @@
 
 export type { TemperatureProps, TemperatureData } from './temperature'
 export type { GraphData } from './graph'
+export type { WMSCapabilitiesType, Layer } from './wms_capabilities'
+
 
 export { emptyGraphData } from './graph'
 export { emptyTemperatureData } from './temperature'
+
 
 export enum SeaheatFeatureType {
     INTAKE = "intake",
@@ -36,11 +39,12 @@ export interface MapView {
 
 export interface LayerConfiguration {
     id: string,
-    url: string,
+    capabilitiesUrl: string,
     title: string,
     layer: string,
     type: string,
     isDatalayer: boolean,
+    dimensions?: Array<string>,
     legend?: {
         url: string,
         width: number,
