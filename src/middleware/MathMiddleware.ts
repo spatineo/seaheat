@@ -1,9 +1,18 @@
 import { createAction, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { setLocation as setIntakeLocation } from "../app/slices/intake";
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility";
+import { setDepth as setIntakeDepth } from "../app/slices/intake";
 import { setLocation as setDischargeLocation } from "../app/slices/discharge";
 import { RootState, AppDispatch } from "../store";
-import { restoreDataState, setFacilityToDischargeDistance, setMonthlyPowerRating, setIntakeToFacilityDistance, setMonthlyAveragePowerOutput } from "../app/slices/data";
+import { 
+    restoreDataState, 
+    setFacilityToDischargeDistance, 
+    setMonthlyPowerRating, 
+    setIntakeToFacilityDistance, 
+    setMonthlyAveragePowerOutput,
+    setIntakeTemperaturePerMonth,
+    setIntakeTemperature,
+} from "../app/slices/data";
 import { getLength } from "ol/sphere";
 import { LineString } from "ol/geom";
 import { secondsInDay } from "date-fns/constants";
@@ -113,6 +122,29 @@ startAppListening({
             }))
         } catch(error) {
             listenerApi.dispatch(processingError(`Error calculating monthlyPowerRating: ${error}`));
+        }
+    }
+})
+
+startAppListening({
+    matcher: isAnyOf(initMathAction, setIntakeDepth, setIntakeTemperature),
+    effect: (_action, listenerApi) => {
+        try {
+         
+            const {intake: {depth}, data: { intakeTemperature: {axes, temperatureValues} }}= listenerApi.getState()
+            
+            const xAxis = { label: 'Month', values: [] as Array<string> }
+            const findEqualDepthIndex = axes.y.values.findIndex(val => depth !== null && val >= depth)
+            
+            const searchForYValue = findEqualDepthIndex > -1 ? temperatureValues.find(tmp => tmp.y === findEqualDepthIndex && tmp) : null
+            console.log(searchForYValue)
+            listenerApi.dispatch(setIntakeTemperaturePerMonth({
+                unit: '',
+                axes: { x: xAxis},
+                series: []
+            }))
+        } catch(error) {
+            console.log(error)
         }
     }
 })
