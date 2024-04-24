@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { availableLayers } from "../../config/layers"
 import { useMemo } from "react"
-import { ImageComponent } from "../../components/ImageComponent/ImageComponent"
+import { LegendComponent } from "../../components/LegendComponent/LegendComponent"
 
 export const ConnectedLegendComponent = () => {
     const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)
@@ -10,7 +10,7 @@ export const ConnectedLegendComponent = () => {
     const legend = useMemo(() => visibleLayers.map((vl) => {
         const al = availableLayers.find((al) => al.id === vl.id);
         if (al?.isDatalayer && al.legend) {
-            return (<ImageComponent 
+            return (<LegendComponent 
                 url={al.legend.url} 
                 width={al.legend.width} 
                 height={al.legend.height} 
