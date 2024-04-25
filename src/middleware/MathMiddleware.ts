@@ -133,18 +133,26 @@ startAppListening({
          
             const {intake: {depth}, data: { intakeTemperature: {axes, temperatureValues} }}= listenerApi.getState()
             
-            const xAxis = { label: 'Month', values: [] as Array<string> }
+            const xAxis = { label: 'Temparature', values: [] as Array<string> }
+            const series = { label: "Power", values: [] as Array<number> };
+
             const findEqualDepthIndex = axes.y.values.findIndex(val => depth !== null && val >= depth)
-            
-            const searchForYValue = findEqualDepthIndex > -1 ? temperatureValues.find(tmp => tmp.y === findEqualDepthIndex && tmp) : null
-            console.log(searchForYValue)
+           
+            const searchForValues = findEqualDepthIndex > -1 ? temperatureValues.filter((tmp) => tmp.y === findEqualDepthIndex && tmp ): null
+            Array(12).fill(0).forEach((_v, month : number) => {
+                const d = new Date(2001, month, 1)
+                const calculatedValues = searchForValues !== null && temperatureValues[month].value * searchForValues[month].value * 1.1639 * 0.997
+                series.values[month] = Number(calculatedValues)
+                xAxis.values[month] = format(d, 'LLL');
+            })
+        
             listenerApi.dispatch(setIntakeTemperaturePerMonth({
                 unit: '',
                 axes: { x: xAxis},
-                series: []
+                series: [series]
             }))
         } catch(error) {
-            console.log(error)
+            listenerApi.dispatch(processingError(`Error calculating IntakeTemperaturePerMonth: ${error}`));
         }
     }
 })
