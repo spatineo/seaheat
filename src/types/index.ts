@@ -14,10 +14,6 @@ export enum SeaheatFeatureType {
     FACILITY = "facility"
 }
 
-export interface OutputType {
-    IntakeTemperaturePerMonth: []
-}
-
 export interface SelectedPointProps {
     location: Array<number> | null,
     depth: number | null,
