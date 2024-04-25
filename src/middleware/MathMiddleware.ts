@@ -141,13 +141,13 @@ startAppListening({
             const searchForValues = findEqualDepthIndex > -1 ? temperatureValues.filter((tmp) => tmp.y === findEqualDepthIndex && tmp ): null
             Array(12).fill(0).forEach((_v, month : number) => {
                 const d = new Date(2001, month, 1)
-                const calculatedValues = searchForValues !== null && temperatureValues[month].value * searchForValues[month].value * 1.1639 * 0.997
+                const calculatedValues = searchForValues !== null && searchForValues[month].value
                 series.values[month] = Number(calculatedValues)
                 xAxis.values[month] = format(d, 'LLL');
             })
         
             listenerApi.dispatch(setIntakeTemperaturePerMonth({
-                unit: '',
+                unit: 'C',
                 axes: { x: xAxis},
                 series: [series]
             }))
