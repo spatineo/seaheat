@@ -10,12 +10,7 @@ export const ConnectedLegendComponent = () => {
     const legend = useMemo(() => visibleLayers.map((vl) => {
         const al = availableLayers.find((al) => al.id === vl.id);
         if (al?.isDatalayer && al.legend) {
-            return (<LegendComponent 
-                url={al.legend.url} 
-                width={al.legend.width} 
-                height={al.legend.height} 
-                scale={al.legend.scale} 
-            />);
+            return (<LegendComponent legend={al.legend} />);
         }
 
     }).find(v => !!v), [visibleLayers]);
