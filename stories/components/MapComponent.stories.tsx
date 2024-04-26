@@ -3,13 +3,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { SeaheatFeatureType } from '../../src/types';
 
-
 import { MapComponent } from '../../src/components/map/MapComponent';
 import { WMSLayer } from '../../src/components/map/layer/WMSLayer';
 import { XYZLayer } from '../../src/components/map/layer/XYZLayer';
 import { LineStringArrowLayer } from '../../src/components/map/layer/LineStringArrowLayer';
 import { SingleFeatureLayer } from '../../src/components/map/layer/SingleFeatureLayer';
-
+import { LegendComponent } from '../../src/components/LegendComponent/LegendComponent';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -38,7 +37,7 @@ export const BasicMap: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
         </MapComponent>
       </div>
@@ -54,7 +53,7 @@ export const HelsinkiFeature: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
           <SingleFeatureLayer type={SeaheatFeatureType.FACILITY} location={helsinki} zIndex={100} />
         </MapComponent>
@@ -71,7 +70,7 @@ export const ArrowHelsinkiTallinn: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '40em',  height: "30em"}}>
         <MapComponent view={{ center: [(helsinki[0]+tallinn[0])/2, (helsinki[1]+tallinn[1])/2], zoom: 8 }} onClickFeature={(evt) => console.log(evt)}>
           <LineStringArrowLayer lineString={[helsinki, tallinn]} zIndex={100} />
         </MapComponent>
@@ -86,7 +85,7 @@ export const XYZBathymetryLayer: Story = {
   },
   render: () => {
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
           <XYZLayer url='https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png' zIndex={10} opacity={1} />
         </MapComponent>
@@ -109,10 +108,17 @@ export const WMSBathymetryLayer: Story = {
       },
       url: 'https://geo.vliz.be/geoserver/ows'
     }
+    const legend = {
+      url: 'https://gtkdata.gtk.fi/arcgis/services/EMODnet/EMODnet_Geology/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=Seabed_substrate_1M',
+      width: 210,
+      height: 126,
+      scale: 0.9
+  }
     return (
-      <div style={{ width: '30em'}}>
+      <div style={{ width: '30em',  height: "30em"}}>
         <MapComponent view={defaultView}>
           <WMSLayer layerInfo={layerInfo} zIndex={10} opacity={0.5} />
+          <LegendComponent url={legend.url} width={legend.width} height={legend.height} scale={legend.scale} />
         </MapComponent>
       </div>
     );

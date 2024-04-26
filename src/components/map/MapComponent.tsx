@@ -110,7 +110,7 @@ export const MapComponent = ({ view, onClickFeature,  onMapViewChange, children 
 
     return (
         <MapContext.Provider value={{ map }}>
-            <Box ref={mapRef} className="map-component">
+            <Box ref={mapRef} className="map-component" position="relative">
                 {children}
             </Box>
         </MapContext.Provider>
