@@ -133,15 +133,15 @@ startAppListening({
          
             const {intake: {depth}, data: { intakeTemperature: {axes, temperatureValues} }}= listenerApi.getState()
             
-            const xAxis = { label: 'Temparature', values: [] as Array<string> }
-            const series = { label: "Power", values: [] as Array<number> };
+            const xAxis = { label: 'Month', values: [] as Array<string> }
+            const series = { label: "Temperature", values: [] as Array<number> };
 
             const findEqualDepthIndex = axes.y.values.findIndex(val => depth !== null && val >= depth)
            
             const searchForValues = findEqualDepthIndex > -1 ? temperatureValues.filter((tmp) => tmp.y === findEqualDepthIndex && tmp ): null
             Array(12).fill(0).forEach((_v, month : number) => {
                 const d = new Date(2001, month, 1)
-                const calculatedValues = searchForValues !== null && searchForValues[month].value
+                const calculatedValues = searchForValues !== null && searchForValues.find((v) => v.x === month)?.value
                 series.values[month] = Number(calculatedValues)
                 xAxis.values[month] = format(d, 'LLL');
             })
