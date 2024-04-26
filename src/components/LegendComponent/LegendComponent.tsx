@@ -1,18 +1,20 @@
 import { Image } from "@chakra-ui/react"
 
 interface LegendProps {
- url: string
- width: number
- height: number
- scale: number
+ legend: {
+  url: string
+  width: number
+  height: number
+  scale: number
+ }
 }
 
-export const LegendComponent = ({ url, width, height, scale }: LegendProps) => {
+export const LegendComponent = ({ legend }: LegendProps) => {
   return (
     <Image 
-      src={url}
-      width={`${Math.round(width * scale)}px`}
-      height={`${Math.round(height * scale)}px`}
+      src={legend.url}
+      width={`${Math.round(legend.width * legend.scale)}px`}
+      height={`${Math.round(legend.height * legend.scale)}px`}
       alt='legend'
       style={{ position: 'absolute', right: '3px', bottom: '3px', zIndex: 100}}
   />
