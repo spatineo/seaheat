@@ -145,12 +145,18 @@ startAppListening({
                 series.values[month] = Number(calculatedValues)
                 xAxis.values[month] = format(d, 'LLL');
             })
-        
-            listenerApi.dispatch(setIntakeTemperaturePerMonth({
+
+            const output = {
                 unit: 'C',
                 axes: { x: xAxis},
                 series: [series]
-            }))
+            };
+        
+            if (depth === null || temperatureValues.length === 0) {
+                output.series = [];
+            }
+
+            listenerApi.dispatch(setIntakeTemperaturePerMonth(output))
         } catch(error) {
             listenerApi.dispatch(processingError(`Error calculating IntakeTemperaturePerMonth: ${error}`));
         }
