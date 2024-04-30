@@ -15,7 +15,17 @@ interface FacilityComponentProps extends FacilityProps {
   setFacilityEffectivenessFactor?: (value: number) => void
 }
 
-export const FacilityComponent = ({ location, name, intakeVolume, temperatureDelta, facilityEffectivenessFactor, setName, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor }: FacilityComponentProps) => {
+export const FacilityComponent = ({
+  location,
+  name,
+  intakeVolume,
+  temperatureDelta,
+  facilityEffectivenessFactor,
+  setName,
+  setIntakeVolume,
+  setTemperatureDelta,
+  setFacilityEffectivenessFactor
+}: FacilityComponentProps) => {
   function callIf<T> (fn: ((v: T) => void) | undefined, value: T) {
     if (fn) fn(value)
   }

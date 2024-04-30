@@ -1,9 +1,19 @@
 import { createAction, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { setLocation as setIntakeLocation } from "../app/slices/intake"
-import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility"
+import {
+  setFacilityEffectivenessFactor,
+  setLocation as setFacilityLocation,
+  setIntakeVolume, setTemperatureDelta
+} from "../app/slices/facility"
 import { setLocation as setDischargeLocation } from "../app/slices/discharge"
 import { RootState, AppDispatch } from "../store"
-import { restoreDataState, setFacilityToDischargeDistance, setMonthlyPowerRating, setIntakeToFacilityDistance, setMonthlyAveragePowerOutput } from "../app/slices/data"
+import {
+  restoreDataState,
+  setFacilityToDischargeDistance,
+  setMonthlyPowerRating,
+  setIntakeToFacilityDistance,
+  setMonthlyAveragePowerOutput
+} from "../app/slices/data"
 import { getLength } from "ol/sphere"
 import { LineString } from "ol/geom"
 import { secondsInDay } from "date-fns/constants"
@@ -62,7 +72,13 @@ startAppListening({
 
 // Calculate monthly power output
 startAppListening({
-  matcher: isAnyOf(initMathAction, restoreDataState, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor),
+  matcher: isAnyOf(
+    initMathAction,
+    restoreDataState,
+    setIntakeVolume,
+    setTemperatureDelta,
+    setFacilityEffectivenessFactor
+  ),
   effect: async (_action, listenerApi) => {
     try {
       const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()
@@ -89,7 +105,13 @@ startAppListening({
 })
 
 startAppListening({
-  matcher: isAnyOf(initMathAction, restoreDataState, setIntakeVolume, setTemperatureDelta, setFacilityEffectivenessFactor),
+  matcher: isAnyOf(
+    initMathAction,
+    restoreDataState,
+    setIntakeVolume,
+    setTemperatureDelta,
+    setFacilityEffectivenessFactor
+  ),
   effect: async (_action, listenerApi) => {
     try {
       const { facility: { intakeVolume, temperatureDelta, facilityEffectivenessFactor } } = listenerApi.getState()

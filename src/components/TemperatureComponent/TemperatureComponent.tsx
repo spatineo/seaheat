@@ -19,7 +19,9 @@ export const TemperatureComponent = ({ data, height, marker }: TemperatureProps)
             if (cellValue === null || cellValue === undefined) {
               return { x: xValue, y: yValue }
             }
-            const legendItem = data.legend.find((l) => ((l.minValue === null || l.minValue === undefined) || l.minValue <= cellValue) && ((l.maxValue === null || l.maxValue === undefined) || cellValue <= l.maxValue)
+            const legendItem = data.legend.find(
+              (l) => ((l.minValue === null || l.minValue === undefined) || l.minValue <= cellValue) &&
+              ((l.maxValue === null || l.maxValue === undefined) || cellValue <= l.maxValue)
             )
             const bgColor = legendItem?.color
             return { x: xValue, y: yValue, value: cellValue, bgColor }
