@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import App from './App'
 import './index.css'
 import { Provider } from 'react-redux'
-import { store } from './store';
+import { store } from './store'
 
 const theme = extendTheme({
   styles: {
@@ -13,8 +13,8 @@ const theme = extendTheme({
         boxSizing: "border-box"
       },
       body: {
-        width: "100vw",
-       
+        width: "100vw"
+
       },
       '*': {
         boxSizing: 'border-box',
@@ -23,7 +23,7 @@ const theme = extendTheme({
       },
       '#root': {
         height: "100vh",
-        overflow: "hidden",
+        overflow: "hidden"
       }
     }
   }
@@ -36,5 +36,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <App />
       </ChakraProvider>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )

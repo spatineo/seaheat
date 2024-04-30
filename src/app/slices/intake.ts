@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface IntakeState {
-  location: Array<number> | null,
-  depth: number | null,
+  location: Array<number> | null
+  depth: number | null
   name: string | null
 }
 
@@ -27,11 +27,11 @@ export const intakeSlice = createSlice({
       state.name = action.payload
     },
     restoreIntakeState: (state, action: PayloadAction<IntakeState>) => {
-      state.name = action.payload.name;
-      state.depth = action.payload.depth;
-      state.location = action.payload.location;
+      state.name = action.payload.name
+      state.depth = action.payload.depth
+      state.location = action.payload.location
     }
-  },
+  }
 })
 
 // Action creators are generated for each case reducer function

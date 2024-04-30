@@ -1,10 +1,10 @@
-import { createContext } from 'react';
-import { Map } from 'ol';
+import { createContext } from 'react'
+import { Map } from 'ol'
 
 interface MapContextType {
-	map: Map | null;
+  map: Map | null
 }
 
-const MapContext = createContext({} as MapContextType);
+const MapContext = createContext({} as MapContextType)
 
-export default MapContext;
+export default MapContext
