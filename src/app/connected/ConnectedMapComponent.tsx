@@ -11,41 +11,55 @@ import { setLocation as setFacilityLocation } from "../slices/facility"
 import { setMapView, setSelectedPointTab } from "../slices/uiState"
 import { LineStringArrowLayer } from "../../components/map/layer/LineStringArrowLayer"
 
-import { Style, Icon } from 'ol/style'
+import { Style, Icon, Circle, Fill, Stroke } from 'ol/style'
 import { ConnectedOverlayLayersComponent } from "./ConnectedOverlayLayersComponent"
 import { ConnectedLegendComponent } from "./ConnectedLegendComponent"
 
-const { defaultStyle, selectedStyle } = [
-  { type: SeaheatFeatureType.INTAKE, src: 'images/pipe.svg' },
-  { type: SeaheatFeatureType.DISCHARGE, src: 'images/pipe.svg' },
-  { type: SeaheatFeatureType.FACILITY, src: 'images/facility.svg' }
-].reduce((memo, d) => {
-  memo.defaultStyle.set(d.type, new Style({
+const pipeStyleDefault = new Style({
+  image: new Circle({
+    radius: 4,
+    stroke: new Stroke({ color: '#000', width: 2 })
+  })
+})
+
+const pipeStyleSelected = new Style({
+  image: new Circle({
+    radius: 6,
+    fill: new Fill({ color: '#f55' })
+  })
+})
+
+const defaultStyle = {
+  [SeaheatFeatureType.INTAKE]: pipeStyleDefault,
+  [SeaheatFeatureType.DISCHARGE]: pipeStyleDefault,
+  [SeaheatFeatureType.FACILITY]: new Style({
     image: new Icon({
-      src: d.src,
+      src: 'images/facility.svg',
       width: 24,
       crossOrigin: 'anonymous',
       color: '#000'
     })
-  }))
+  })
+}
 
-  memo.selectedStyle.set(d.type, new Style({
+const selectedStyle = {
+  [SeaheatFeatureType.INTAKE]: pipeStyleSelected,
+  [SeaheatFeatureType.DISCHARGE]: pipeStyleSelected,
+  [SeaheatFeatureType.FACILITY]: new Style({
     image: new Icon({
-      src: d.src,
+      src: 'images/facility.svg',
       width: 24,
       crossOrigin: 'anonymous',
       color: '#f55'
     })
-  }))
-
-  return memo
-}, { defaultStyle: new Map<SeaheatFeatureType, Style>(), selectedStyle: new Map<SeaheatFeatureType, Style>() })
+  })
+}
 
 const selectStyle = (selected: SeaheatFeatureType, featureType: SeaheatFeatureType) => {
   if (selected === featureType) {
-    return selectedStyle.get(featureType)
+    return selectedStyle[featureType]
   } else {
-    return defaultStyle.get(featureType)
+    return defaultStyle[featureType]
   }
 }
 

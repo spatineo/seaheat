@@ -1,10 +1,6 @@
 import { createAction, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
-import { setLocation as setIntakeLocation } from "../app/slices/intake"
-import {
-  setFacilityEffectivenessFactor,
-  setLocation as setFacilityLocation,
-  setIntakeVolume, setTemperatureDelta
-} from "../app/slices/facility"
+import { setLocation as setIntakeLocation, setDepth as setIntakeDepth } from "../app/slices/intake"
+import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility"
 import { setLocation as setDischargeLocation } from "../app/slices/discharge"
 import { RootState, AppDispatch } from "../store"
 import {
@@ -12,7 +8,9 @@ import {
   setFacilityToDischargeDistance,
   setMonthlyPowerRating,
   setIntakeToFacilityDistance,
-  setMonthlyAveragePowerOutput
+  setMonthlyAveragePowerOutput,
+  setIntakeTemperaturePerMonth,
+  setIntakeTemperature
 } from "../app/slices/data"
 import { getLength } from "ol/sphere"
 import { LineString } from "ol/geom"
@@ -133,6 +131,42 @@ startAppListening({
       }))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating monthlyPowerRating: ${error}`))
+    }
+  }
+})
+
+startAppListening({
+  matcher: isAnyOf(initMathAction, setIntakeDepth, setIntakeTemperature),
+  effect: (_action, listenerApi) => {
+    try {
+      const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
+
+      const xAxis = { label: 'Month', values: [] as Array<string> }
+      const series = { label: "Temperature", values: [] as Array<number> }
+
+      const findEqualDepthIndex = axes.y.values.findIndex(val => depth !== null && val >= depth)
+
+      const searchForValues = findEqualDepthIndex > -1 ? temperatureValues.filter((tmp) => tmp.y === findEqualDepthIndex && tmp) : null
+      Array(12).fill(0).forEach((_v, month: number) => {
+        const d = new Date(2001, month, 1)
+        const calculatedValues = searchForValues?.find((v) => v.x === month)?.value
+        series.values[month] = Number(calculatedValues)
+        xAxis.values[month] = format(d, 'LLL')
+      })
+
+      const output = {
+        unit: 'C',
+        axes: { x: xAxis },
+        series: [series]
+      }
+
+      if (depth === null || temperatureValues.length === 0) {
+        output.series = []
+      }
+
+      listenerApi.dispatch(setIntakeTemperaturePerMonth(output))
+    } catch (error) {
+      listenerApi.dispatch(processingError(`Error calculating IntakeTemperaturePerMonth: ${error}`))
     }
   }
 })

@@ -18,12 +18,12 @@ export interface UIState {
   map: {
     view: MapView
     visibleLayers: Array<VisibleLayer>
+    layerDimensions: {
+      [key: string]: LayerDimension
+    }
   }
   graph: {
     visibleGraph: OutputType
-  }
-  layerDimensions: {
-    [key: string]: LayerDimension
   }
 }
 
@@ -34,12 +34,12 @@ const initialState: UIState = {
       center: [2749287.033361, 8966980.662191],
       zoom: 5
     },
-    visibleLayers: []
+    visibleLayers: [],
+    layerDimensions: {}
   },
   graph: {
     visibleGraph: OutputType.monthlyAveragePowerOutput
-  },
-  layerDimensions: {}
+  }
 }
 
 interface LayerDimensionPayloadType {
@@ -83,13 +83,13 @@ export const uiStateSlice = createSlice({
     },
 
     setLayerDimension: (state, action: PayloadAction<LayerDimensionPayloadType>) => {
-      if (!state.layerDimensions[action.payload.layerId]) {
-        state.layerDimensions[action.payload.layerId] = {
+      if (!state.map.layerDimensions[action.payload.layerId]) {
+        state.map.layerDimensions[action.payload.layerId] = {
           values: {}
         }
       }
 
-      state.layerDimensions[action.payload.layerId].values[action.payload.dimension] = action.payload.value
+      state.map.layerDimensions[action.payload.layerId].values[action.payload.dimension] = action.payload.value
     },
 
     setVisibleGraph: (state, action: PayloadAction<OutputType>) => {
@@ -98,10 +98,8 @@ export const uiStateSlice = createSlice({
 
     restoreUIState: (state, action: PayloadAction<UIState>) => {
       state.selectedPointTab = action.payload.selectedPointTab
-      state.map.view = action.payload.map.view
-      state.map.visibleLayers = action.payload.map.visibleLayers
+      state.map = action.payload.map
       state.graph = action.payload.graph
-      state.layerDimensions = action.payload.layerDimensions
     }
   }
 })

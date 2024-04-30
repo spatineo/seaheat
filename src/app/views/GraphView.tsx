@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import { Box, Button, Flex, Select, Spacer } from "@chakra-ui/react"
 import { RootState } from "../../store"
 import { useDispatch, useSelector } from "react-redux"
@@ -47,10 +47,10 @@ export const GraphView = () => {
         </Box>
         <Spacer />
         <Box>
-          <Button onClick={() => { exportCsv(graphs[visibleGraph]) }}>Download CSV</Button>
+          <Button onClick={() => exportCsv(graphs[visibleGraph])}>Download CSV</Button>
         </Box>
       </Flex>
-      <GraphComponent data={graphs[visibleGraph]} height={150} />
+      {graphs[visibleGraph].series.length === 0 ? <Box position="relative" ml="2">No data series</Box> : <GraphComponent data={graphs[visibleGraph]} height={150} />}
     </Box>
   )
 }

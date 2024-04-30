@@ -11,7 +11,7 @@ export const ConnectedLayerDimensionComponent = () => {
 
   const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)
   const layers = useSelector((state: RootState) => state.data.layers)
-  const layerDimensions = useSelector((state: RootState) => state.uiState.layerDimensions)
+  const layerDimensions = useSelector((state: RootState) => state.uiState.map.layerDimensions)
 
   const data = useMemo(() => {
     return visibleLayers.map((vl) => {
