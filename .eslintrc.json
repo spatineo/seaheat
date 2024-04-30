@@ -7,14 +7,35 @@
         "standard-with-typescript",
         "plugin:react/recommended"
     ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module",
-        "project": ["./tsconfig.json"]
-      },
     "plugins": [
         "react"
     ],
-    "rules": {
-    }
+    "overrides": [
+        {
+          "files": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
+          "parserOptions": {
+            "ecmaVersion": "latest",
+            "sourceType": "module",
+            "project": ["./tsconfig.json"]
+          },
+          "rules": {
+            "@typescript-eslint/consistent-type-imports": "off",
+            "@typescript-eslint/quotes": "off",
+            "@typescript-eslint/consistent-indexed-object-style": "off",
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "@typescript-eslint/array-type": "off",
+            "quote-props": "off",
+            "@typescript-eslint/strict-boolean-expressions": "off",
+            "@typescript-eslint/restrict-template-expressions": "off",
+            "@typescript-eslint/prefer-nullish-coalescing": "off",
+            "@typescript-eslint/no-non-null-assertion": "off",
+            "@typescript-eslint/no-confusing-void-expression": "off",
+            "@typescript-eslint/consistent-type-assertions": "off",
+            "@typescript-eslint/triple-slash-reference": "off",
+            "array-callback-return": "off",
+            "indent": ["error", 2, { "SwitchCase": 1 }] 
+            }
+        }
+      ]
+   
 }
