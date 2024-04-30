@@ -1,17 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import intakeReducer from './app/slices/intake';
-import dischargeReducer from './app/slices/discharge';
-import facilityReducer from './app/slices/facility';
+import intakeReducer from './app/slices/intake'
+import dischargeReducer from './app/slices/discharge'
+import facilityReducer from './app/slices/facility'
 
-import dataReducer from './app/slices/data';
-import uiStateReducer from './app/slices/uiState';
+import dataReducer from './app/slices/data'
+import uiStateReducer from './app/slices/uiState'
 
-import { importExportMiddleware } from './middleware/ImportExportMiddleware';
-import { dataAPIMiddleware } from './middleware/DataAPIMiddleware';
-import { initMathAction, mathMiddleware } from './middleware/MathMiddleware';
-import { errorMiddleware } from './middleware/ErrorMiddleware';
-import { initWMSAction, wmsMiddleware } from './middleware/WMSCapabilitiesMiddleware';
+import { importExportMiddleware } from './middleware/ImportExportMiddleware'
+import { dataAPIMiddleware } from './middleware/DataAPIMiddleware'
+import { initMathAction, mathMiddleware } from './middleware/MathMiddleware'
+import { errorMiddleware } from './middleware/ErrorMiddleware'
+import { initWMSAction, wmsMiddleware } from './middleware/WMSCapabilitiesMiddleware'
 
 export const store = configureStore({
   reducer: {
@@ -40,4 +40,3 @@ store.dispatch(initWMSAction())
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
-

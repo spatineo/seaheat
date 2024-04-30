@@ -1,44 +1,42 @@
-import { useContext, useEffect, useState } from "react";
-import TileLayer from 'ol/layer/Tile';
-import { XYZ } from 'ol/source';
-import MapContext from "../MapContext";
+import { useContext, useEffect, useState } from "react"
+import TileLayer from 'ol/layer/Tile'
+import { XYZ } from 'ol/source'
+import MapContext from "../MapContext"
 
 interface XYZLayerProps {
-    url: string,
-    opacity: number,
-    zIndex: number
+  url: string
+  opacity: number
+  zIndex: number
 }
 
-export const XYZLayer = ({url, opacity, zIndex} : XYZLayerProps) => {
-    const { map } = useContext(MapContext);
+export const XYZLayer = ({ url, opacity, zIndex }: XYZLayerProps) => {
+  const { map } = useContext(MapContext)
 
-    const [ layer, setLayer ] = useState<TileLayer<XYZ> | null>(null);
+  const [layer, setLayer] = useState<TileLayer<XYZ> | null>(null)
 
-    useEffect(() => {
-        if (!map) return;
+  useEffect(() => {
+    if (!map) return
 
-        const layer = new TileLayer({
-            source: new XYZ({
-                url
-            }),
-            zIndex
-        });
+    const layer = new TileLayer({
+      source: new XYZ({
+        url
+      }),
+      zIndex
+    })
 
-        map.addLayer(layer);
-        setLayer(layer);
+    map.addLayer(layer)
+    setLayer(layer)
 
-        return () => {
-            map.removeLayer(layer);
-        }
+    return () => {
+      map.removeLayer(layer)
+    }
+  }, [map, url, zIndex])
 
-    }, [map, url, zIndex]);
+  useEffect(() => {
+    if (!layer) return
 
-    useEffect(() => {
-        if (!layer) return;
+    layer.setOpacity(opacity)
+  }, [layer, opacity])
 
-        layer.setOpacity(opacity);
-
-    }, [layer, opacity]);
-
-    return null;
+  return null
 }

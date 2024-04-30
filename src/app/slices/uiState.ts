@@ -1,29 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { MapView, SeaheatFeatureType } from '../../types'
-import { availableLayers } from '../../config/layers';
-import { OutputType } from './data';
+import { availableLayers } from '../../config/layers'
+import { OutputType } from './data'
 
 interface VisibleLayer {
-  id: string,
+  id: string
   opacity: number
 }
 
 interface LayerDimension {
-  values: { [key : string]: string }
+  values: { [key: string]: string }
 }
 
 export interface UIState {
-  selectedPointTab: SeaheatFeatureType;
+  selectedPointTab: SeaheatFeatureType
   map: {
-    view: MapView,
-    visibleLayers: Array<VisibleLayer>,
-  },
+    view: MapView
+    visibleLayers: Array<VisibleLayer>
+  }
   graph: {
     visibleGraph: OutputType
-  },
+  }
   layerDimensions: {
-    [key : string]: LayerDimension
+    [key: string]: LayerDimension
   }
 }
 
@@ -43,8 +43,8 @@ const initialState: UIState = {
 }
 
 interface LayerDimensionPayloadType {
-  layerId: string,
-  dimension: string,
+  layerId: string
+  dimension: string
   value: string
 }
 
@@ -61,17 +61,17 @@ export const uiStateSlice = createSlice({
     },
 
     toggleLayer: (state, action: PayloadAction<string>) => {
-      if (state.map.visibleLayers.find((v) => v.id == action.payload)) {
+      if (state.map.visibleLayers.find((v) => v.id === action.payload)) {
         // unselect
         state.map.visibleLayers = state.map.visibleLayers.filter((v) => v.id !== action.payload)
       } else {
         // select, BUT if this is a datalayer and there is already a datalayer, unselect that
-        const newLayer = availableLayers.find((al) => al.id === action.payload);
+        const newLayer = availableLayers.find((al) => al.id === action.payload)
         if (newLayer?.isDatalayer) {
           state.map.visibleLayers = state.map.visibleLayers.filter((vl) => {
-            const al = availableLayers.find((al) => al.id === vl.id);
-            if (al?.isDatalayer) return false;
-            return true;
+            const al = availableLayers.find((al) => al.id === vl.id)
+            if (al?.isDatalayer) return false
+            return true
           })
         }
 
@@ -100,10 +100,10 @@ export const uiStateSlice = createSlice({
       state.selectedPointTab = action.payload.selectedPointTab
       state.map.view = action.payload.map.view
       state.map.visibleLayers = action.payload.map.visibleLayers
-      state.graph = action.payload.graph;
-      state.layerDimensions = action.payload.layerDimensions;
+      state.graph = action.payload.graph
+      state.layerDimensions = action.payload.layerDimensions
     }
-  },
+  }
 })
 
 // Action creators are generated for each case reducer function

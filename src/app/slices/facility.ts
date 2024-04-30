@@ -3,17 +3,17 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { MonthValue } from '../../types'
 
 export interface FacilityState {
-  location: Array<number> | null,
-  name: string | null,
-  intakeVolume: number[],
-  temperatureDelta: number[],
+  location: Array<number> | null
+  name: string | null
+  intakeVolume: number[]
+  temperatureDelta: number[]
   facilityEffectivenessFactor: number
 }
 
 const initialState: FacilityState = {
   location: null,
   name: null,
-  intakeVolume:     Array(12).fill(10),
+  intakeVolume: Array(12).fill(10),
   temperatureDelta: Array(12).fill(2),
   facilityEffectivenessFactor: 0.7
 }
@@ -38,13 +38,13 @@ export const facilitySlice = createSlice({
       state.facilityEffectivenessFactor = action.payload
     },
     restoreFacilityState: (state, action: PayloadAction<FacilityState>) => {
-      state.name = action.payload.name;
-      state.location = action.payload.location;
+      state.name = action.payload.name
+      state.location = action.payload.location
       state.intakeVolume = action.payload.intakeVolume
       state.temperatureDelta = action.payload.temperatureDelta
       state.facilityEffectivenessFactor = action.payload.facilityEffectivenessFactor
     }
-  },
+  }
 })
 
 // Action creators are generated for each case reducer function

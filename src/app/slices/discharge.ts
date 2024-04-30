@@ -2,15 +2,15 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface DischargeState {
-  location: Array<number> | null,
-  depth: number | null,
+  location: Array<number> | null
+  depth: number | null
   name: string | null
 }
 
 const initialState: DischargeState = {
   location: null,
   depth: null,
-  name: null,
+  name: null
 }
 
 export const dischargeSlice = createSlice({
@@ -32,7 +32,7 @@ export const dischargeSlice = createSlice({
       state.depth = action.payload.depth
       state.location = action.payload.location
     }
-  },
+  }
 })
 
 // Action creators are generated for each case reducer function
