@@ -13,7 +13,7 @@ interface CsvRecord {
   [key: string]: string | number
 }
 
-export const GraphView = () => {
+export const GraphView: React.FC = () => {
   const dispatch = useDispatch()
   const graphs = useSelector((state: RootState) => state.data.output)
   const visibleGraph = useSelector((state: RootState) => state.uiState.graph.visibleGraph)

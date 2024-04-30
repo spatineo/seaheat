@@ -9,7 +9,7 @@ import { RootState } from "../../store"
 import { ConnectedDischargeComponent } from "../connected/ConnectedDischargeComponent"
 import { ConnectedFacilityComponent } from "../connected/ConnectedFacilityComponent"
 
-export const SelectedPointView = () => {
+export const SelectedPointView: React.FC = () => {
   const dispatch = useDispatch()
 
   const currentTab = useSelector((state: RootState) => state.uiState.selectedPointTab)

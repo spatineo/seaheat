@@ -63,7 +63,7 @@ const selectStyle = (selected: SeaheatFeatureType, featureType: SeaheatFeatureTy
   }
 }
 
-export const ConnectedMapComponent = () => {
+export const ConnectedMapComponent: React.FC = () => {
   const dispatch = useDispatch()
   const intake = useSelector((state: RootState) => state.intake)
   const discharge = useSelector((state: RootState) => state.discharge)

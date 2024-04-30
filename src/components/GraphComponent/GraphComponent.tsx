@@ -10,7 +10,7 @@ interface GraphProps {
   height: number
 }
 
-export const GraphComponent = ({ data, height }: GraphProps) => {
+export const GraphComponent: React.FC<GraphProps> = ({ data, height }: GraphProps) => {
   const graphRef = useRef<HTMLDivElement>(null)
   const [graph, setGraph] = useState<echarts.ECharts | null>(null)
 

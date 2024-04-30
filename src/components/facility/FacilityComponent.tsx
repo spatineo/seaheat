@@ -15,7 +15,7 @@ interface FacilityComponentProps extends FacilityProps {
   setFacilityEffectivenessFactor?: (value: number) => void
 }
 
-export const FacilityComponent = ({
+export const FacilityComponent: React.FC<FacilityComponentProps> = ({
   location,
   name,
   intakeVolume,

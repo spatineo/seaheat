@@ -6,7 +6,7 @@ import { availableLayers } from "../../config/layers"
 import { Select } from "@chakra-ui/react"
 import { setLayerDimension } from "../slices/uiState"
 
-export const ConnectedLayerDimensionComponent = () => {
+export const ConnectedLayerDimensionComponent: React.FC = () => {
   const dispatch = useDispatch()
 
   const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)

@@ -5,7 +5,7 @@ import { exportState } from "../../middleware/ImportExportMiddleware"
 import { useFileImport } from "../hooks/useFileImport"
 import { UploadView } from "./UploadView"
 
-export const DesignerView = () => {
+export const DesignerView: React.FC = () => {
   const dispatch = useDispatch()
 
   const { loadFileForImport } = useFileImport()

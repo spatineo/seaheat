@@ -10,7 +10,7 @@ interface UploadViewProps {
   dragDropText: string
 }
 
-export const UploadView = ({
+export const UploadView: React.FC<UploadViewProps> = ({
   onChange,
   accept,
   multiple,

@@ -7,7 +7,7 @@ import { setName, setDepth } from "../slices/intake"
 import { wrapAction } from "./utils"
 import { TemperatureComponent } from "../../components/TemperatureComponent/TemperatureComponent"
 
-export const ConnectedIntakeComponent = () => {
+export const ConnectedIntakeComponent: React.FC = () => {
   const intakeProps = useSelector((state: RootState) => state.intake)
   const intakeTemperature = useSelector((state: RootState) => state.data.intakeTemperature)
   const distanceToFacility = useSelector((state: RootState) => state.data.distances.intakeToFacility)

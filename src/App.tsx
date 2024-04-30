@@ -8,7 +8,7 @@ import { MapView } from './app/views/MapView'
 import { LayersView } from './app/views/LayersView'
 import { GraphView } from './app/views/GraphView'
 
-function App () {
+const App: React.FC = () => {
   return (
     <Grid
       templateAreas={`"top top top"

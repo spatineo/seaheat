@@ -3,7 +3,7 @@ import { Box, Flex } from '@chakra-ui/react'
 import './TemperatureComponent.css'
 import { TemperatureProps } from '../../types'
 
-export const TemperatureComponent = ({ data, height, marker }: TemperatureProps) => {
+export const TemperatureComponent: React.FC<TemperatureProps> = ({ data, height, marker }: TemperatureProps) => {
   const { calculatedData } = useMemo(() => {
     const calculatedData = data.axes.y.values
       .filter((yValue) => (data.seabedDepth !== null) && yValue <= data.seabedDepth)

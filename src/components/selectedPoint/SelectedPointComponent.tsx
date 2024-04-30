@@ -10,7 +10,7 @@ interface SelectedPointComponentProps extends SelectedPointProps {
   setDepth?: (depth: number | null) => void
 }
 
-export const SelectedPointComponent = ({ location, depth, name, distanceToFacility, setName, setDepth }: SelectedPointComponentProps) => {
+export const SelectedPointComponent: React.FC<SelectedPointComponentProps> = ({ location, depth, name, distanceToFacility, setName, setDepth }: SelectedPointComponentProps) => {
   function callIf<T> (fn: ((v: T) => void) | undefined, value: T) {
     if (fn) fn(value)
   }

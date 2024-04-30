@@ -29,7 +29,7 @@ interface MapComponentProps {
   children?: React.ReactNode
 }
 
-export const MapComponent = ({ view, onClickFeature, onMapViewChange, children }: MapComponentProps) => {
+export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature, onMapViewChange, children }: MapComponentProps) => {
   const mapRef = useRef(null)
   const [map, setMap] = useState<Map | null>(null)
 

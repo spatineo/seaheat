@@ -5,7 +5,7 @@ import { setName, setIntakeVolume, setTemperatureDelta, setFacilityEffectiveness
 import { wrapAction } from "./utils"
 import { FacilityComponent } from "../../components/facility/FacilityComponent"
 
-export const ConnectedFacilityComponent = () => {
+export const ConnectedFacilityComponent: React.FC = () => {
   const facilityProps = useSelector((state: RootState) => state.facility)
   const dispatch = useDispatch()
 

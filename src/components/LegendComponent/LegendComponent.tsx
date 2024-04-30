@@ -10,7 +10,7 @@ interface LegendProps {
   }
 }
 
-export const LegendComponent = ({ legend }: LegendProps) => {
+export const LegendComponent: React.FC<LegendProps> = ({ legend }: LegendProps) => {
   return (
     <Image
       src={legend.url}

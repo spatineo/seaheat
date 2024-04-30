@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { toggleLayer } from "../slices/uiState"
 
-export const LayersView = () => {
+export const LayersView: React.FC = () => {
   const dispatch = useDispatch()
 
   const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)

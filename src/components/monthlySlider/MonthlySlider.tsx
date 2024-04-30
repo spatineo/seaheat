@@ -12,7 +12,7 @@ interface MonthlySliderProps {
   changeValue?: (value: MonthValue<number>) => void
   sliderIcon: As
 }
-export const MonthlySlider = ({ values, minValue, maxValue, unit, color, changeValue, sliderIcon }: MonthlySliderProps) => {
+export const MonthlySlider: React.FC<MonthlySliderProps> = ({ values, minValue, maxValue, unit, color, changeValue, sliderIcon }: MonthlySliderProps) => {
   return (
     <HStack width='100%'>
       {values.map((value, mon: number) => {

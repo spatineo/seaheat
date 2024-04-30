@@ -4,7 +4,7 @@ import { availableLayers } from "../../config/layers"
 import React, { useMemo } from "react"
 import { LegendComponent } from "../../components/LegendComponent/LegendComponent"
 
-export const ConnectedLegendComponent = () => {
+export const ConnectedLegendComponent: React.FC = () => {
   const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)
 
   const legend = useMemo(() => visibleLayers.map((vl) => {

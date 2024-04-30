@@ -1,10 +1,10 @@
+import React, { useMemo } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { availableLayers } from "../../config/layers"
-import React, { useMemo } from "react"
 import { WMSLayer } from "../../components/map/layer/WMSLayer"
 
-export const ConnectedOverlayLayersComponent = () => {
+export const ConnectedOverlayLayersComponent: React.FC = () => {
   const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)
   const layers = useSelector((state: RootState) => state.data.layers)
   const layerDimensions = useSelector((state: RootState) => state.uiState.map.layerDimensions)

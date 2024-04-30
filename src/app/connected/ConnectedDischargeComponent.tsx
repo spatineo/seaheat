@@ -6,7 +6,7 @@ import { setName, setDepth } from "../slices/discharge"
 import { wrapAction } from "./utils"
 import { TemperatureComponent } from "../../components/TemperatureComponent/TemperatureComponent"
 
-export const ConnectedDischargeComponent = () => {
+export const ConnectedDischargeComponent: React.FC = () => {
   const dischargeProps = useSelector((state: RootState) => state.discharge)
   const dischargeTemperature = useSelector((state: RootState) => state.data.dischargeTemperature)
   const distanceToFacility = useSelector((state: RootState) => state.data.distances.facilityToDischarge)
