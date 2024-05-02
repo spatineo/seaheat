@@ -89,7 +89,7 @@ export const dataSlice = createSlice({
 export const {
   setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance,
   setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
-  restoreDataState, setIntakeTemperaturePerMonth
+  restoreDataState, setIntakeTemperaturePerMonth, setWaterThroughputVolume
 } = dataSlice.actions
 
 export default dataSlice.reducer
