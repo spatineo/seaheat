@@ -10,7 +10,9 @@ import {
   setIntakeToFacilityDistance,
   setMonthlyAveragePowerOutput,
   setIntakeTemperaturePerMonth,
-  setIntakeTemperature
+  setIntakeTemperature,
+  setDischargeTemperature,
+  setTemperatureAtDischargeDepth
 } from "../app/slices/data"
 import { getLength } from "ol/sphere"
 import { LineString } from "ol/geom"
@@ -167,6 +169,41 @@ startAppListening({
       listenerApi.dispatch(setIntakeTemperaturePerMonth(output))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating IntakeTemperaturePerMonth: ${error}`))
+    }
+  }
+})
+
+startAppListening({
+  matcher: isAnyOf(initMathAction, setIntakeDepth, setDischargeTemperature),
+  effect: (_action, listenerApi) => {
+    try {
+      const { discharge: { depth }, data: { dischargeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
+      const xAxis = { label: 'Month', values: [] as Array<string> }
+      const series = { label: "Temperature", values: [] as Array<number> }
+
+      const findEqualDepthIndex = axes.y.values.findIndex(val => depth !== null && val >= depth)
+
+      const searchForValues = findEqualDepthIndex > -1 ? temperatureValues.filter((tmp) => tmp.y === findEqualDepthIndex && tmp) : null
+      Array(12).fill(0).forEach((_v, month: number) => {
+        const d = new Date(2001, month, 1)
+        const calculatedValues = searchForValues?.find((v) => v.x === month)?.value
+        series.values[month] = Number(calculatedValues)
+        xAxis.values[month] = format(d, 'LLL')
+      })
+
+      const output = {
+        unit: 'C',
+        axes: { x: xAxis },
+        series: [series]
+      }
+
+      if (depth === null || temperatureValues.length === 0) {
+        output.series = []
+      }
+
+      listenerApi.dispatch(setTemperatureAtDischargeDepth(output))
+    } catch (error) {
+      listenerApi.dispatch(processingError(`Error calculating Temperature at discharge depth: ${error}`))
     }
   }
 })
