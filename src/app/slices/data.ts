@@ -5,7 +5,8 @@ import { GraphData, Layer, TemperatureData, emptyGraphData, emptyTemperatureData
 export enum OutputType {
   monthlyAveragePowerOutput = "monthlyAveragePowerOutput",
   monthlyPowerRating = "monthlyPowerRating",
-  IntakeTemperaturePerMonth = "IntakeTemperaturePerMonth"
+  IntakeTemperaturePerMonth = "IntakeTemperaturePerMonth",
+  temperatureAtDischargeDepth = "temperatureAtDischargeDepth"
 }
 
 export interface WMSLayerType {
@@ -69,6 +70,9 @@ export const dataSlice = createSlice({
     setIntakeTemperaturePerMonth: (state, action: PayloadAction<GraphData>) => {
       state.output.IntakeTemperaturePerMonth = action.payload
     },
+    setTemperatureAtDischargeDepth: (state, action: PayloadAction<GraphData>) => {
+      state.output.temperatureAtDischargeDepth = action.payload
+    },
     setLayer: (state, action: PayloadAction<WMSLayerType>) => {
       state.layers[action.payload.id] = action.payload
     },
@@ -83,7 +87,7 @@ export const dataSlice = createSlice({
 export const {
   setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance,
   setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
-  restoreDataState, setIntakeTemperaturePerMonth
+  restoreDataState, setIntakeTemperaturePerMonth, setTemperatureAtDischargeDepth
 } = dataSlice.actions
 
 export default dataSlice.reducer
