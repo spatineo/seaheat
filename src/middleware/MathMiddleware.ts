@@ -14,7 +14,8 @@ import {
   setDischargeTemperature,
   setTemperatureAtDischargeDepth,
   setWaterThroughputVolume,
-  setDischargeWaterTemperature
+  setDischargeWaterTemperature,
+  setDischargeTemperatureDifference
 } from "../app/slices/data"
 import { getLength } from "ol/sphere"
 import { LineString } from "ol/geom"
@@ -271,6 +272,40 @@ startAppListening({
       listenerApi.dispatch(setDischargeWaterTemperature(output))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating Discharge water temperature: ${error}`))
+    }
+  }
+})
+
+startAppListening({
+  matcher: isAnyOf(initMathAction, restoreDataState, setTemperatureAtDischargeDepth, setDischargeWaterTemperature),
+  effect: (_action, listenerApi) => {
+    try {
+      const xAxis = { label: 'Month', values: [] as Array<string> }
+      const series = { label: "Temperature", values: [] as Array<number> }
+      const { data: { output: { dischargeWaterTemperature, temperatureAtDischargeDepth } } } = listenerApi.getState()
+
+      Array(12).fill(0).forEach((_v, month: number) => {
+        temperatureAtDischargeDepth.series.forEach((tepmDischargeDepth) => {
+          console.log(tepmDischargeDepth)
+          dischargeWaterTemperature.series.forEach((dischargeWaterTemp) => {
+            if (!isNaN(tepmDischargeDepth.values[month]) && !isNaN(dischargeWaterTemp.values[month])) {
+              const d = new Date(2001, month, 1)
+              series.values[month] = tepmDischargeDepth.values[month] - dischargeWaterTemp.values[month]
+              xAxis.values[month] = format(d, 'LLL')
+            }
+          })
+        })
+      })
+
+      const output = {
+        unit: 'C',
+        axes: { x: xAxis },
+        series: [series]
+      }
+
+      listenerApi.dispatch(setDischargeTemperatureDifference(output))
+    } catch (error) {
+      listenerApi.dispatch(processingError(`Error calculating Discharge Temperature Difference: ${error}`))
     }
   }
 })
