@@ -177,7 +177,6 @@ startAppListening({
   effect: (_action, listenerApi) => {
     try {
       const { facility: { intakeVolume } } = listenerApi.getState()
-      console.log('intake voulune', intakeVolume)
       const xAxis = { label: 'Month', values: [] as Array<string> }
       const series = { label: "Water flow", values: [] as Array<number> }
 
