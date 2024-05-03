@@ -6,6 +6,7 @@ export enum OutputType {
   monthlyAveragePowerOutput = "monthlyAveragePowerOutput",
   monthlyPowerRating = "monthlyPowerRating",
   IntakeTemperaturePerMonth = "IntakeTemperaturePerMonth",
+  temperatureAtDischargeDepth = "temperatureAtDischargeDepth",
   waterThroughputVolume = "waterThroughputVolume"
 }
 
@@ -72,6 +73,9 @@ export const dataSlice = createSlice({
     setIntakeTemperaturePerMonth: (state, action: PayloadAction<GraphData>) => {
       state.output.IntakeTemperaturePerMonth = action.payload
     },
+    setTemperatureAtDischargeDepth: (state, action: PayloadAction<GraphData>) => {
+      state.output.temperatureAtDischargeDepth = action.payload
+    },
     setWaterThroughputVolume: (state, action: PayloadAction<GraphData>) => {
       state.output.waterThroughputVolume = action.payload
     },
@@ -89,7 +93,7 @@ export const dataSlice = createSlice({
 export const {
   setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance,
   setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
-  restoreDataState, setIntakeTemperaturePerMonth, setWaterThroughputVolume
+  restoreDataState, setIntakeTemperaturePerMonth, setTemperatureAtDischargeDepth, setWaterThroughputVolume
 } = dataSlice.actions
 
 export default dataSlice.reducer
