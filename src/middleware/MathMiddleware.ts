@@ -1,7 +1,7 @@
 import { createAction, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { setLocation as setIntakeLocation, setDepth as setIntakeDepth } from "../app/slices/intake"
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility"
-import { setLocation as setDischargeLocation } from "../app/slices/discharge"
+import { setLocation as setDischargeLocation, setDepth as setDischargeDepth } from "../app/slices/discharge"
 import { RootState, AppDispatch } from "../store"
 import {
   restoreDataState,
@@ -203,7 +203,7 @@ startAppListening({
 })
 
 startAppListening({
-  matcher: isAnyOf(initMathAction, setIntakeDepth, setDischargeTemperature),
+  matcher: isAnyOf(initMathAction, setDischargeDepth, setDischargeTemperature),
   effect: (_action, listenerApi) => {
     try {
       const { discharge: { depth }, data: { dischargeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
