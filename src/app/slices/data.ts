@@ -6,8 +6,9 @@ export enum OutputType {
   monthlyAveragePowerOutput = "monthlyAveragePowerOutput",
   monthlyPowerRating = "monthlyPowerRating",
   IntakeTemperaturePerMonth = "IntakeTemperaturePerMonth",
-  temperatureAtDischargeDepth = "temperatureAtDischargeDepth",
-  waterThroughputVolume = "waterThroughputVolume"
+  waterThroughputVolume = "waterThroughputVolume",
+  dischargeWaterTemperature = "dischargeWaterTemperature",
+  temperatureAtDischargeDepth = "temperatureAtDischargeDepth"
 }
 
 export interface WMSLayerType {
@@ -42,8 +43,9 @@ const initialState: DataState = {
     [OutputType.monthlyAveragePowerOutput.toString()]: emptyGraphData(),
     [OutputType.monthlyPowerRating.toString()]: emptyGraphData(),
     [OutputType.IntakeTemperaturePerMonth.toString()]: emptyGraphData(),
-    [OutputType.waterThroughputVolume.toString()]: emptyGraphData()
-
+    [OutputType.waterThroughputVolume.toString()]: emptyGraphData(),
+    [OutputType.temperatureAtDischargeDepth.toString()]: emptyGraphData(),
+    [OutputType.dischargeWaterTemperature.toString()]: emptyGraphData()
   },
   layers: {}
 }
@@ -79,6 +81,9 @@ export const dataSlice = createSlice({
     setWaterThroughputVolume: (state, action: PayloadAction<GraphData>) => {
       state.output.waterThroughputVolume = action.payload
     },
+    setDischargeWaterTemperature: (state, action: PayloadAction<GraphData>) => {
+      state.output.dischargeWaterTemperature = action.payload
+    },
     setLayer: (state, action: PayloadAction<WMSLayerType>) => {
       state.layers[action.payload.id] = action.payload
     },
@@ -93,7 +98,8 @@ export const dataSlice = createSlice({
 export const {
   setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance,
   setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
-  restoreDataState, setIntakeTemperaturePerMonth, setTemperatureAtDischargeDepth, setWaterThroughputVolume
+  restoreDataState, setIntakeTemperaturePerMonth, setTemperatureAtDischargeDepth, setWaterThroughputVolume,
+  setDischargeWaterTemperature
 } = dataSlice.actions
 
 export default dataSlice.reducer
