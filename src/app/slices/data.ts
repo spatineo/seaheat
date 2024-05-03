@@ -44,7 +44,8 @@ const initialState: DataState = {
     [OutputType.monthlyPowerRating.toString()]: emptyGraphData(),
     [OutputType.IntakeTemperaturePerMonth.toString()]: emptyGraphData(),
     [OutputType.waterThroughputVolume.toString()]: emptyGraphData(),
-    [OutputType.dischargeWaterTemperature]: emptyGraphData()
+    [OutputType.temperatureAtDischargeDepth.toString()]: emptyGraphData(),
+    [OutputType.dischargeWaterTemperature.toString()]: emptyGraphData()
   },
   layers: {}
 }
@@ -97,7 +98,8 @@ export const dataSlice = createSlice({
 export const {
   setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance,
   setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
-  restoreDataState, setIntakeTemperaturePerMonth, setTemperatureAtDischargeDepth, setWaterThroughputVolume
+  restoreDataState, setIntakeTemperaturePerMonth, setTemperatureAtDischargeDepth, setWaterThroughputVolume,
+  setDischargeWaterTemperature
 } = dataSlice.actions
 
 export default dataSlice.reducer
