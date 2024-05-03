@@ -5,7 +5,8 @@ import { GraphData, Layer, TemperatureData, emptyGraphData, emptyTemperatureData
 export enum OutputType {
   monthlyAveragePowerOutput = "monthlyAveragePowerOutput",
   monthlyPowerRating = "monthlyPowerRating",
-  IntakeTemperaturePerMonth = "IntakeTemperaturePerMonth"
+  IntakeTemperaturePerMonth = "IntakeTemperaturePerMonth",
+  waterThroughputVolume = "waterThroughputVolume"
 }
 
 export interface WMSLayerType {
@@ -39,7 +40,9 @@ const initialState: DataState = {
   output: {
     [OutputType.monthlyAveragePowerOutput.toString()]: emptyGraphData(),
     [OutputType.monthlyPowerRating.toString()]: emptyGraphData(),
-    [OutputType.IntakeTemperaturePerMonth.toString()]: emptyGraphData()
+    [OutputType.IntakeTemperaturePerMonth.toString()]: emptyGraphData(),
+    [OutputType.waterThroughputVolume.toString()]: emptyGraphData()
+
   },
   layers: {}
 }
@@ -69,6 +72,9 @@ export const dataSlice = createSlice({
     setIntakeTemperaturePerMonth: (state, action: PayloadAction<GraphData>) => {
       state.output.IntakeTemperaturePerMonth = action.payload
     },
+    setWaterThroughputVolume: (state, action: PayloadAction<GraphData>) => {
+      state.output.waterThroughputVolume = action.payload
+    },
     setLayer: (state, action: PayloadAction<WMSLayerType>) => {
       state.layers[action.payload.id] = action.payload
     },
@@ -83,7 +89,7 @@ export const dataSlice = createSlice({
 export const {
   setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance,
   setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
-  restoreDataState, setIntakeTemperaturePerMonth
+  restoreDataState, setIntakeTemperaturePerMonth, setWaterThroughputVolume
 } = dataSlice.actions
 
 export default dataSlice.reducer

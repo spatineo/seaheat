@@ -10,7 +10,8 @@ import {
   setIntakeToFacilityDistance,
   setMonthlyAveragePowerOutput,
   setIntakeTemperaturePerMonth,
-  setIntakeTemperature
+  setIntakeTemperature,
+  setWaterThroughputVolume
 } from "../app/slices/data"
 import { getLength } from "ol/sphere"
 import { LineString } from "ol/geom"
@@ -167,6 +168,34 @@ startAppListening({
       listenerApi.dispatch(setIntakeTemperaturePerMonth(output))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating IntakeTemperaturePerMonth: ${error}`))
+    }
+  }
+})
+
+startAppListening({
+  matcher: isAnyOf(initMathAction, restoreDataState, setIntakeVolume),
+  effect: (_action, listenerApi) => {
+    try {
+      const { facility: { intakeVolume } } = listenerApi.getState()
+      const xAxis = { label: 'Month', values: [] as Array<string> }
+      const series = { label: "Water flow", values: [] as Array<number> }
+
+      Array(12).fill(0).forEach((_v, month: number) => {
+        const d = new Date(2001, month, 1)
+        const calculatedValues = intakeVolume[month]
+        series.values[month] = Number(calculatedValues)
+        xAxis.values[month] = format(d, 'LLL')
+      })
+
+      const output = {
+        unit: 'm3/s',
+        axes: { x: xAxis },
+        series: [series]
+      }
+
+      listenerApi.dispatch(setWaterThroughputVolume(output))
+    } catch (error) {
+      listenerApi.dispatch(processingError(`Error calculating Water Throughput Volume: ${error}`))
     }
   }
 })
