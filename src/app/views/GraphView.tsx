@@ -50,7 +50,9 @@ export const GraphView: React.FC = () => {
           <Button onClick={() => exportCsv(graphs[visibleGraph])}>Download CSV</Button>
         </Box>
       </Flex>
-      {graphs[visibleGraph].series.length === 0 ? <Box position="relative" ml="2">No data series</Box> : <GraphComponent data={graphs[visibleGraph]} height={150} />}
+      {(graphs[visibleGraph] === undefined || graphs[visibleGraph].series.length === 0)
+        ? <Box position="relative" ml="2">No data series</Box>
+        : <GraphComponent data={graphs[visibleGraph]} height={150} />}
     </Box>
   )
 }
