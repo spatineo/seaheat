@@ -13,7 +13,8 @@ import {
   setIntakeTemperature,
   setDischargeTemperature,
   setTemperatureAtDischargeDepth,
-  setWaterThroughputVolume
+  setWaterThroughputVolume,
+  setDischargeWaterTemperature
 } from "../app/slices/data"
 import { getLength } from "ol/sphere"
 import { LineString } from "ol/geom"
@@ -139,7 +140,7 @@ startAppListening({
 })
 
 startAppListening({
-  matcher: isAnyOf(initMathAction, setIntakeDepth, setIntakeTemperature),
+  matcher: isAnyOf(initMathAction, restoreDataState, setIntakeDepth, setIntakeTemperature),
   effect: (_action, listenerApi) => {
     try {
       const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
@@ -203,7 +204,7 @@ startAppListening({
 })
 
 startAppListening({
-  matcher: isAnyOf(initMathAction, setDischargeDepth, setDischargeTemperature),
+  matcher: isAnyOf(initMathAction, restoreDataState, setDischargeDepth, setDischargeTemperature),
   effect: (_action, listenerApi) => {
     try {
       const { discharge: { depth }, data: { dischargeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
@@ -233,6 +234,43 @@ startAppListening({
       listenerApi.dispatch(setTemperatureAtDischargeDepth(output))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating Temperature at discharge depth: ${error}`))
+    }
+  }
+})
+
+startAppListening({
+  matcher: isAnyOf(initMathAction, restoreDataState, setIntakeDepth, setIntakeTemperature, setTemperatureDelta),
+  effect: (_action, listenerApi) => {
+    try {
+      const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
+      const { facility: { temperatureDelta } } = listenerApi.getState()
+      const xAxis = { label: 'Month', values: [] as Array<string> }
+      const series = { label: "Temperature", values: [] as Array<number> }
+
+      const findEqualDepthIndex = axes.y.values.findIndex(val => depth !== null && val >= depth)
+
+      const searchForValues = findEqualDepthIndex > -1 ? temperatureValues.filter((tmp) => tmp.y === findEqualDepthIndex && tmp) : null
+      Array(12).fill(0).forEach((_v, month: number) => {
+        const d = new Date(2001, month, 1)
+        const calculatedValues = searchForValues?.find((v) => v.x === month)?.value
+        series.values[month] = Number(calculatedValues)
+        xAxis.values[month] = format(d, 'LLL')
+      })
+
+      if (series.values && temperatureDelta.length === series.values.length) {
+        series.values.forEach((item, index) => {
+          series.values[index] = item - temperatureDelta[index]
+        })
+      }
+
+      const output = {
+        unit: 'C',
+        axes: { x: xAxis },
+        series: [series]
+      }
+      listenerApi.dispatch(setDischargeWaterTemperature(output))
+    } catch (error) {
+      listenerApi.dispatch(processingError(`Error calculating Discharge water temperature: ${error}`))
     }
   }
 })
