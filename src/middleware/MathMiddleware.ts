@@ -284,16 +284,16 @@ startAppListening({
       const series = { label: "Temperature", values: [] as Array<number> }
       const { data: { output: { dischargeWaterTemperature, temperatureAtDischargeDepth } } } = listenerApi.getState()
 
+      const temperatureDischargeArrayValues = temperatureAtDischargeDepth.series[0]
+      const dischargeWaterTempArrayValues = dischargeWaterTemperature.series[0]
       Array(12).fill(0).forEach((_v, month: number) => {
-        temperatureAtDischargeDepth.series.forEach((tepmDischargeDepth) => {
-          dischargeWaterTemperature.series.forEach((dischargeWaterTemp) => {
-            if (!isNaN(tepmDischargeDepth.values[month]) && !isNaN(dischargeWaterTemp.values[month])) {
-              const d = new Date(2001, month, 1)
-              series.values[month] = dischargeWaterTemp.values[month] - tepmDischargeDepth.values[month]
-              xAxis.values[month] = format(d, 'LLL')
-            }
-          })
-        })
+        if (temperatureDischargeArrayValues !== undefined && dischargeWaterTempArrayValues !== undefined) {
+          if (!isNaN(temperatureDischargeArrayValues.values[month]) && !isNaN(dischargeWaterTempArrayValues.values[month])) {
+            const d = new Date(2001, month, 1)
+            series.values[month] = temperatureDischargeArrayValues.values[month] - dischargeWaterTempArrayValues.values[month]
+            xAxis.values[month] = format(d, 'LLL')
+          }
+        }
       })
 
       const output = {
