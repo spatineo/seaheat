@@ -286,11 +286,10 @@ startAppListening({
 
       Array(12).fill(0).forEach((_v, month: number) => {
         temperatureAtDischargeDepth.series.forEach((tepmDischargeDepth) => {
-          console.log(tepmDischargeDepth)
           dischargeWaterTemperature.series.forEach((dischargeWaterTemp) => {
             if (!isNaN(tepmDischargeDepth.values[month]) && !isNaN(dischargeWaterTemp.values[month])) {
               const d = new Date(2001, month, 1)
-              series.values[month] = tepmDischargeDepth.values[month] - dischargeWaterTemp.values[month]
+              series.values[month] = dischargeWaterTemp.values[month] - tepmDischargeDepth.values[month]
               xAxis.values[month] = format(d, 'LLL')
             }
           })
