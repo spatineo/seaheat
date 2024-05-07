@@ -3,6 +3,7 @@ import { setLocation as setIntakeLocation, setDepth as setIntakeDepth } from "..
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility"
 import { setLocation as setDischargeLocation, setDepth as setDischargeDepth } from "../app/slices/discharge"
 import { RootState, AppDispatch } from "../store"
+import { GraphData } from "../types"
 import {
   restoreDataState,
   setFacilityToDischargeDistance,
@@ -286,20 +287,26 @@ startAppListening({
 
       const temperatureDischargeArrayValues = temperatureAtDischargeDepth.series[0]
       const dischargeWaterTempArrayValues = dischargeWaterTemperature.series[0]
-      Array(12).fill(0).forEach((_v, month: number) => {
-        if (temperatureDischargeArrayValues !== undefined && dischargeWaterTempArrayValues !== undefined) {
-          if (!isNaN(temperatureDischargeArrayValues.values[month]) && !isNaN(dischargeWaterTempArrayValues.values[month])) {
-            const d = new Date(2001, month, 1)
-            series.values[month] = temperatureDischargeArrayValues.values[month] - dischargeWaterTempArrayValues.values[month]
-            xAxis.values[month] = format(d, 'LLL')
-          }
-        }
-      })
 
-      const output = {
+      let output: GraphData = {
         unit: 'C',
-        axes: { x: xAxis },
-        series: [series]
+        axes: { x: { label: 'Month', values: [] } },
+        series: []
+      }
+
+      if (temperatureDischargeArrayValues === undefined || dischargeWaterTempArrayValues === undefined) {
+        output.series = []
+      } else {
+        Array(12).fill(0).forEach((_v, month: number) => {
+          const d = new Date(2001, month, 1)
+          series.values[month] = temperatureDischargeArrayValues.values[month] - dischargeWaterTempArrayValues.values[month]
+          xAxis.values[month] = format(d, 'LLL')
+        })
+        output = {
+          unit: 'C',
+          axes: { x: xAxis },
+          series: [series]
+        }
       }
 
       listenerApi.dispatch(setDischargeTemperatureDifference(output))
