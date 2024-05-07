@@ -47,12 +47,15 @@ export const UploadView: React.FC<UploadViewProps> = ({
   }
 
   return (
-    <Box maxW="90%">
+    <Box maxW="100%">
       <InputGroup
         sx={{ backgroundColor: "#f9f9f9" }}
         onClick={handleClick}
         display="flex"
         alignItems="center"
+        position="relative"
+        width="100%"
+        gap="1"
         onDragOver={(event) => {
           event.preventDefault()
           event.stopPropagation()
@@ -61,16 +64,22 @@ export const UploadView: React.FC<UploadViewProps> = ({
         onDrop={handleDrop}
         onDragLeave={handleDragLeave}
       >
-        <Button fontWeight={400} backgroundColor="#f9f9f9" fontSize="calc(4px + 0.5vw + 0.5vh)">{buttonText}</Button>
+        <Button
+          fontWeight={400}
+          backgroundColor="#f9f9f9"
+          fontSize="calc(4px + 0.5vw + 0.5vh)"
+          position="relative" w="30%">
+          {buttonText}
+        </Button>
         <Flex
           pt="2"
           pb="2"
           sx={{
-            width: "100%",
+            width: "70%",
+            position: "relative",
             textAlign: "justify",
             alignItems: "center",
             marginLeft: "2",
-            borderRadius: "3",
             backgroundColor: isDraggingOver ? "#A0A0A0" : "#f9f9f9"
           }}
         >
@@ -81,7 +90,8 @@ export const UploadView: React.FC<UploadViewProps> = ({
               overflow: "hidden",
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",
-              width: "calc(100% - 30%)"
+              width: "auto"
+              // width: "calc(100% - 30%)"
             }}>{dragDropText}</Text>
           <Input
             type="file"
