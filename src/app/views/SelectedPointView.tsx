@@ -31,7 +31,7 @@ export const SelectedPointView: React.FC = () => {
         size="md"
         mt="1"
       >
-        <TabList position="relative">
+        <TabList position="relative" gap="1">
           <Tab>Intake</Tab>
           <Tab>Facility</Tab>
           <Tab>Discharge</Tab>
