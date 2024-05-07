@@ -32,9 +32,9 @@ export const SelectedPointView: React.FC = () => {
         mt="1"
       >
         <TabList position="relative" gap="1">
-          <Tab>Intake</Tab>
-          <Tab>Facility</Tab>
-          <Tab>Discharge</Tab>
+          <Tab fontSize="calc(4px + 0.5vw + 0.5vh)">Intake</Tab>
+          <Tab fontSize="calc(4px + 0.5vw + 0.5vh)">Facility</Tab>
+          <Tab fontSize="calc(4px + 0.5vw + 0.5vh)">Discharge</Tab>
         </TabList>
 
         <TabPanels position="relative">
