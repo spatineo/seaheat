@@ -37,7 +37,7 @@ export const GraphView: React.FC = () => {
 
   return (
     <Box borderWidth='1px' borderRadius='lg' padding={0} height='100%' width='100%'>
-      <Flex w='100%' padding={2}>
+      <Flex w='100%' padding={2} position="relative">
         <Box>
           <Select value={visibleGraph} onChange={(evt) => dispatch(setVisibleGraph(evt.target.value as OutputType))}>
             {Object.values(OutputType).filter((v) => isNaN(Number(v))).map((key) =>
@@ -46,8 +46,8 @@ export const GraphView: React.FC = () => {
           </Select>
         </Box>
         <Spacer />
-        <Box>
-          <Button onClick={() => exportCsv(graphs[visibleGraph])}>Download CSV</Button>
+        <Box mr="2" position="relative">
+          <Button onClick={() => exportCsv(graphs[visibleGraph])} mr="2">Download CSV</Button>
         </Box>
       </Flex>
       {(graphs[visibleGraph] === undefined || graphs[visibleGraph].series.length === 0)
