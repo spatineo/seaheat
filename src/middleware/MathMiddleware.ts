@@ -288,25 +288,19 @@ startAppListening({
       const temperatureDischargeArrayValues = temperatureAtDischargeDepth.series[0]
       const dischargeWaterTempArrayValues = dischargeWaterTemperature.series[0]
 
-      let output: GraphData = {
+      const output: GraphData = {
         unit: 'C',
         axes: { x: { label: 'Month', values: [] } },
         series: []
       }
-
-      if (temperatureDischargeArrayValues === undefined || dischargeWaterTempArrayValues === undefined) {
-        output.series = []
-      } else {
+      if (temperatureDischargeArrayValues !== undefined && dischargeWaterTempArrayValues !== undefined) {
         Array(12).fill(0).forEach((_v, month: number) => {
           const d = new Date(2001, month, 1)
           series.values[month] = temperatureDischargeArrayValues.values[month] - dischargeWaterTempArrayValues.values[month]
           xAxis.values[month] = format(d, 'LLL')
         })
-        output = {
-          unit: 'C',
-          axes: { x: xAxis },
-          series: [series]
-        }
+        output.axes = { x: xAxis }
+        output.series = [series]
       }
 
       listenerApi.dispatch(setDischargeTemperatureDifference(output))
