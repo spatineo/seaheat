@@ -24,9 +24,10 @@ export const SelectedPointView: React.FC = () => {
     <Box minW="100%" position="relative" pr="4" m="0" boxSizing="border-box">
       <Tabs
         index={typePerTab.indexOf(currentTab)}
-        variant='soft-rounded'
+        variant='enclosed'
         colorScheme='gray'
-        isFitted onChange={chooseTab}
+        isFitted
+        onChange={chooseTab}
         position="relative"
         size="md"
         mt="1"
