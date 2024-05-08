@@ -296,7 +296,7 @@ startAppListening({
       if (temperatureDischargeArrayValues !== undefined && dischargeWaterTempArrayValues !== undefined) {
         Array(12).fill(0).forEach((_v, month: number) => {
           const d = new Date(2001, month, 1)
-          series.values[month] = temperatureDischargeArrayValues.values[month] - dischargeWaterTempArrayValues.values[month]
+          series.values[month] = dischargeWaterTempArrayValues.values[month] - temperatureDischargeArrayValues.values[month]
           xAxis.values[month] = format(d, 'LLL')
         })
         output.axes = { x: xAxis }
