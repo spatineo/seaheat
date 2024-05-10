@@ -21,18 +21,21 @@ export const SelectedPointView: React.FC = () => {
   }
 
   return (
-    <Box minW="100%" position="relative" p="0" m="0" boxSizing="border-box">
+    <Box minW="100%" position="relative" pr="4" m="0" boxSizing="border-box">
       <Tabs
         index={typePerTab.indexOf(currentTab)}
         variant='enclosed'
-        colorScheme='green'
-        isFitted onChange={chooseTab}
+        colorScheme='gray'
+        isFitted
+        onChange={chooseTab}
         position="relative"
+        size="md"
+        mt="1"
       >
-        <TabList position="relative">
-          <Tab>Intake</Tab>
-          <Tab>Facility</Tab>
-          <Tab>Discharge</Tab>
+        <TabList position="relative" gap="1">
+          <Tab fontSize="calc(4px + 0.5vw + 0.5vh)">Intake</Tab>
+          <Tab fontSize="calc(4px + 0.5vw + 0.5vh)">Facility</Tab>
+          <Tab fontSize="calc(4px + 0.5vw + 0.5vh)">Discharge</Tab>
         </TabList>
 
         <TabPanels position="relative">
