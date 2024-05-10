@@ -53,5 +53,14 @@ export const availableLayers: Array<LayerConfiguration> = [
     isDatalayer: true,
     type: 'WMS',
     dimensions: ['elevation']
+  },
+  {
+    id: 'a404e31f-3035-40b7-905a-25667ac11141',
+    title: 'Smartmet',
+    capabilitiesUrl: 'https://smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
+    layer: 'seaheat-customer:seaheat-producer:bottomtemperature',
+    isDatalayer: true,
+    type: 'WMS',
+    dimensions: ['time']
   }
 ]
