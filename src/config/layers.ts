@@ -56,11 +56,18 @@ export const availableLayers: Array<LayerConfiguration> = [
   },
   {
     id: 'a404e31f-3035-40b7-905a-25667ac11141',
-    title: 'Smartmet',
+    title: 'Seaheat bottom temperature',
     capabilitiesUrl: 'https://smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
     layer: 'seaheat-customer:seaheat-producer:bottomtemperature',
     isDatalayer: true,
     type: 'WMS',
-    dimensions: ['time']
+    dimensions: ['time'],
+    legend: {
+      width: 345,
+      height: 250,
+      // eslint-disable-next-line max-len
+      url: "https://smartmet-server.out.ock.fmi.fi/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=seaheat-customer%3Aseaheat-producer%3Abottomtemperature&width=345&height=250",
+      scale: 0.8
+    }
   }
 ]
