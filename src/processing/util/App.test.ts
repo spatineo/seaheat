@@ -1,5 +1,5 @@
 import { expect, test } from "vitest"
-import { parseDimensionValues, convertDimensionStringValue } from "../processing/util/helpers"
+import { parseDimensionValues, convertDimensionStringValue } from "./helpers"
 
 test('convert dimension value seperated with slash', () => {
   const dimensionValues = "2005-01-01T12:00:00Z/2005-12-31T12:00:00Z/PT24"
