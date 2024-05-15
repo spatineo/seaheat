@@ -1,32 +1,43 @@
-import { parseISO, isValid, add, format } from "date-fns"
+import { add } from "date-fns"
 import * as duration from "duration-fns"
 
-function isValidDateString (dateString: string) {
-  return isValid(parseISO(dateString))
-}
-
 export function convertDimensionStringValue (stringValue: string) {
-  // eslint-disable-next-line no-useless-escape
-  return stringValue.trim().split(/[,\/]+/)
-    .map(value => value.trim())
-    .filter(value => value !== '')
+  const initSplit = stringValue.split(/[,]/).map(value => value.trim())
+  let seperator = false
+
+  for (const value of initSplit) {
+    if (value.includes("/")) {
+      seperator = true
+      break
+    }
+  }
+
+  return {
+    seperator,
+    value: initSplit
+  }
 }
 
 export function parseDimensionValues (valueString: string) {
   const values = convertDimensionStringValue(valueString)
+  console.log('values', values)
   const parsedValues: string[] = []
-  if (isValidDateString(values[0]) && isValidDateString(values[1])) {
-    const parsedDuration = duration.toDays(values[2])
-    const startDate = new Date(values[0])
-    const endDate = new Date(values[1])
+  if (values.seperator) {
+    const items = values.value[0]
+    const durationValue = values.value[0].split("/")[2]
+    const parsedDuration = duration.parse(durationValue)
+
+    const startDate = new Date(items.split('/')[0])
+    const endDate = new Date(items.split('/')[1])
     let currentDate: Date = new Date(startDate)
 
     while (currentDate <= endDate) {
-      parsedValues.push(format(new Date(currentDate), "yyy-MM-dd"))
-      currentDate = add(currentDate, { days: parsedDuration })
+      parsedValues.push(new Date(currentDate).toISOString())
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      currentDate = add(currentDate, parsedDuration)
     }
   } else {
-    parsedValues.push(...values)
+    values.value.forEach(val => parsedValues.push(val))
   }
   return parsedValues
 }
