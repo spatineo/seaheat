@@ -1,4 +1,4 @@
-import { isAfter, parseISO, isValid, add, format } from "date-fns"
+import { parseISO, isValid, add, format } from "date-fns"
 import * as duration from "duration-fns"
 
 function isValidDateString (dateString: string) {
@@ -14,18 +14,16 @@ export function convertDimensionStringValue (stringValue: string) {
 
 export function parseDimensionValues (valueString: string) {
   const values = convertDimensionStringValue(valueString)
-  const parsedValues: (string | Date)[] = []
+  const parsedValues: string[] = []
   if (isValidDateString(values[0]) && isValidDateString(values[1])) {
     const parsedDuration = duration.toDays(values[2])
-    if (!isAfter(values[0], values[1])) {
-      const startDate = new Date(values[0])
-      const endDate = new Date(values[1])
-      let currentDate: Date = new Date(startDate)
+    const startDate = new Date(values[0])
+    const endDate = new Date(values[1])
+    let currentDate: Date = new Date(startDate)
 
-      while (currentDate <= endDate) {
-        parsedValues.push(format(new Date(currentDate), "yyy-MM-dd"))
-        currentDate = add(currentDate, { days: parsedDuration })
-      }
+    while (currentDate <= endDate) {
+      parsedValues.push(format(new Date(currentDate), "yyy-MM-dd"))
+      currentDate = add(currentDate, { days: parsedDuration })
     }
   } else {
     parsedValues.push(...values)
