@@ -20,7 +20,6 @@ export function convertDimensionStringValue (stringValue: string) {
 
 export function parseDimensionValues (valueString: string) {
   const values = convertDimensionStringValue(valueString)
-  console.log('values', values)
   const parsedValues: string[] = []
   if (values.seperator) {
     const items = values.value[0]
