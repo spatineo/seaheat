@@ -40,3 +40,13 @@ test('return daily when duration is PT24H', () => {
     '2023-05-13T00:00:00.000Z'
   ])
 })
+
+test('return daily when duration is PT1H30M', () => {
+  const dimensionValues = "2023-05-11T00:00:00Z,2023-05-12T00:00:00Z/2023-05-12T03:00:00Z/PT1H30M"
+  expect(parseDimensionValues(dimensionValues)).toEqual([
+    '2023-05-11T00:00:00Z',
+    '2023-05-12T00:00:00.000Z',
+    '2023-05-12T01:30:00.000Z',
+    '2023-05-12T03:00:00.000Z'
+  ])
+})
