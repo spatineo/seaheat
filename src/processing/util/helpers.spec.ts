@@ -50,3 +50,12 @@ test('return daily when duration is PT1H30M', () => {
     '2023-05-12T03:00:00.000Z'
   ])
 })
+
+test('one month period', () => {
+  const dimensionValues = "2023-01-01T00:00:00Z/2023-03-01T00:00:00Z/P1M"
+  expect(parseDimensionValues(dimensionValues)).toEqual([
+    '2023-01-01T00:00:00.000Z',
+    '2023-02-01T00:00:00.000Z',
+    '2023-03-01T00:00:00.000Z'
+  ])
+})
