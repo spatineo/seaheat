@@ -5,6 +5,7 @@ import { RootState } from "../../store"
 import { availableLayers } from "../../config/layers"
 import { Select } from "@chakra-ui/react"
 import { setLayerDimension } from "../slices/uiState"
+import { parseDimensionValues } from "../../processing/util/helpers"
 
 export const ConnectedLayerDimensionComponent: React.FC = () => {
   const dispatch = useDispatch()
@@ -42,7 +43,7 @@ export const ConnectedLayerDimensionComponent: React.FC = () => {
       <div key={idx}>
         <p>{opt.title}</p>
         {opt.dimensions?.map((d, dIdx) => {
-          const options = d.values.split(',')
+          const options = parseDimensionValues(d.values)
           return (
             <Select placeholder={`No ${d.name}`} key={`${d.name}-${dIdx} selected`}
               onChange={(evt) => { onChange(opt.layerId, d.name, evt.target.value) }}
