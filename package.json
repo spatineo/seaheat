@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",

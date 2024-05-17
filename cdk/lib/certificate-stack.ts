@@ -1,8 +1,8 @@
-import * as cdk from 'aws-cdk-lib';
-import * as route53 from 'aws-cdk-lib/aws-route53';
-import * as certificatemanager from "aws-cdk-lib/aws-certificatemanager";
+import * as cdk from 'aws-cdk-lib'
+import * as route53 from 'aws-cdk-lib/aws-route53'
+import * as certificatemanager from 'aws-cdk-lib/aws-certificatemanager'
 
-import { Construct } from 'constructs';
+import { type Construct } from 'constructs'
 
 export class CertificateStack extends cdk.Stack {
   certificate: certificatemanager.Certificate
@@ -10,35 +10,35 @@ export class CertificateStack extends cdk.Stack {
   hostedZoneId: string
   hostedZone: route53.IHostedZone
 
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor (scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, {
-        env: {
-            region: 'us-east-1'
-        },
-        crossRegionReferences: true,
-        ...props
-    });
+      env: {
+        region: 'us-east-1'
+      },
+      crossRegionReferences: true,
+      ...props
+    })
 
-    const targetEnv = this.node.tryGetContext('environment') || 'staging';
+    const targetEnv = this.node.tryGetContext('environment') || 'staging'
 
-    switch(targetEnv) {
-        case 'staging':
-            this.domainName = 'seaheat-staging.com';
-            this.hostedZoneId = 'Z0660851JG2CK3DEP4C9';
-            break;
-        default:
-            throw Error(`Unknown environment ${targetEnv}`)
+    switch (targetEnv) {
+      case 'staging':
+        this.domainName = 'seaheat-staging.com'
+        this.hostedZoneId = 'Z0660851JG2CK3DEP4C9'
+        break
+      default:
+        throw Error(`Unknown environment ${targetEnv}`)
     }
 
-    this.hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', { zoneName: this.domainName, hostedZoneId: this.hostedZoneId });
+    this.hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', { zoneName: this.domainName, hostedZoneId: this.hostedZoneId })
 
     this.certificate = new certificatemanager.Certificate(this, 'SeaHeatCertificate', {
-        domainName: this.domainName,
-        validation: certificatemanager.CertificateValidation.fromDns(this.hostedZone)
-    });
+      domainName: this.domainName,
+      validation: certificatemanager.CertificateValidation.fromDns(this.hostedZone)
+    })
 
     new cdk.CfnOutput(this, 'WebsiteUrl', {
-        value: `https://${this.domainName}/`
-    });
+      value: `https://${this.domainName}/`
+    })
   }
 }
