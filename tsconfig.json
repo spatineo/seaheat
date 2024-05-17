@@ -20,7 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "cdk"],
+  "include": ["src" ],
   "exclude": ["dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
