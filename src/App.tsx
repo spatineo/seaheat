@@ -39,7 +39,7 @@ const App: React.FC = () => {
               <MapView />
             </Box>
           </Box>
-          <Box width="35vw" boxSizing="border-box">
+          <Box width="35vw" boxSizing="border-box" pr="2">
             <SelectedPointView />
           </Box>
         </Flex>
