@@ -13,8 +13,8 @@ interface FacilityComponentProps extends FacilityProps {
   setIntakeVolume?: (value: MonthValue<number>) => void
   setTemperatureDelta?: (value: MonthValue<number>) => void
   setFacilityEffectivenessFactor?: (value: number) => void
-  intakeDistance: number | null
-  facilityDistance: number | null
+  intakeToFacilityDistance: number | null
+  facilityToDischargeDistance: number | null
 }
 
 export const FacilityComponent: React.FC<FacilityComponentProps> = ({
@@ -27,8 +27,8 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
   setIntakeVolume,
   setTemperatureDelta,
   setFacilityEffectivenessFactor,
-  intakeDistance,
-  facilityDistance
+  intakeToFacilityDistance,
+  facilityToDischargeDistance
 }: FacilityComponentProps) => {
   function callIf<T> (fn: ((v: T) => void) | undefined, value: T) {
     if (fn) fn(value)
@@ -60,19 +60,17 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
         </Flex>
       </Flex>
       <Flex marginTop={3}>
-        {(facilityDistance !== null && intakeDistance !== null)
-          ? <Box>
-            <Box marginTop={2}>
-              <Text>Distance from Intake to Facility : {(intakeDistance / 1000).toFixed(1)} km</Text>
-            </Box>
-            <Box marginTop={2}>
-              <Text>Distance from Facility to Discharge: {(facilityDistance / 1000).toFixed(1)} km</Text>
-            </Box>
-
+        {<Box>
+          {(intakeToFacilityDistance !== null && intakeToFacilityDistance > 0) &&
+          <Box marginTop={2}>
+            {<Text>Distance from Intake to Facility : {(intakeToFacilityDistance / 1000).toFixed(1)} km</Text>}
           </Box>
-          : <Flex marginTop={3}>
-            <Text>Distances: <i>unset</i></Text>
-          </Flex>
+          }
+          {(facilityToDischargeDistance !== null && facilityToDischargeDistance > 0) && <Box marginTop={2}>
+            <Text>Distance from Facility to Discharge: {(facilityToDischargeDistance / 1000).toFixed(1)} km</Text>
+          </Box>
+          }
+        </Box>
         }
       </Flex>
 
