@@ -2,6 +2,22 @@ import { LayerConfiguration } from "../types"
 
 export const availableLayers: Array<LayerConfiguration> = [
   {
+    id: 'a404e31f-3035-40b7-905a-25667ac11141',
+    title: 'Seaheat bottom temperature',
+    capabilitiesUrl: 'https://smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
+    layer: 'seaheat-customer:seaheat-producer:bottomtemperature',
+    isDatalayer: true,
+    type: 'WMS',
+    dimensions: ['time'],
+    legend: {
+      width: 345,
+      height: 250,
+      // eslint-disable-next-line max-len
+      url: "https://smartmet-server.out.ock.fmi.fi/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=seaheat-customer%3Aseaheat-producer%3Abottomtemperature&width=345&height=250",
+      scale: 0.8
+    }
+  },
+  {
     id: 'a13e3405-f2a0-46a2-8030-278d76950fe6',
     title: 'Bathymetry',
     capabilitiesUrl: 'https://geo.vliz.be/geoserver/ows?SERVICE=WMS&REQUEST=GetCapabilities',
@@ -42,31 +58,6 @@ export const availableLayers: Array<LayerConfiguration> = [
       url: 'https://paikkatieto.ymparisto.fi/arcgis/services/Velmukartta/Velmukartta/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=1',
       width: 90,
       height: 468,
-      scale: 0.8
-    }
-  },
-  {
-    id: '010bce28-29bf-4a87-bdf8-65faa63ebe74',
-    title: 'KNMI Temp',
-    capabilitiesUrl: 'https://geoservices.knmi.nl/adaguc-server?DATASET=HARM_N25&SERVICE=WMS&REQUEST=GetCapabilities',
-    layer: 'air_temperature__at_pl',
-    isDatalayer: true,
-    type: 'WMS',
-    dimensions: ['elevation']
-  },
-  {
-    id: 'a404e31f-3035-40b7-905a-25667ac11141',
-    title: 'Seaheat bottom temperature',
-    capabilitiesUrl: 'https://smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
-    layer: 'seaheat-customer:seaheat-producer:bottomtemperature',
-    isDatalayer: true,
-    type: 'WMS',
-    dimensions: ['time'],
-    legend: {
-      width: 345,
-      height: 250,
-      // eslint-disable-next-line max-len
-      url: "https://smartmet-server.out.ock.fmi.fi/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=seaheat-customer%3Aseaheat-producer%3Abottomtemperature&width=345&height=250",
       scale: 0.8
     }
   }
