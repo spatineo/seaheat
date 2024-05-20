@@ -7,6 +7,8 @@ import { FacilityComponent } from "../../components/facility/FacilityComponent"
 
 export const ConnectedFacilityComponent: React.FC = () => {
   const facilityProps = useSelector((state: RootState) => state.facility)
+  const intakeToFacility = useSelector((state: RootState) => state.data.distances.intakeToFacility)
+  const facilityToDischarge = useSelector((state: RootState) => state.data.distances.facilityToDischarge)
   const dispatch = useDispatch()
 
   const intakeCallbacks = {
@@ -16,5 +18,5 @@ export const ConnectedFacilityComponent: React.FC = () => {
     setFacilityEffectivenessFactor: wrapAction(setFacilityEffectivenessFactor, dispatch)
   }
 
-  return (<FacilityComponent {...facilityProps} {...intakeCallbacks} />)
+  return (<FacilityComponent intakeToFacilityDistance={intakeToFacility} facilityToDischargeDistance={facilityToDischarge} {...facilityProps} {...intakeCallbacks} />)
 }

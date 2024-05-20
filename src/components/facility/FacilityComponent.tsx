@@ -13,6 +13,8 @@ interface FacilityComponentProps extends FacilityProps {
   setIntakeVolume?: (value: MonthValue<number>) => void
   setTemperatureDelta?: (value: MonthValue<number>) => void
   setFacilityEffectivenessFactor?: (value: number) => void
+  intakeToFacilityDistance: number | null
+  facilityToDischargeDistance: number | null
 }
 
 export const FacilityComponent: React.FC<FacilityComponentProps> = ({
@@ -24,7 +26,9 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
   setName,
   setIntakeVolume,
   setTemperatureDelta,
-  setFacilityEffectivenessFactor
+  setFacilityEffectivenessFactor,
+  intakeToFacilityDistance,
+  facilityToDischargeDistance
 }: FacilityComponentProps) => {
   function callIf<T> (fn: ((v: T) => void) | undefined, value: T) {
     if (fn) fn(value)
@@ -44,17 +48,32 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
           </Flex>
         </Flex>
       </FormControl>
-      <Flex>
+      <Flex marginTop={3}>
         <Flex w='150px'>
           <Text>Location:</Text>
         </Flex>
-        <Flex>
+        <Flex >
           {convertedLocation
             ? <Text>[{Number(convertedLocation[0]).toFixed(3)}, {Number(convertedLocation[1]).toFixed(3)}]</Text>
             : <Text><i>unset</i></Text>
           }
         </Flex>
       </Flex>
+      <Flex marginTop={3}>
+        {<Box>
+          {(intakeToFacilityDistance !== null && intakeToFacilityDistance > 0) &&
+          <Box marginTop={2}>
+            {<Text>Distance from Intake to Facility : {(intakeToFacilityDistance / 1000).toFixed(1)} km</Text>}
+          </Box>
+          }
+          {(facilityToDischargeDistance !== null && facilityToDischargeDistance > 0) && <Box marginTop={2}>
+            <Text>Distance from Facility to Discharge: {(facilityToDischargeDistance / 1000).toFixed(1)} km</Text>
+          </Box>
+          }
+        </Box>
+        }
+      </Flex>
+
       <Flex marginTop={3}>
         <Text>Set intake volume&nbsp;</Text>
         <Text fontSize='xs'>(m<span style={{ verticalAlign: 'super', fontSize: '60%' }}>3</span>/s)</Text>
