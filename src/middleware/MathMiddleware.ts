@@ -3,7 +3,7 @@ import { setLocation as setIntakeLocation, setDepth as setIntakeDepth } from "..
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility"
 import { setLocation as setDischargeLocation, setDepth as setDischargeDepth } from "../app/slices/discharge"
 import { RootState, AppDispatch } from "../store"
-import { inputDistance } from "../processing/util/mathMiddlewareHelper"
+import { acceptDistances } from "../processing/util/mathMiddlewareHelper"
 import { GraphData } from "../types"
 import {
   restoreDataState,
@@ -40,7 +40,7 @@ startAppListening({
   effect: async (_action, listenerApi) => {
     try {
       const state = listenerApi.getState()
-      const intakeToFacility = inputDistance(state.intake.location, state.facility.location)
+      const intakeToFacility = acceptDistances(state.intake.location, state.facility.location)
       if (intakeToFacility !== state.data.distances.intakeToFacility) {
         listenerApi.dispatch(setIntakeToFacilityDistance(intakeToFacility))
         // createDistanceDispatcher(listenerApi.getState(), listenerApi.dispatch, () => setIntakeToFacilityDistance(intakeToFacility))

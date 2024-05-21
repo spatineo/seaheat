@@ -20,7 +20,7 @@ export function createDistanceDispatcher (
   }
 }
 
-export function inputDistance (arr1: number[] | null, arr2: number[] | null) {
+export function acceptDistances (arr1: number[] | null, arr2: number[] | null) {
   let intakeToFacility = null
   if (arr1 && arr2) {
     intakeToFacility = distanceBetweenPoints(arr1, arr2)
