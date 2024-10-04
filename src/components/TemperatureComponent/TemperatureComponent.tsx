@@ -147,7 +147,7 @@ export const TemperatureComponent: React.FC<TemperatureProps> = ({ data, height,
               borderRight: "4px solid white"
             }}
           >
-            - {data.seabedDepth}
+            - {data.seabedDepth}m
           </td>
           <th></th>
         </tr>

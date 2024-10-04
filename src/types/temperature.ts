@@ -3,7 +3,7 @@ interface Axis <T> {
   values: T[]
 }
 
-interface Value {
+export interface Value {
   x: number
   y: number
   value: number
