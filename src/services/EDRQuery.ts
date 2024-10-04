@@ -2,7 +2,6 @@ import { TemperatureData } from "../types"
 import { toLonLat } from "ol/proj"
 import { config } from "../config/app"
 
-import { transformCoverageJSONToTemperatureData } from "../processing/util/transformCoverageJSON"
 import { Value } from "../types/temperature"
 
 const baseUrl = 'https://smartmet-server.out.ock.fmi.fi/edr/collections/seaheat3d.666.10/'
