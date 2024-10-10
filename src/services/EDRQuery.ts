@@ -21,7 +21,8 @@ const legend = [
   { minValue: 16, maxValue: 50, color: '#ee0000' }
 ]
 
-const parameterName = 'monthly_timmax_so'
+// const parameterName = 'monthly_timmax_so' // Salt
+const parameterNameTemp = 'monthly_timmax_thetao' // Temperature
 
 export const requestTemperatureData = async (location: number[]): Promise<TemperatureData> => {
   const lonLat = toLonLat(location, config.projection)
@@ -43,7 +44,7 @@ export const requestTemperatureData = async (location: number[]): Promise<Temper
 
   response.coverages.forEach((coverage: any) => {
     const x = new Date(coverage.domain.axes.t.values[0] as string).getMonth()
-    const values = coverage.ranges[parameterName].values as number[]
+    const values = coverage.ranges[parameterNameTemp].values as number[]
     values.forEach((value, y) => {
       if (value !== null && y > seabedDepthIndex) {
         seabedDepthIndex = y
