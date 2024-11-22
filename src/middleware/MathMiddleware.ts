@@ -3,7 +3,7 @@ import { setLocation as setIntakeLocation, setDepth as setIntakeDepth } from "..
 import { setFacilityEffectivenessFactor, setLocation as setFacilityLocation, setIntakeVolume, setTemperatureDelta } from "../app/slices/facility"
 import { setLocation as setDischargeLocation, setDepth as setDischargeDepth } from "../app/slices/discharge"
 import { RootState, AppDispatch } from "../store"
-import { GraphData } from "../types"
+
 import {
   restoreDataState,
   setFacilityToDischargeDistance,
@@ -23,6 +23,8 @@ import { LineString } from "ol/geom"
 import { secondsInDay } from "date-fns/constants"
 import { format, getDaysInMonth } from "date-fns"
 import { processingError } from "./ErrorMiddleware"
+import { calculateDischargeTempDiff } from "../processing/util/calculateDischargeTempDiff"
+import { calculateDischargeWaterTemp } from "../processing/util/calculateDischargeWaterTemp"
 
 export const initMathAction = createAction('INIT_MATH')
 
@@ -244,32 +246,11 @@ startAppListening({
   matcher: isAnyOf(initMathAction, restoreDataState, setIntakeDepth, setIntakeTemperature, setTemperatureDelta),
   effect: (_action, listenerApi) => {
     try {
-      const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
+      const { intake: { depth }, data: { intakeTemperature } } = listenerApi.getState()
       const { facility: { temperatureDelta } } = listenerApi.getState()
-      const xAxis = { label: 'Month', values: [] as Array<string> }
-      const series = { label: "Temperature", values: [] as Array<number> }
 
-      const findEqualDepthIndex = axes.y.values.findIndex(val => depth !== null && val >= depth)
+      const output = calculateDischargeWaterTemp(intakeTemperature, temperatureDelta, depth)
 
-      const searchForValues = findEqualDepthIndex > -1 ? temperatureValues.filter((tmp) => tmp.y === findEqualDepthIndex && tmp) : null
-      Array(12).fill(0).forEach((_v, month: number) => {
-        const d = new Date(2001, month, 1)
-        const calculatedValues = searchForValues?.find((v) => v.x === month)?.value
-        series.values[month] = Number(calculatedValues)
-        xAxis.values[month] = format(d, 'LLL')
-      })
-
-      if (series.values && temperatureDelta.length === series.values.length) {
-        series.values.forEach((item, index) => {
-          series.values[index] = item - temperatureDelta[index]
-        })
-      }
-
-      const output = {
-        unit: 'C',
-        axes: { x: xAxis },
-        series: [series]
-      }
       listenerApi.dispatch(setDischargeWaterTemperature(output))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating Discharge water temperature: ${error}`))
@@ -281,28 +262,12 @@ startAppListening({
   matcher: isAnyOf(initMathAction, restoreDataState, setTemperatureAtDischargeDepth, setDischargeWaterTemperature),
   effect: (_action, listenerApi) => {
     try {
-      const xAxis = { label: 'Month', values: [] as Array<string> }
-      const series = { label: "Temperature", values: [] as Array<number> }
       const { data: { output: { dischargeWaterTemperature, temperatureAtDischargeDepth } } } = listenerApi.getState()
 
       const temperatureDischargeArrayValues = temperatureAtDischargeDepth.series[0]
       const dischargeWaterTempArrayValues = dischargeWaterTemperature.series[0]
 
-      const output: GraphData = {
-        unit: 'C',
-        axes: { x: { label: 'Month', values: [] } },
-        series: []
-      }
-      if (temperatureDischargeArrayValues !== undefined && dischargeWaterTempArrayValues !== undefined) {
-        Array(12).fill(0).forEach((_v, month: number) => {
-          const d = new Date(2001, month, 1)
-          series.values[month] = dischargeWaterTempArrayValues.values[month] - temperatureDischargeArrayValues.values[month]
-          xAxis.values[month] = format(d, 'LLL')
-        })
-        output.axes = { x: xAxis }
-        output.series = [series]
-      }
-
+      const output = calculateDischargeTempDiff(temperatureDischargeArrayValues, dischargeWaterTempArrayValues)
       listenerApi.dispatch(setDischargeTemperatureDifference(output))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating Discharge Temperature Difference: ${error}`))
