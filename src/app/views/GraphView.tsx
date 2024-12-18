@@ -20,10 +20,13 @@ export const GraphView: React.FC = () => {
   const visibleGraph = useSelector((state: RootState) => state.uiState.graph.visibleGraph)
 
   const exportCsv = (inputData: GraphData) => {
-    const csvConfig = mkConfig({ useKeysAsHeaders: true })
-
     const scenario = scenarios.find(s => s.id === inputData.scenarioId)
     const funct = functions.find(f => f.id === inputData.functionId)
+
+    const csvConfig = mkConfig({
+      filename: `${visibleGraph}` + (scenario ? `_${scenario.id}` : '') + (funct ? `_${funct.id}` : ''),
+      useKeysAsHeaders: true
+    })
 
     const data: Array<CsvRecord> = inputData.axes.x.values.map((month: string) => ({
       "Month": month
