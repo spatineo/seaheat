@@ -4,6 +4,7 @@ import { availableLayers } from "../../config/layers"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { toggleLayer } from "../slices/uiState"
+import { ConnectedLayerDimensionComponent } from "../connected/ConnectedLayerDimensionComponent"
 
 export const LayersView: React.FC = () => {
   const dispatch = useDispatch()
@@ -22,7 +23,10 @@ export const LayersView: React.FC = () => {
         <CheckboxGroup colorScheme='blue' value={checked}>
           {
             availableLayers.filter((al) => al.isDatalayer).map((l, idx) =>
-              <Checkbox size='md' checked={false} key={idx} onChange={() => dispatch(toggleLayer(l.id))} value={l.id}>{l.title}</Checkbox>
+              <div key={idx}>
+                <Checkbox size='md' checked={false} key={idx} onChange={() => dispatch(toggleLayer(l.id))} value={l.id}>{l.title}</Checkbox>
+                {checked.includes(l.id) ? <ConnectedLayerDimensionComponent/> : <></> }
+              </div>
             )
           }
         </CheckboxGroup>

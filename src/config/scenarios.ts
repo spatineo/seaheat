@@ -5,7 +5,7 @@ interface Scenario {
   name: string
   data: {
     [x: string]: string
-}
+  }
 }
 
 export const scenarios = [{
@@ -17,28 +17,28 @@ export const scenarios = [{
   }
 }, {
   id: 'rcp45long-rcp45-monthly',
-  name: 'RCP 4.5 - pitkän ajan (2069-2099)',
+  name: 'RCP 4.5 - long term (2069-2099)',
   data: {
     bottomTemperature: '666.1',
     level: '666.2'
   }
 }, {
   id: 'rcp45mid-rcp45-monthly',
-  name: 'RCP 4.5 - lyhyen ajan (2030-2060)',
+  name: 'RCP 4.5 - short term (2030-2060)',
   data: {
     bottomTemperature: '666.1',
     level: '666.2'
   }
 }, {
   id: 'rcp85long-rcp85-monthly',
-  name: 'RCP 8.5 - pitkän ajan (2069-2099)',
+  name: 'RCP 8.5 - long term (2069-2099)',
   data: {
     bottomTemperature: '666.1',
     level: '666.2'
   }
 }, {
   id: 'rcp85mid-rcp85-monthly',
-  name: 'RCP 8.5 - lyhyen ajan (2030-2060)',
+  name: 'RCP 8.5 - short term (2030-2060)',
   data: {
     bottomTemperature: '666.1',
     level: '666.2'

@@ -5,8 +5,6 @@ import { config } from "../config/app"
 import { Value } from "../types/temperature"
 import { collectionUrl } from "../config/scenarios"
 
-const baseUrl = collectionUrl('monthly', 'level', 'timmean')
-
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 const ticks = [10, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500]
@@ -38,6 +36,8 @@ const parameterNameTemp = 'monthly_thetao' // Temperature
 
 export const requestTemperatureData = async (location: number[]): Promise<TemperatureData> => {
   const lonLat = toLonLat(location, config.projection)
+
+  const baseUrl = collectionUrl('monthly', 'level', 'timmean')
 
   const qs = new URLSearchParams()
   qs.append('coords', `POINT(${lonLat.join(' ')})`)

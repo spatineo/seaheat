@@ -41,11 +41,10 @@ export const ConnectedLayerDimensionComponent: React.FC = () => {
   return data.map((opt, idx) => {
     return (
       <div key={idx}>
-        <p>{opt.title}</p>
         {opt.dimensions?.map((d, dIdx) => {
           const options = parseDimensionValues(d.values)
           return (
-            <Select placeholder={`No ${d.name}`} key={`${d.name}-${dIdx} selected`}
+            <Select placeholder={`No ${d.name}`} key={`select-${idx}-${dIdx}`}
               onChange={(evt) => { onChange(opt.layerId, d.name, evt.target.value) }}
               value={layerDimensions[opt.layerId]?.values[d.name]}>
               {options.map((o, oIdx) => (

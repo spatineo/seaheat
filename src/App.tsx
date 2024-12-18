@@ -2,7 +2,7 @@
 import React from 'react'
 import { Grid, GridItem, Box, Flex } from '@chakra-ui/react'
 import { DesignerView } from './app/views/DesignerView'
-import { DimensionSelectView } from './app/views/DimensionSelectView'
+import { ConnectedScenarioSelectView } from './app/connected/ConnectedScenarioSelectView'
 import { SelectedPointView } from './app/views/SelectedPointView'
 import { MapView } from './app/views/MapView'
 import { LayersView } from './app/views/LayersView'
@@ -33,7 +33,7 @@ const App: React.FC = () => {
           </Box>
           <Box width="40vw" boxSizing="border-box" maxH="calc(100vh - 4hv)">
             <Box height="6em" overflowY="auto">
-              <DimensionSelectView />
+              <ConnectedScenarioSelectView />
             </Box>
             <Box h="calc(100% - 6em)">
               <MapView />

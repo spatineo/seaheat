@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { MapView, SeaheatFeatureType } from '../../types'
 import { availableLayers } from '../../config/layers'
 import { OutputType } from './data'
+import { scenarios } from '../../config/scenarios'
 
 interface VisibleLayer {
   id: string
@@ -25,6 +26,7 @@ export interface UIState {
   graph: {
     visibleGraph: OutputType
   }
+  scenario: string
 }
 
 const initialState: UIState = {
@@ -39,7 +41,8 @@ const initialState: UIState = {
   },
   graph: {
     visibleGraph: OutputType.monthlyAveragePowerOutput
-  }
+  },
+  scenario: scenarios[0].id,
 }
 
 interface LayerDimensionPayloadType {
@@ -100,11 +103,15 @@ export const uiStateSlice = createSlice({
       state.selectedPointTab = action.payload.selectedPointTab
       state.map = action.payload.map
       state.graph = action.payload.graph
+    },
+
+    setScenario: (state, action: PayloadAction<string>) => {
+      state.scenario = action.payload
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, restoreUIState } = uiStateSlice.actions
+export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, restoreUIState, setScenario } = uiStateSlice.actions
 
 export default uiStateSlice.reducer
