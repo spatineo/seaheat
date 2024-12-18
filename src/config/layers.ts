@@ -4,8 +4,8 @@ export const availableLayers: Array<LayerConfiguration> = [
   {
     id: 'a404e31f-3035-40b7-905a-25667ac11141',
     title: 'Seaheat bottom temperature',
-    capabilitiesUrl: 'https://smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
-    layer: 'seaheat-customer:seaheat-producer:bottomtemperature',
+    capabilitiesUrl: 'https://ext-seaheat-smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
+    layer: 'seaheat-customer:seaheat-producer:seaheat-monthly-monthly-timmean-bottomtemperature',
     isDatalayer: true,
     type: 'WMS',
     dimensions: ['time'],
@@ -13,25 +13,9 @@ export const availableLayers: Array<LayerConfiguration> = [
       width: 345,
       height: 250,
       // eslint-disable-next-line max-len
-      url: "https://smartmet-server.out.ock.fmi.fi/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=seaheat-customer%3Aseaheat-producer%3Abottomtemperature&width=345&height=250",
+      url: "https://ext-seaheat-smartmet-server.out.ock.fmi.fi/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=seaheat-customer%3Aseaheat-producer%3Aseaheat-monthly-monthly-timmean-bottomtemperature&width=548&height=250",
       scale: 0.8
     }
-  },
-  {
-    id: 'a13e3405-f2a0-46a2-8030-278d76950fe6',
-    title: 'Bathymetry',
-    capabilitiesUrl: 'https://geo.vliz.be/geoserver/ows?SERVICE=WMS&REQUEST=GetCapabilities',
-    layer: 'MARSPEC:bathy_30s1',
-    isDatalayer: false,
-    type: 'WMS'
-  },
-  {
-    id: '33385d92-d481-4de7-96d0-a093a74f8349',
-    title: 'Ampumahaukka, esiintymät',
-    capabilitiesUrl: 'https://paikkatiedot.ymparisto.fi/geoserver/inspire_sd2/ows?SERVICE=WMS&REQUEST=GetCapabilities',
-    layer: 'SD.Ampuhaukka',
-    isDatalayer: false,
-    type: 'WMS'
   },
   {
     id: 'a530150a-0e40-4fdc-8087-d50b62404d8a',

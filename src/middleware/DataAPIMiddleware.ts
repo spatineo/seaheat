@@ -24,6 +24,7 @@ startAppListening({
       }
       listenerApi.dispatch(setIntakeTemperature(data))
     } catch (error) {
+      window.console.error(error)
       listenerApi.dispatch(processingError(`Error downloading intake temperature data ${error}`))
     }
   }
