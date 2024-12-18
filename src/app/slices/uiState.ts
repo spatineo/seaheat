@@ -99,19 +99,20 @@ export const uiStateSlice = createSlice({
       state.graph.visibleGraph = action.payload
     },
 
+    setScenario: (state, action: PayloadAction<string>) => {
+      state.scenario = action.payload
+    },
+
     restoreUIState: (state, action: PayloadAction<UIState>) => {
       state.selectedPointTab = action.payload.selectedPointTab
       state.map = action.payload.map
       state.graph = action.payload.graph
-    },
-
-    setScenario: (state, action: PayloadAction<string>) => {
-      state.scenario = action.payload
+      state.scenario = action.payload.scenario
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, restoreUIState, setScenario } = uiStateSlice.actions
+export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, setScenario, restoreUIState } = uiStateSlice.actions
 
 export default uiStateSlice.reducer
