@@ -1,6 +1,5 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Box } from '@chakra-ui/react'
 import { RootState } from "../../store"
 import { SelectedPointComponent } from "../../components/selectedPoint/SelectedPointComponent"
 import { setName, setDepth } from "../slices/intake"
@@ -19,11 +18,11 @@ export const ConnectedIntakeComponent: React.FC = () => {
   }
 
   return (
-    <Box h="calc(68vh - 38px)" overflowY="auto">
+    <>
       <SelectedPointComponent {...intakeProps} {...intakeCallbacks} distanceToFacility={distanceToFacility} />
       {intakeTemperature.temperatureValues.length > 0
         ? <TemperatureComponent data={intakeTemperature} height={300} marker={intakeProps.depth || undefined}/>
         : <></>}
-    </Box>
+    </>
   )
 }

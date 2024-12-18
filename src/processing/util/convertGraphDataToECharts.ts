@@ -3,7 +3,6 @@ import { functions } from "../../config/scenarios"
 import { GraphData } from "../../types"
 
 export const convertGraphDataToECharts = (data: GraphData): EChartOption => {
-  // const scenario = scenarios.find(s => s.id === data.scenarioId)
   const funct = functions.find(f => f.id === data.functionId)
 
   return {
