@@ -8,7 +8,7 @@ import { OutputTitle } from "../../config/graph"
 import { setVisibleGraph } from "../slices/uiState"
 import { GraphData } from "../../types"
 import { download as downloadCsv, generateCsv, mkConfig } from "export-to-csv"
-import { scenarios } from "../../config/scenarios"
+import { functions, scenarios } from "../../config/scenarios"
 
 interface CsvRecord {
   [key: string]: string | number
@@ -22,13 +22,17 @@ export const GraphView: React.FC = () => {
   const exportCsv = (inputData: GraphData) => {
     const csvConfig = mkConfig({ useKeysAsHeaders: true })
 
+    const scenario = scenarios.find(s => s.id === inputData.scenarioId)
+    const funct = functions.find(f => f.id === inputData.functionId)
+
     const data: Array<CsvRecord> = inputData.axes.x.values.map((month: string) => ({
       "Month": month
     }))
 
     inputData.series.forEach((series) => {
+      const label = (scenario && funct) ? `${series.label} (${scenario.name}/${funct.name})` : series.label
       series.values.forEach((value, idx) => {
-        data[idx][series.label] = value
+        data[idx][label] = value
       })
     })
 
