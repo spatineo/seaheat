@@ -8,14 +8,7 @@ export const availableLayers: Array<LayerConfiguration> = [
     layer: 'seaheat-customer:seaheat-producer:seaheat-monthly-monthly-timmean-bottomtemperature',
     isDatalayer: true,
     type: 'WMS',
-    dimensions: ['time'],
-    legend: {
-      width: 345,
-      height: 250,
-      // eslint-disable-next-line max-len
-      url: "https://ext-seaheat-smartmet-server.out.ock.fmi.fi/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=seaheat-customer%3Aseaheat-producer%3Aseaheat-monthly-monthly-timmean-bottomtemperature&width=548&height=250",
-      scale: 0.8
-    }
+    dimensions: ['time']
   },
   {
     id: 'a530150a-0e40-4fdc-8087-d50b62404d8a',

@@ -156,13 +156,13 @@ export const TemperatureComponent: React.FC<TemperatureProps> = ({ data, height,
   )
 
   const legendsContent = (
-    <Flex boxSizing="border-box" w="100%" mt="4" flexWrap="wrap" gap="4">
+    <Flex boxSizing="border-box" w="100%" mt="4" flexWrap="wrap" columnGap="4" rowGap="1">
       {data.legend.map(({ color, minValue, maxValue }, index) => {
         return (
           <Flex
             key={index}
-            minW="30%"
-            maxW="30%"
+            minW="20%"
+            maxW="20%"
             boxSizing="border-box"
             alignItems="center"
             textAlign="center"

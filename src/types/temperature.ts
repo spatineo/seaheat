@@ -10,8 +10,8 @@ export interface Value {
 }
 
 interface Legend {
-  minValue: number
-  maxValue: number
+  minValue: number | null
+  maxValue: number | null
   color: string
 }
 
