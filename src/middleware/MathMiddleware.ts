@@ -97,10 +97,13 @@ startAppListening({
         xAxis.values[month] = format(d, 'LLL')
       })
 
+      // Scenario and function do not affect this calculation
       listenerApi.dispatch(setMonthlyAveragePowerOutput({
         unit: 'MWh',
         axes: { x: xAxis },
-        series: [series]
+        series: [series],
+        scenarioId: null,
+        functionId: null
       }))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating monthlyAveragePowerOutput: ${error}`))
@@ -130,10 +133,13 @@ startAppListening({
         xAxis.values[month] = format(d, 'LLL')
       })
 
+      // Scenario and function do not affect this calculation
       listenerApi.dispatch(setMonthlyPowerRating({
         unit: 'MW',
         axes: { x: xAxis },
-        series: [series]
+        series: [series],
+        scenarioId: null,
+        functionId: null
       }))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating monthlyPowerRating: ${error}`))
@@ -145,7 +151,7 @@ startAppListening({
   matcher: isAnyOf(initMathAction, restoreDataState, setIntakeDepth, setIntakeTemperature),
   effect: (_action, listenerApi) => {
     try {
-      const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
+      const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } }, uiState: { dataSource } } = listenerApi.getState()
 
       const xAxis = { label: 'Month', values: [] as Array<string> }
       const series = { label: "Temperature", values: [] as Array<number> }
@@ -163,7 +169,9 @@ startAppListening({
       const output = {
         unit: 'C',
         axes: { x: xAxis },
-        series: [series]
+        series: [series],
+        scenarioId: dataSource.scenarioId,
+        functionId: dataSource.functionId
       }
 
       if (depth === null || temperatureValues.length === 0) {
@@ -192,10 +200,13 @@ startAppListening({
         xAxis.values[month] = format(d, 'LLL')
       })
 
+      // Scenario and function do not affect this calculation
       const output = {
         unit: 'm3/s',
         axes: { x: xAxis },
-        series: [series]
+        series: [series],
+        scenarioId: null,
+        functionId: null
       }
 
       listenerApi.dispatch(setWaterThroughputVolume(output))
@@ -209,7 +220,7 @@ startAppListening({
   matcher: isAnyOf(initMathAction, restoreDataState, setDischargeDepth, setDischargeTemperature),
   effect: (_action, listenerApi) => {
     try {
-      const { discharge: { depth }, data: { dischargeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
+      const { discharge: { depth }, data: { dischargeTemperature: { axes, temperatureValues } }, uiState: { dataSource } } = listenerApi.getState()
       const xAxis = { label: 'Month', values: [] as Array<string> }
       const series = { label: "Temperature", values: [] as Array<number> }
 
@@ -226,7 +237,9 @@ startAppListening({
       const output = {
         unit: 'C',
         axes: { x: xAxis },
-        series: [series]
+        series: [series],
+        scenarioId: dataSource.scenarioId,
+        functionId: dataSource.functionId
       }
 
       if (depth === null || temperatureValues.length === 0) {
@@ -244,7 +257,7 @@ startAppListening({
   matcher: isAnyOf(initMathAction, restoreDataState, setIntakeDepth, setIntakeTemperature, setTemperatureDelta),
   effect: (_action, listenerApi) => {
     try {
-      const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } } } = listenerApi.getState()
+      const { intake: { depth }, data: { intakeTemperature: { axes, temperatureValues } }, uiState: { dataSource } } = listenerApi.getState()
       const { facility: { temperatureDelta } } = listenerApi.getState()
       const xAxis = { label: 'Month', values: [] as Array<string> }
       const series = { label: "Temperature", values: [] as Array<number> }
@@ -268,7 +281,9 @@ startAppListening({
       const output = {
         unit: 'C',
         axes: { x: xAxis },
-        series: [series]
+        series: [series],
+        scenarioId: dataSource.scenarioId,
+        functionId: dataSource.functionId
       }
       listenerApi.dispatch(setDischargeWaterTemperature(output))
     } catch (error) {
@@ -283,7 +298,7 @@ startAppListening({
     try {
       const xAxis = { label: 'Month', values: [] as Array<string> }
       const series = { label: "Temperature", values: [] as Array<number> }
-      const { data: { output: { dischargeWaterTemperature, temperatureAtDischargeDepth } } } = listenerApi.getState()
+      const { data: { output: { dischargeWaterTemperature, temperatureAtDischargeDepth } }, uiState: { dataSource } } = listenerApi.getState()
 
       const temperatureDischargeArrayValues = temperatureAtDischargeDepth.series[0]
       const dischargeWaterTempArrayValues = dischargeWaterTemperature.series[0]
@@ -291,7 +306,9 @@ startAppListening({
       const output: GraphData = {
         unit: 'C',
         axes: { x: { label: 'Month', values: [] } },
-        series: []
+        series: [],
+        scenarioId: dataSource.scenarioId,
+        functionId: dataSource.functionId
       }
       if (temperatureDischargeArrayValues !== undefined && dischargeWaterTempArrayValues !== undefined) {
         Array(12).fill(0).forEach((_v, month: number) => {

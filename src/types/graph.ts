@@ -14,6 +14,8 @@ export interface GraphData {
     x: Axis<string>
   }
   series: Array<Series>
+  scenarioId: string | null
+  functionId: string | null
 }
 
 export const emptyGraphData = (): GraphData => ({
@@ -21,5 +23,7 @@ export const emptyGraphData = (): GraphData => ({
   axes: {
     x: { label: 'N/A', values: [] }
   },
-  series: []
+  series: [],
+  scenarioId: null,
+  functionId: null
 })

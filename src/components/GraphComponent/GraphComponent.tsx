@@ -51,7 +51,7 @@ export const GraphComponent: React.FC<GraphProps> = ({ data, height }: GraphProp
       },
       grid: {
         left: '3%',
-        right: '12%',
+        right: '150px',
         bottom: '3%',
         top: '12%',
         containLabel: true

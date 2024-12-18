@@ -59,7 +59,9 @@ const data = {
               60.917536778111995
           ]
       }
-  ]
+  ],
+  scenarioId: null,
+  functionId: null
 }
 
 const tripleSeriesData = {
@@ -137,7 +139,9 @@ const tripleSeriesData = {
           60.917536778111995
       ]
   }
-  ]
+  ],
+  scenarioId: null,
+  functionId: null
 }
 const newSeriesValues = [
   84.21779278079998,

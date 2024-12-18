@@ -1,17 +1,18 @@
+import { EChartOption } from "echarts"
+import { functions } from "../../config/scenarios"
 import { GraphData } from "../../types"
 
-export const convertGraphDataToECharts = (data: GraphData) => {
+export const convertGraphDataToECharts = (data: GraphData): EChartOption => {
+  // const scenario = scenarios.find(s => s.id === data.scenarioId)
+  const funct = functions.find(f => f.id === data.functionId)
+
   return {
-    title: {
-      text: data.unit,
-      right: '6%',
-      top: 20
-    },
     legend: {
       data: data.series.map(serie => serie.label),
+      formatter: funct ? () => funct.name : undefined,
       orient: "vertical" as const,
-      right: "2%",
-      top: 50
+      top: '50',
+      right: '1%'
     },
     series: data.series.map(serie => ({
       name: serie.label,
