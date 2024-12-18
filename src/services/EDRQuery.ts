@@ -5,7 +5,7 @@ import { config } from "../config/app"
 import { Value } from "../types/temperature"
 import { collectionUrl } from "../config/scenarios"
 
-const baseUrl = collectionUrl('monthly', '666.10', 'timmean')
+const baseUrl = collectionUrl('monthly', 'level', 'timmean')
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 

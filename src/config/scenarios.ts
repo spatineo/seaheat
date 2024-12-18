@@ -1,5 +1,13 @@
 export const edrBaseURL = 'https://ext-seaheat-smartmet-server.out.ock.fmi.fi/edr'
 
+interface Scenario {
+  id: string
+  name: string
+  data: {
+    [x: string]: string
+}
+}
+
 export const scenarios = [{
   id: 'monthly',
   name: 'Reanalysis',
@@ -35,7 +43,7 @@ export const scenarios = [{
     bottomTemperature: '666.1',
     level: '666.2'
   }
-}]
+}] as Scenario[]
 
 export const functions = [{
   id: 'timmean',
@@ -57,6 +65,7 @@ export const functions = [{
   name: 'Keskihajonta'
 }]
 
-export const collectionUrl = (scenarioId: string, dataId: string, functionId: string) => {
+export const collectionUrl = (scenarioId: string, dataType: string, functionId: string) => {
+  const dataId = scenarios.find(s => s.id === scenarioId)?.data[dataType]
   return `${edrBaseURL}/collections/seaheat-monthly-${scenarioId}-${functionId}.${dataId}/`
 }
