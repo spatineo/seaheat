@@ -3,7 +3,7 @@ import { toLonLat } from "ol/proj"
 import { config } from "../config/app"
 
 import { Value } from "../types/temperature"
-import { collectionUrl } from "../config/scenarios"
+import { collectionUrl, scenarios } from "../config/scenarios"
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -34,20 +34,29 @@ const legend = [
 // const parameterNameSaltiness = 'monthly_timmax_so' // Salt
 const parameterNameTemp = 'monthly_thetao' // Temperature
 
-export const requestTemperatureData = async (location: number[]): Promise<TemperatureData> => {
+export const requestTemperatureData = async (location: number[], scenarioId: string): Promise<TemperatureData> => {
   const lonLat = toLonLat(location, config.projection)
 
-  const baseUrl = collectionUrl('monthly', 'level', 'timmean')
+  const scenario = scenarios.find(s => s.id === scenarioId)
+  if (!scenario) {
+    throw Error(`Unknown scenario: ${scenarioId}`)
+  }
+
+  const baseUrl = collectionUrl(scenarioId, 'level', 'timmean')
 
   const qs = new URLSearchParams()
   qs.append('coords', `POINT(${lonLat.join(' ')})`)
-  qs.append('datetime', '2007-01-01T12:00:00Z/2007-12-01T12:00:00Z')
+  qs.append('datetime', `${scenario.dataYear}-01-01T12:00:00Z/${scenario.dataYear}-12-30T12:00:00Z`)
 
   const tmp = new URLSearchParams(qs)
   const query = `${baseUrl}position?${tmp.toString()}`
   const data = await fetch(query, {})
 
   const response = await data.json()
+
+  if (Object.keys(response as object).length === 0) {
+    throw Error(`Empty EDR response`)
+  }
 
   const depthValues = response.coverages[0].domain.axes.z.values
   let seabedDepthIndex = 0
