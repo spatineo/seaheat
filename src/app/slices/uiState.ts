@@ -42,7 +42,7 @@ const initialState: UIState = {
   graph: {
     visibleGraph: OutputType.monthlyAveragePowerOutput
   },
-  scenario: scenarios[0].id,
+  scenario: scenarios[0].id
 }
 
 interface LayerDimensionPayloadType {
