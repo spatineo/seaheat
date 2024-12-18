@@ -53,7 +53,13 @@ export const scenarios = [{
 
 export const functions = [{
   id: 'timmean',
-  name: 'Mean'
+  name: 'Average'
+}, {
+  id: 'timpctl-90',
+  name: '90th percentile'
+}, {
+  id: 'timpctl-10',
+  name: '10th percentile'
 }, {
   id: 'timmax',
   name: 'Max'
@@ -61,14 +67,8 @@ export const functions = [{
   id: 'timmin',
   name: 'Min'
 }, {
-  id: 'timpctl-10',
-  name: 'Alin 10%'
-}, {
-  id: 'timpctl-90',
-  name: 'Ylin 90%'
-}, {
   id: 'timstd',
-  name: 'Keskihajonta'
+  name: 'Standard deviation'
 }]
 
 export const collectionUrl = (scenarioId: string, dataType: string, functionId: string) => {

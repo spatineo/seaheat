@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { MapView, SeaheatFeatureType } from '../../types'
 import { availableLayers } from '../../config/layers'
 import { OutputType } from './data'
-import { scenarios } from '../../config/scenarios'
+import { functions, scenarios } from '../../config/scenarios'
 
 interface VisibleLayer {
   id: string
@@ -26,7 +26,10 @@ export interface UIState {
   graph: {
     visibleGraph: OutputType
   }
-  scenario: string
+  dataSource: {
+    scenarioId: string
+    functionId: string
+  }
 }
 
 const initialState: UIState = {
@@ -42,7 +45,10 @@ const initialState: UIState = {
   graph: {
     visibleGraph: OutputType.monthlyAveragePowerOutput
   },
-  scenario: scenarios[0].id
+  dataSource: {
+    scenarioId: scenarios[0].id,
+    functionId: functions[0].id
+  }
 }
 
 interface LayerDimensionPayloadType {
@@ -99,20 +105,24 @@ export const uiStateSlice = createSlice({
       state.graph.visibleGraph = action.payload
     },
 
-    setScenario: (state, action: PayloadAction<string>) => {
-      state.scenario = action.payload
+    setScenarioId: (state, action: PayloadAction<string>) => {
+      state.dataSource.scenarioId = action.payload
+    },
+
+    setFunctionId: (state, action: PayloadAction<string>) => {
+      state.dataSource.functionId = action.payload
     },
 
     restoreUIState: (state, action: PayloadAction<UIState>) => {
       state.selectedPointTab = action.payload.selectedPointTab
       state.map = action.payload.map
       state.graph = action.payload.graph
-      state.scenario = action.payload.scenario
+      state.dataSource = action.payload.dataSource
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, setScenario, restoreUIState } = uiStateSlice.actions
+export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, setScenarioId, setFunctionId, restoreUIState } = uiStateSlice.actions
 
 export default uiStateSlice.reducer

@@ -34,7 +34,7 @@ const legend = [
 // const parameterNameSaltiness = 'monthly_timmax_so' // Salt
 const parameterNameTemp = 'monthly_thetao' // Temperature
 
-export const requestTemperatureData = async (location: number[], scenarioId: string): Promise<TemperatureData> => {
+export const requestTemperatureData = async (location: number[], scenarioId: string, functionId: string): Promise<TemperatureData> => {
   const lonLat = toLonLat(location, config.projection)
 
   const scenario = scenarios.find(s => s.id === scenarioId)
@@ -42,7 +42,7 @@ export const requestTemperatureData = async (location: number[], scenarioId: str
     throw Error(`Unknown scenario: ${scenarioId}`)
   }
 
-  const baseUrl = collectionUrl(scenarioId, 'level', 'timmean')
+  const baseUrl = collectionUrl(scenarioId, 'level', functionId)
 
   const qs = new URLSearchParams()
   qs.append('coords', `POINT(${lonLat.join(' ')})`)

@@ -6,20 +6,20 @@ import { requestTemperatureData } from "../services/EDRQuery"
 import { restoreDataState, setDischargeTemperature, setIntakeTemperature } from "../app/slices/data"
 import { emptyTemperatureData } from "../types/temperature"
 import { processingError } from "./ErrorMiddleware"
-import { setScenario } from "../app/slices/uiState"
+import { setFunctionId, setScenarioId } from "../app/slices/uiState"
 
 export const dataAPIMiddleware = createListenerMiddleware()
 const startAppListening = dataAPIMiddleware.startListening.withTypes<RootState, AppDispatch>()
 
 startAppListening({
-  matcher: isAnyOf(restoreDataState, setIntakeLocation, setScenario),
+  matcher: isAnyOf(restoreDataState, setIntakeLocation, setScenarioId, setFunctionId),
   effect: async (_action, listenerApi) => {
     try {
       listenerApi.cancelActiveListeners()
       const state = listenerApi.getState()
       let data
       if (state.intake.location !== null) {
-        data = await requestTemperatureData(state.intake.location, state.uiState.scenario)
+        data = await requestTemperatureData(state.intake.location, state.uiState.dataSource.scenarioId, state.uiState.dataSource.functionId)
       } else {
         data = emptyTemperatureData()
       }
@@ -32,14 +32,14 @@ startAppListening({
 })
 
 startAppListening({
-  matcher: isAnyOf(restoreDataState, setDischargeLocation, setScenario),
+  matcher: isAnyOf(restoreDataState, setDischargeLocation, setScenarioId, setFunctionId),
   effect: async (_action, listenerApi) => {
     try {
       listenerApi.cancelActiveListeners()
       const state = listenerApi.getState()
       let data
       if (state.discharge.location !== null) {
-        data = await requestTemperatureData(state.discharge.location, state.uiState.scenario)
+        data = await requestTemperatureData(state.discharge.location, state.uiState.dataSource.scenarioId, state.uiState.dataSource.functionId)
       } else {
         data = emptyTemperatureData()
       }
