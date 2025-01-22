@@ -5,6 +5,7 @@ import Map from 'ol/Map.js'
 import View from 'ol/View.js'
 import { OSM } from 'ol/source.js'
 import { Tile as TileLayer } from 'ol/layer.js'
+import { ScaleLine, defaults as defaultControls } from 'ol/control.js';
 
 import MapContext from "./MapContext"
 
@@ -36,10 +37,14 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
   useEffect(() => {
     if (!mapRef.current) return
 
+
+    const scaleControl = new ScaleLine({ units: 'metric' });
+
     const mapObject: Map = new Map({
       view: new View({
         projection: config.projection
       }),
+      controls: defaultControls().extend([scaleControl]),
       layers: [new TileLayer({
         source: new OSM()
       })]
