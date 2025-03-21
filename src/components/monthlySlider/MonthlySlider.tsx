@@ -7,12 +7,13 @@ interface MonthlySliderProps {
   values: number[]
   minValue: number
   maxValue: number
+  step?: number
   unit: string
   color: string
   changeValue?: (value: MonthValue<number>) => void
   sliderIcon: As
 }
-export const MonthlySlider: React.FC<MonthlySliderProps> = ({ values, minValue, maxValue, unit, color, changeValue, sliderIcon }: MonthlySliderProps) => {
+export const MonthlySlider: React.FC<MonthlySliderProps> = ({ values, minValue, maxValue, step = 1, unit, color, changeValue, sliderIcon }: MonthlySliderProps) => {
   return (
     <HStack width='100%'>
       {values.map((value, mon: number) => {
@@ -25,6 +26,7 @@ export const MonthlySlider: React.FC<MonthlySliderProps> = ({ values, minValue, 
               min={minValue}
               max={maxValue}
               value={value}
+              step={step}
               minH={75}
               onChange={(newValue) => changeValue && changeValue({ month: mon, value: newValue }) }>
               <SliderTrack>
@@ -36,7 +38,7 @@ export const MonthlySlider: React.FC<MonthlySliderProps> = ({ values, minValue, 
                 </SliderThumb>
               </Tooltip>
             </Slider>
-            <Text fontSize='xs'>{value}</Text>
+            <Text fontSize='xs'>{step < 1 ? value.toFixed(1) : value}</Text>
           </VStack>
         )
       })}

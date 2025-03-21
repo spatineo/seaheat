@@ -97,6 +97,7 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
           values={temperatureDelta}
           minValue={facilityParameters.temperatureDeltaMinimum}
           maxValue={facilityParameters.temperatureDeltaMaximum}
+          step={0.5}
           unit='C'
           color='#1a2fed'
           changeValue={setTemperatureDelta}
