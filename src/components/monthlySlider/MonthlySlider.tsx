@@ -27,7 +27,7 @@ export const MonthlySlider: React.FC<MonthlySliderProps> = ({ values, minValue, 
               max={maxValue}
               value={value}
               step={step}
-              minH={75}
+              minH={100}
               onChange={(newValue) => changeValue && changeValue({ month: mon, value: newValue }) }>
               <SliderTrack>
                 <SliderFilledTrack bg={color}/>
