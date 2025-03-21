@@ -1,7 +1,7 @@
 export const facilityParameters = {
   intakeMinimum: 0,
-  intakeMaximum: 70,
+  intakeMaximum: 100,
 
   temperatureDeltaMinimum: 0,
-  temperatureDeltaMaximum: 8
+  temperatureDeltaMaximum: 16
 }
