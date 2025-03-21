@@ -25,7 +25,6 @@ export const DesignerView: React.FC = () => {
             onChange={loadFileForImport}
             accept={'application/json'}
             buttonText="Import"
-            dragDropText="Drag and Drop"
           />
         </Box>
 
