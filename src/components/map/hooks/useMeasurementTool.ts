@@ -1,4 +1,4 @@
-import { Feature, Map, MapBrowserEvent, Overlay } from "ol"
+import { Feature, Map, Overlay } from "ol"
 import { LineString } from "ol/geom"
 import VectorLayer from "ol/layer/Vector"
 import VectorSource from "ol/source/Vector"
@@ -34,40 +34,9 @@ export const useMeasurementTool = (map: Map | null) => {
     })
 
     let sketch: Feature<LineString> | null = null
-
-    let helpTooltipElement: HTMLDivElement | null = null
-    let helpTooltip: Overlay
-
     let measureTooltipElement: HTMLDivElement | null = null
     let measureTooltip: Overlay
-
-    const continueLineMsg = 'Click to continue drawing the line'
     const measureToolTipsToClean: HTMLDivElement[] = []
-
-    const pointerMoveHandler = function (evt: MapBrowserEvent<PointerEvent>) {
-      if (evt.dragging) {
-        return
-      }
-      let helpMsg = 'Click to start drawing'
-
-      if (sketch) {
-        const geom = sketch.getGeometry()
-        if (geom instanceof LineString) {
-          helpMsg = continueLineMsg
-        }
-      }
-
-      if (helpTooltipElement) {
-        helpTooltipElement.innerHTML = helpMsg
-        helpTooltip.setPosition(evt.coordinate)
-
-        helpTooltipElement.classList.remove('hidden')
-      }
-    }
-
-    const hideHelpToolTipEvent = () => {
-      helpTooltipElement?.classList.add('hidden')
-    }
 
     const formatLength = function (line: LineString) {
       const length = getLength(line)
@@ -151,22 +120,6 @@ export const useMeasurementTool = (map: Map | null) => {
       }
     })
 
-    const createHelpTooltip = (map: Map) => {
-      if (helpTooltipElement) {
-        helpTooltipElement.remove()
-        map.removeOverlay(helpTooltip)
-        helpTooltip.dispose()
-      }
-      helpTooltipElement = document.createElement('div')
-      helpTooltipElement.className = 'ol-tooltip hidden'
-      helpTooltip = new Overlay({
-        element: helpTooltipElement,
-        offset: [15, 0],
-        positioning: 'center-left'
-      })
-      map.addOverlay(helpTooltip)
-    }
-
     const createMeasureTooltip = (map: Map) => {
       if (measureTooltipElement) {
         measureTooltipElement.remove()
@@ -189,23 +142,16 @@ export const useMeasurementTool = (map: Map | null) => {
 
     map.addInteraction(draw)
     map.addLayer(vector)
-    eventsKeys.push(map.on('pointermove', pointerMoveHandler))
-    map.getViewport().addEventListener('mouseout', hideHelpToolTipEvent)
     createMeasureTooltip(map)
-    createHelpTooltip(map)
 
     return () => {
       eventsKeys.forEach(unByKey)
-      map.getViewport().removeEventListener('mouseout', hideHelpToolTipEvent)
       map.removeInteraction(draw)
       map.removeLayer(vector)
       vector.dispose()
       map.removeOverlay(measureTooltip)
       measureTooltip.dispose()
       measureTooltipElement?.remove()
-      map.removeOverlay(helpTooltip)
-      helpTooltip.dispose()
-      helpTooltipElement?.remove()
       measureToolTipsToClean.forEach(e => e.remove())
     }
   }, [map, measurementToolActive])
