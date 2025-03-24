@@ -8,8 +8,8 @@ The app is built on React + Redux and development is done with Vite + storybooks
 
 Main architecture:
  - Client only
- - React + Redux + RTK (TODO)
- - UI in Chakra (TODO)
+ - React + Redux + RTK
+ - UI in Chakra
  - Storybooks for component development
  - Deployed on AWS via CDK
 
@@ -28,7 +28,7 @@ Running storyboks: `npm run storybook`
 
 ## Backend Development
 
-Backend deployment is on AWS CDK. The architecture is very simple: Cloudformation, ACM certificate and an S3 bucket. 
+Backend deployment is done using AWS Cloudformation via CDK code. The architecture is very simple: Cloudfront, Route 53, ACM certificate and an S3 bucket. 
 
 Note that you need to build the application before working on the stacks. Also please note that a frontend developer almost never needs to work on this.
 
