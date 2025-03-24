@@ -153,6 +153,9 @@ export const useMeasurementTool = (map: Map | null) => {
       measureTooltip.dispose()
       measureTooltipElement?.remove()
       measureToolTipsToClean.forEach(e => e.remove())
+      if (listener) {
+        unByKey(listener)
+      }
     }
   }, [map, measurementToolActive])
 
