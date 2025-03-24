@@ -1,4 +1,4 @@
-import { Box, Button } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from "react"
 
 import Map from 'ol/Map.js'
@@ -18,6 +18,7 @@ import { unByKey } from 'ol/Observable'
 
 import { config } from '../../config/app'
 import { useMeasurementTool } from './hooks/useMeasurementTool'
+import { UpDownIcon } from '@chakra-ui/icons'
 
 export interface ClickEvent {
   type?: SeaheatFeatureType
@@ -55,7 +56,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
     return () => { mapObject.setTarget(undefined) }
   }, [mapRef])
 
-  const { setMeasurementToolActive } = useMeasurementTool(map)
+  const { measurementToolActive, setMeasurementToolActive } = useMeasurementTool(map)
 
   useEffect(() => {
     if (!map || !onMapViewChange) return
@@ -117,8 +118,22 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
     <MapContext.Provider value={{ map }}>
       <Box ref={mapRef} className="map-component" position="relative">
         {children}
-        <Button onClick={() => setMeasurementToolActive(true)}>Measure</Button>
-        <Button onClick={() => setMeasurementToolActive(false)}>Stop</Button>
+        <button
+          onClick={() => setMeasurementToolActive((v) => !v)}
+          className='ol-control'
+          style={{
+            position: 'absolute',
+            width: '24px',
+            left: '.5em',
+            top: '4em',
+            margin: '1',
+            border: '1px solid rgb(202,202,202)',
+            color: !measurementToolActive ? 'var(--ol-subtle-foreground-color)' : 'var(--ol-background-color)',
+            backgroundColor: measurementToolActive ? 'var(--ol-subtle-foreground-color)' : 'var(--ol-background-color)',
+            zIndex: 10
+          }}>
+          <UpDownIcon/>
+        </button>
       </Box>
     </MapContext.Provider>
   )
