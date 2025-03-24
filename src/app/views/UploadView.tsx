@@ -1,6 +1,5 @@
-import React, { useRef, ChangeEvent, useState, useEffect } from "react"
-import { Box, Input, InputGroup, Button, Text, Flex, Show, Hide } from "@chakra-ui/react"
-import { DragHandleIcon } from "@chakra-ui/icons"
+import React, { useRef, ChangeEvent, useState } from "react"
+import { Box, Input, InputGroup, Button, Show, Hide } from "@chakra-ui/react"
 
 interface UploadViewProps {
   onChange: (file: File) => void
