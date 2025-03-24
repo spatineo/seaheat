@@ -17,6 +17,8 @@ import { Point } from 'ol/geom'
 import { unByKey } from 'ol/Observable'
 
 import { config } from '../../config/app'
+import { useMeasurementTool } from './hooks/useMeasurementTool'
+import { UpDownIcon } from '@chakra-ui/icons'
 
 export interface ClickEvent {
   type?: SeaheatFeatureType
@@ -37,9 +39,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
   useEffect(() => {
     if (!mapRef.current) return
 
-
     const scaleControl = new ScaleLine({ units: 'metric' });
-
     const mapObject: Map = new Map({
       view: new View({
         projection: config.projection
@@ -55,6 +55,8 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
 
     return () => { mapObject.setTarget(undefined) }
   }, [mapRef])
+
+  const { measurementToolActive, setMeasurementToolActive } = useMeasurementTool(map)
 
   useEffect(() => {
     if (!map || !onMapViewChange) return
@@ -79,7 +81,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
   }, [map, view])
 
   useEffect(() => {
-    if (!map || !onClickFeature) return
+    if (!map || !onClickFeature || measurementToolActive) return
 
     const eventKey = map.on('singleclick', (evt: MapBrowserEvent<UIEvent>) => {
       if (!onClickFeature) return
@@ -110,12 +112,28 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
     return () => {
       unByKey(eventKey)
     }
-  }, [onClickFeature, map])
+  }, [measurementToolActive, onClickFeature, map])
 
   return (
     <MapContext.Provider value={{ map }}>
       <Box ref={mapRef} className="map-component" position="relative">
         {children}
+        <button
+          onClick={() => setMeasurementToolActive((v) => !v)}
+          className='ol-control'
+          style={{
+            position: 'absolute',
+            width: '24px',
+            left: '.5em',
+            top: '4em',
+            margin: '1',
+            border: '1px solid rgb(202,202,202)',
+            color: !measurementToolActive ? 'var(--ol-subtle-foreground-color)' : 'var(--ol-background-color)',
+            backgroundColor: measurementToolActive ? 'var(--ol-subtle-foreground-color)' : 'var(--ol-background-color)',
+            zIndex: 10
+          }}>
+          <UpDownIcon/>
+        </button>
       </Box>
     </MapContext.Provider>
   )
