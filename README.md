@@ -2,22 +2,6 @@
 
 Staging version: [https://seaheat-staging.com/](https://seaheat-staging.com/)
 
-## TODO:
-
-älä commitoi
-
-- lue collectionien nimistä mitä skenaarioita on
-- tunnista joukousta pois vesialueen koko collection (erityistapaus, data ei vielä valmis)
-
-
-odota:
-- vahvistus ettei dataset ole flipattu
-- vahvistus santulta, että palvelussa on varmasti koko datasetti
-
-HUOM:
-- parametrien nimet muuttuu vielä (Simo laittaa Santulle tietoa)
-
-
 ## Architecture
 
 The app is built on React + Redux and development is done with Vite + storybooks
