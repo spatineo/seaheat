@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from "react"
 
 import Map from 'ol/Map.js'
@@ -17,6 +17,7 @@ import { Point } from 'ol/geom'
 import { unByKey } from 'ol/Observable'
 
 import { config } from '../../config/app'
+import { useMeasurementTool } from './hooks/useMeasurementTool'
 
 export interface ClickEvent {
   type?: SeaheatFeatureType
@@ -37,9 +38,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
   useEffect(() => {
     if (!mapRef.current) return
 
-
     const scaleControl = new ScaleLine({ units: 'metric' });
-
     const mapObject: Map = new Map({
       view: new View({
         projection: config.projection
@@ -55,6 +54,8 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
 
     return () => { mapObject.setTarget(undefined) }
   }, [mapRef])
+
+  const { setMeasurementToolActive } = useMeasurementTool(map)
 
   useEffect(() => {
     if (!map || !onMapViewChange) return
@@ -116,6 +117,8 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
     <MapContext.Provider value={{ map }}>
       <Box ref={mapRef} className="map-component" position="relative">
         {children}
+        <Button onClick={() => setMeasurementToolActive(true)}>Measure</Button>
+        <Button onClick={() => setMeasurementToolActive(false)}>Stop</Button>
       </Box>
     </MapContext.Provider>
   )
