@@ -81,7 +81,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
   }, [map, view])
 
   useEffect(() => {
-    if (!map || !onClickFeature) return
+    if (!map || !onClickFeature || measurementToolActive) return
 
     const eventKey = map.on('singleclick', (evt: MapBrowserEvent<UIEvent>) => {
       if (!onClickFeature) return
@@ -112,7 +112,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
     return () => {
       unByKey(eventKey)
     }
-  }, [onClickFeature, map])
+  }, [measurementToolActive, onClickFeature, map])
 
   return (
     <MapContext.Provider value={{ map }}>
