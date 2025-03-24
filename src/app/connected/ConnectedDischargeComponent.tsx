@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SelectedPointComponent } from "../../components/selectedPoint/SelectedPointComponent"
-import { setName, setDepth } from "../slices/discharge"
+import { setName, setDepth, setLocation } from "../slices/discharge"
 import { wrapAction } from "./utils"
 import { TemperatureComponent } from "../../components/TemperatureComponent/TemperatureComponent"
 
@@ -14,7 +14,8 @@ export const ConnectedDischargeComponent: React.FC = () => {
 
   const dischargeCallbacks = {
     setName: wrapAction(setName, dispatch),
-    setDepth: wrapAction(setDepth, dispatch)
+    setDepth: wrapAction(setDepth, dispatch),
+    setLocation: wrapAction(setLocation, dispatch)
   }
 
   return (

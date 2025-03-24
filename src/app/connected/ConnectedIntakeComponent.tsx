@@ -2,7 +2,7 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SelectedPointComponent } from "../../components/selectedPoint/SelectedPointComponent"
-import { setName, setDepth } from "../slices/intake"
+import { setName, setDepth, setLocation } from "../slices/intake"
 import { wrapAction } from "./utils"
 import { TemperatureComponent } from "../../components/TemperatureComponent/TemperatureComponent"
 
@@ -14,7 +14,8 @@ export const ConnectedIntakeComponent: React.FC = () => {
 
   const intakeCallbacks = {
     setName: wrapAction(setName, dispatch),
-    setDepth: wrapAction(setDepth, dispatch)
+    setDepth: wrapAction(setDepth, dispatch),
+    setLocation: wrapAction(setLocation, dispatch)
   }
 
   return (

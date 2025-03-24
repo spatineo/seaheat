@@ -1,16 +1,17 @@
 import React from 'react'
 import { Flex, FormControl, FormLabel, Input, Text } from '@chakra-ui/react'
-import { toLonLat } from 'ol/proj'
 import { SelectedPointProps } from "../../types"
 import { config } from '../../config/app'
+import { CoordinatesComponent } from '../coordinates/CoordinatesComponent'
 
 interface SelectedPointComponentProps extends SelectedPointProps {
   distanceToFacility: number | null
   setName?: (name: string | null) => void
   setDepth?: (depth: number | null) => void
+  setLocation: (location: Array<number> | null) => void
 }
 
-export const SelectedPointComponent: React.FC<SelectedPointComponentProps> = ({ location, depth, name, distanceToFacility, setName, setDepth }: SelectedPointComponentProps) => {
+export const SelectedPointComponent: React.FC<SelectedPointComponentProps> = ({ location, depth, name, distanceToFacility, setName, setLocation, setDepth }: SelectedPointComponentProps) => {
   function callIf<T> (fn: ((v: T) => void) | undefined, value: T) {
     if (fn) fn(value)
   }
@@ -19,8 +20,6 @@ export const SelectedPointComponent: React.FC<SelectedPointComponentProps> = ({ 
     if (value === '') return null
     return Number(value)
   }
-
-  const convertedLocation = location && toLonLat(location, config.projection)
 
   return (
     <>
@@ -46,21 +45,20 @@ export const SelectedPointComponent: React.FC<SelectedPointComponentProps> = ({ 
       </FormControl>
       <Flex>
         <Flex w='150px'>
+          <Text>Location: </Text>
+        </Flex>
+        <Flex>
+          <CoordinatesComponent coordinates={location} projection={config.projection} setCoordinates={setLocation} />
+        </Flex>
+      </Flex>
+      <Flex>
+        <Flex w='150px'>
           <Text>Distance to facility:</Text>
         </Flex>
         <Flex>
           {distanceToFacility
             ? <Text>{(distanceToFacility / 1000).toFixed(1)} km</Text>
             : <Text><i>-</i></Text>
-          }
-        </Flex>
-        <Flex w='150px' paddingLeft={4}>
-          <Text>Location: </Text>
-        </Flex>
-        <Flex>
-          {convertedLocation
-            ? <Text>[{Number(convertedLocation[0]).toFixed(3)}, {Number(convertedLocation[1]).toFixed(3)}]</Text>
-            : <Text><i>unset</i></Text>
           }
         </Flex>
       </Flex>
