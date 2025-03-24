@@ -1,18 +1,19 @@
 import React from 'react'
 import { Box, Flex, FormControl, FormLabel, Input, Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack, Text, Tooltip } from '@chakra-ui/react'
 import { FacilityProps, MonthValue } from "../../types"
-import { toLonLat } from 'ol/proj'
 
 import { facilityParameters } from '../../config/parameters'
 import { ChevronDownIcon, RepeatIcon, SunIcon } from '@chakra-ui/icons'
 import { MonthlySlider } from '../monthlySlider/MonthlySlider'
 import { config } from '../../config/app'
+import { CoordinatesComponent } from '../coordinates/CoordinatesComponent'
 
 interface FacilityComponentProps extends FacilityProps {
   setName?: (name: string | null) => void
   setIntakeVolume?: (value: MonthValue<number>) => void
   setTemperatureDelta?: (value: MonthValue<number>) => void
   setFacilityEffectivenessFactor?: (value: number) => void
+  setLocation: (location: Array<number> | null) => void
   intakeToFacilityDistance: number | null
   facilityToDischargeDistance: number | null
 }
@@ -27,6 +28,7 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
   setIntakeVolume,
   setTemperatureDelta,
   setFacilityEffectivenessFactor,
+  setLocation,
   intakeToFacilityDistance,
   facilityToDischargeDistance
 }: FacilityComponentProps) => {
@@ -34,7 +36,7 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
     if (fn) fn(value)
   }
 
-  const convertedLocation = location && toLonLat(location, config.projection)
+  // determine flow from props to state and from state to prop callback
 
   return (
     <>
@@ -52,11 +54,8 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
         <Flex w='150px'>
           <Text>Location:</Text>
         </Flex>
-        <Flex >
-          {convertedLocation
-            ? <Text>[{Number(convertedLocation[0]).toFixed(3)}, {Number(convertedLocation[1]).toFixed(3)}]</Text>
-            : <Text><i>unset</i></Text>
-          }
+        <Flex>
+          <CoordinatesComponent coordinates={location} projection={config.projection} setCoordinates={setLocation} />
         </Flex>
       </Flex>
       <Flex marginTop={3}>
