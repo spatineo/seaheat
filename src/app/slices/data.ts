@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { GraphData, Layer, TemperatureData, emptyGraphData, emptyTemperatureData } from '../../types'
+import { emptyImpactData } from '../../types/temperature'
 
 export enum OutputType {
   monthlyAveragePowerOutput = "monthlyAveragePowerOutput",
@@ -9,7 +10,8 @@ export enum OutputType {
   waterThroughputVolume = "waterThroughputVolume",
   dischargeWaterTemperature = "dischargeWaterTemperature",
   temperatureAtDischargeDepth = "temperatureAtDischargeDepth",
-  dischargeTemperatureDifference = "dischargeTemperatureDifference"
+  dischargeTemperatureDifference = "dischargeTemperatureDifference",
+  impactAnalysis = "impactAnalysis"
 }
 
 export interface WMSLayerType {
@@ -18,9 +20,22 @@ export interface WMSLayerType {
   layer: Layer
 }
 
+export interface Impact {
+  month: number
+  data: {
+    density: number
+    impactRadius: number
+  }[]
+}
+
+export interface ImpactData {
+  monthlyImpact: Impact[]
+}
+
 export interface DataState {
   intakeTemperature: TemperatureData
   dischargeTemperature: TemperatureData
+  impactData: ImpactData
   distances: {
     intakeToFacility: number | null
     facilityToDischarge: number | null
@@ -36,6 +51,7 @@ export interface DataState {
 const initialState: DataState = {
   intakeTemperature: emptyTemperatureData(),
   dischargeTemperature: emptyTemperatureData(),
+  impactData: emptyImpactData(),
   distances: {
     intakeToFacility: null,
     facilityToDischarge: null
@@ -47,7 +63,8 @@ const initialState: DataState = {
     [OutputType.waterThroughputVolume.toString()]: emptyGraphData(),
     [OutputType.temperatureAtDischargeDepth.toString()]: emptyGraphData(),
     [OutputType.dischargeWaterTemperature.toString()]: emptyGraphData(),
-    [OutputType.dischargeTemperatureDifference.toString()]: emptyGraphData()
+    [OutputType.dischargeTemperatureDifference.toString()]: emptyGraphData(),
+    [OutputType.impactAnalysis.toString()]: emptyGraphData()
   },
   layers: {}
 }
@@ -89,8 +106,14 @@ export const dataSlice = createSlice({
     setDischargeTemperatureDifference: (state, action: PayloadAction<GraphData>) => {
       state.output.dischargeTemperatureDifference = action.payload
     },
+    setImpactAnalysis: (state, action: PayloadAction<GraphData>) => {
+      state.output.impactAnalysis = action.payload
+    },
     setLayer: (state, action: PayloadAction<WMSLayerType>) => {
       state.layers[action.payload.id] = action.payload
+    },
+    setImpactData: (state, action: PayloadAction<ImpactData>) => {
+      state.impactData = action.payload
     },
     restoreDataState: () => {
       // NOP, this action is declared here so that data and math middleware can hitch on to these events
@@ -104,7 +127,7 @@ export const {
   setIntakeTemperature, setDischargeTemperature, setIntakeToFacilityDistance,
   setFacilityToDischargeDistance, setMonthlyAveragePowerOutput, setMonthlyPowerRating, setLayer,
   restoreDataState, setIntakeTemperaturePerMonth, setTemperatureAtDischargeDepth, setWaterThroughputVolume,
-  setDischargeWaterTemperature, setDischargeTemperatureDifference
+  setDischargeWaterTemperature, setDischargeTemperatureDifference, setImpactAnalysis, setImpactData
 } = dataSlice.actions
 
 export default dataSlice.reducer

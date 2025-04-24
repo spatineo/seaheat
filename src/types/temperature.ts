@@ -1,3 +1,5 @@
+import { ImpactData } from "../app/slices/data"
+
 interface Axis <T> {
   label: string
   values: T[]
@@ -43,4 +45,8 @@ export const emptyTemperatureData = (): TemperatureData => ({
   saltinessValues: [],
   legend: [],
   seabedDepth: 0
+})
+
+export const emptyImpactData = (): ImpactData => ({
+  monthlyImpact: []
 })

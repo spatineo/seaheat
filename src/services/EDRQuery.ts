@@ -95,15 +95,16 @@ export const requestTemperatureData = async (location: number[], scenarioId: str
   }
 }
 
-export const requestImpactData = async (location: number[]): Promise<any> => {
+export const requestImpactData = async (location: number[], volume: number, month: number): Promise<any> => {
   const lonLat = toLonLat(location, config.projection)
 
-  const baseUrl = collectionImpactUrl(10)
+  const baseUrl = collectionImpactUrl(volume)
+
+  const datetime = `2000-${String(month + 1).padStart(2, '0')}-01T00:00:00Z`
 
   const qs = new URLSearchParams()
   qs.append('coords', `POINT(${lonLat.join(' ')})`)
-  // Fixed time range for impact data
-  qs.append('datetime', '2000-01-01T00:00:00Z/2000-12-01T00:00:00Z')
+  qs.append('datetime', datetime)
 
   const tmp = new URLSearchParams(qs)
   const query = `${baseUrl}position?${tmp.toString()}`
@@ -115,10 +116,8 @@ export const requestImpactData = async (location: number[]): Promise<any> => {
     throw Error(`Empty EDR response`)
   }
 
-  console.log(response)
-
-  console.log('requestImpactData(), mock', lonLat)
-  return {
-    radius: 100
-  }
+  return response.coverages[0].domain.axes.z.values.map((z, idx) => ({
+    density: z / 1000000, // for practical reasons, the values from EDR are integers
+    impactRadius: response.coverages[0].ranges.impactradius.values[idx]
+  }))
 }

@@ -1,12 +1,13 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { setLocation as setIntakeLocation } from "../app/slices/intake"
-import { setDepth as setDischargeDepth, setLocation as setDischargeLocation } from "../app/slices/discharge"
+import { setLocation as setDischargeLocation } from "../app/slices/discharge"
 import { RootState, AppDispatch } from "../store"
 import { requestImpactData, requestTemperatureData } from "../services/EDRQuery"
-import { restoreDataState, setDischargeTemperature, setIntakeTemperature } from "../app/slices/data"
+import { ImpactData, restoreDataState, setDischargeTemperature, setImpactData, setIntakeTemperature } from "../app/slices/data"
 import { emptyTemperatureData } from "../types/temperature"
 import { processingError } from "./ErrorMiddleware"
 import { setFunctionId, setScenarioId } from "../app/slices/uiState"
+import { setIntakeVolume } from "../app/slices/facility"
 
 export const dataAPIMiddleware = createListenerMiddleware()
 const startAppListening = dataAPIMiddleware.startListening.withTypes<RootState, AppDispatch>()
@@ -54,20 +55,28 @@ startAppListening({
 
 // Temperature data listener: discharge impact
 startAppListening({
-  matcher: isAnyOf(restoreDataState, setDischargeLocation, setDischargeDepth, setFunctionId), // TODO <- needs to react to other things as well
+  matcher: isAnyOf(restoreDataState, setDischargeLocation, setIntakeVolume),
   effect: async (_action, listenerApi) => {
     try {
       listenerApi.cancelActiveListeners()
       const state = listenerApi.getState()
 
-      let impactData
-      if (state.discharge.location !== null) {
-        impactData = await requestImpactData(state.discharge.location) // <- TODO, what parameters do we need? depth?
-      } else {
-        impactData = {}
+      const impactData: ImpactData = {
+        monthlyImpact: []
       }
 
-      console.log('imact data', impactData)
+      const location = state.discharge.location
+      if (location !== null) {
+        // impactData = await requestImpactData(state.discharge.location) // <- TODO, what parameters do we need? depth?
+        // we should use RTK query here... but first lets implement this the "easy way"
+        // chrome seems to cache the values well enough
+        impactData.monthlyImpact = await Promise.all(state.facility.intakeVolume.map(async (volume, month) => ({
+          month,
+          data: await requestImpactData(location, volume, month)
+        })))
+      }
+
+      listenerApi.dispatch(setImpactData(impactData))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error downloading discharge temperature data ${error}`))
     }

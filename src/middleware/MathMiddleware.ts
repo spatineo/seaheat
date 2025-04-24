@@ -16,13 +16,17 @@ import {
   setTemperatureAtDischargeDepth,
   setWaterThroughputVolume,
   setDischargeWaterTemperature,
-  setDischargeTemperatureDifference
+  setDischargeTemperatureDifference,
+  setImpactData,
+  setImpactAnalysis
 } from "../app/slices/data"
 import { getLength } from "ol/sphere"
 import { LineString } from "ol/geom"
 import { secondsInDay } from "date-fns/constants"
 import { format, getDaysInMonth } from "date-fns"
 import { processingError } from "./ErrorMiddleware"
+import { densityOfOutflow, normalizedImpactRadius } from "../processing/util/math"
+import { Series } from "../types/graph"
 
 export const initMathAction = createAction('INIT_MATH')
 
@@ -323,6 +327,64 @@ startAppListening({
       listenerApi.dispatch(setDischargeTemperatureDifference(output))
     } catch (error) {
       listenerApi.dispatch(processingError(`Error calculating Discharge Temperature Difference: ${error}`))
+    }
+  }
+})
+
+// Impact calculation
+//  - setIntakeTemperature = this contains incoming saltiness which is the same as discharge saltiness
+//  - setIntakeDepth = set depth for intake
+//  - setDischargeWaterTemperature = pre-calculated discharge temperature (intake temp with facility effect)
+//  - setImpactData = lookup table for density -> impact value
+startAppListening({
+  matcher: isAnyOf(initMathAction, restoreDataState, setIntakeTemperature, setIntakeDepth, setDischargeWaterTemperature, setImpactData),
+  effect: (_action, listenerApi) => {
+    try {
+      const { data: { output: { dischargeWaterTemperature }, impactData, intakeTemperature }, intake: { depth: intakeDepth }, uiState: { dataSource } } = listenerApi.getState()
+
+      const canCalculate =
+        intakeTemperature.saltinessValues.length > 0 &&
+        dischargeWaterTemperature.series[0].values.length === 12 &&
+        dischargeWaterTemperature.series[0].values.findIndex(n => !Number.isFinite(n)) === -1 &&
+        impactData.monthlyImpact.length === 12
+
+      const output: GraphData = {
+        unit: 'km',
+        axes: { x: { label: 'Month', values: [] } },
+        series: [],
+        scenarioId: dataSource.scenarioId,
+        functionId: dataSource.functionId
+      }
+
+      if (canCalculate) {
+        const intakeDepthIndex = intakeTemperature.axes.y.values.findIndex(val => intakeDepth !== null && val >= intakeDepth)
+
+        const series: Series = {
+          label: 'Impact radius',
+          values: []
+        }
+        output.series.push(series)
+
+        Array(12).fill(0).forEach((_v, month: number) => {
+          const T = dischargeWaterTemperature.series[0].values[month]
+          const S = intakeTemperature.saltinessValues.find(v => v.x === month && v.y === intakeDepthIndex)!.value
+
+          const density = densityOfOutflow(T, S)
+
+          const monthlyImpact = [...impactData.monthlyImpact[month].data]
+          monthlyImpact.sort((a, b) => Math.abs(a.density - density) - Math.abs(b.density - density))
+          const impactRadius = normalizedImpactRadius(monthlyImpact[0].impactRadius)
+
+          series.values[month] = impactRadius
+
+          const d = new Date(2001, month, 1)
+          output.axes.x.values[month] = format(d, 'LLL')
+        })
+      }
+
+      listenerApi.dispatch(setImpactAnalysis(output))
+    } catch (error) {
+      listenerApi.dispatch(processingError(`Error calculating IntakeTemperaturePerMonth: ${error}`))
     }
   }
 })
