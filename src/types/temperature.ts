@@ -22,6 +22,7 @@ export interface TemperatureData {
   }
   ticks: number[]
   temperatureValues: Value[]
+  saltinessValues: Value[]
   legend: Legend[]
   seabedDepth: number
 }
@@ -39,6 +40,7 @@ export const emptyTemperatureData = (): TemperatureData => ({
   },
   ticks: [],
   temperatureValues: [],
+  saltinessValues: [],
   legend: [],
   seabedDepth: 0
 })
