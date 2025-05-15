@@ -349,7 +349,7 @@ startAppListening({
         impactData.monthlyImpact.length === 12
 
       const output: GraphData = {
-        unit: 'km',
+        unit: 'm',
         axes: { x: { label: 'Month', values: [] } },
         series: [],
         scenarioId: dataSource.scenarioId,
