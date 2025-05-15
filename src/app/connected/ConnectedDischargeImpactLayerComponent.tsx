@@ -18,7 +18,6 @@ export const ConnectedDischargeImpactLayerComponent: React.FC<ConnectedDischarge
   const impactRadius = useSelector((state: RootState) => state.data.output.impactAnalysis.series[0]?.values)
   const dischargeLocation = useSelector((state: RootState) => state.discharge.location)
 
-  console.log('wow', zIndex)
   const featureCollection = useMemo((): Feature[] => {
     if (!dischargeLocation || !impactRadius) return []
 
