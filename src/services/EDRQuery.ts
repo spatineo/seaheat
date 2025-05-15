@@ -116,7 +116,7 @@ export const requestImpactData = async (location: number[], volume: number, mont
     throw Error(`Empty EDR response`)
   }
 
-  return response.coverages[0].domain.axes.z.values.map((z, idx) => ({
+  return response.coverages[0].domain.axes.z.values.map((z: number, idx: number) => ({
     density: z / 1000000, // for practical reasons, the values from EDR are integers
     impactRadius: response.coverages[0].ranges.impactradius.values[idx]
   }))
