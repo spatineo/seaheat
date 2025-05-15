@@ -71,7 +71,17 @@ export const functions = [{
   name: 'Standard deviation'
 }]
 
-export const collectionUrl = (scenarioId: string, dataType: string, functionId: string) => {
+export const collectionTemperatureUrl = (scenarioId: string, dataType: string, functionId: string) => {
   const dataId = scenarios.find(s => s.id === scenarioId)?.data[dataType]
   return `${edrBaseURL}/collections/seaheat-monthly-${scenarioId}-${functionId}.${dataId}/`
+}
+
+export const collectionImpactUrl = (volume: number) => {
+  // Cap volume to 10-80 by not accepting values above 80 and treating values < 10 as 10
+  if (volume > 80) throw Error(`volume ${volume} outside of range (max 80)`)
+  const normalizedVolume = volume < 10 ? 10 : volume
+
+  const roundedVolume = Math.round(normalizedVolume / 5) * 5
+  const volumeCollectionId = String(roundedVolume).padStart(2, '0')
+  return `${edrBaseURL}/collections/seaheat-monthly-intial-r-and-z-v-${volumeCollectionId}-2000-2019.667.2/`
 }

@@ -3,7 +3,7 @@ import { toLonLat } from "ol/proj"
 import { config } from "../config/app"
 
 import { Value } from "../types/temperature"
-import { collectionUrl, scenarios } from "../config/scenarios"
+import { collectionImpactUrl, collectionTemperatureUrl, scenarios } from "../config/scenarios"
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -31,8 +31,8 @@ const legend = [
   { minValue: 35, maxValue: null, color: '#960a2c' }
 ]
 
-// const parameterNameSaltiness = 'monthly_timmax_so' // Salt
-const parameterNameTemp = 'monthly_thetao' // Temperature
+const parameterNameTemp = 'monthly_thetao'
+const parameterNameSaltiness = 'monthly_so'
 
 export const requestTemperatureData = async (location: number[], scenarioId: string, functionId: string): Promise<TemperatureData> => {
   const lonLat = toLonLat(location, config.projection)
@@ -42,7 +42,7 @@ export const requestTemperatureData = async (location: number[], scenarioId: str
     throw Error(`Unknown scenario: ${scenarioId}`)
   }
 
-  const baseUrl = collectionUrl(scenarioId, 'level', functionId)
+  const baseUrl = collectionTemperatureUrl(scenarioId, 'level', functionId)
 
   const qs = new URLSearchParams()
   qs.append('coords', `POINT(${lonLat.join(' ')})`)
@@ -59,18 +59,24 @@ export const requestTemperatureData = async (location: number[], scenarioId: str
   }
 
   const depthValues = response.coverages[0].domain.axes.z.values
+
+  const extractValues = (parameterName: string): Value[] => response.coverages.flatMap((coverage: any) => {
+    const x = new Date(coverage.domain.axes.t.values[0] as string).getMonth()
+    const values = coverage.ranges[parameterName].values as number[]
+    return values.map((value, y) => ({ x, y, value }))
+  })
+
+  const temperatureValues: Value[] = extractValues(parameterNameTemp)
+  const saltinessValues: Value[] = extractValues(parameterNameSaltiness)
+
   let seabedDepthIndex = 0
 
-  const temperatureValues: Value[] = []
-
   response.coverages.forEach((coverage: any) => {
-    const x = new Date(coverage.domain.axes.t.values[0] as string).getMonth()
     const values = coverage.ranges[parameterNameTemp].values as number[]
     values.forEach((value, y) => {
       if (value !== null && y > seabedDepthIndex) {
         seabedDepthIndex = y
       }
-      temperatureValues.push({ x, y, value })
     })
   })
 
@@ -83,7 +89,35 @@ export const requestTemperatureData = async (location: number[], scenarioId: str
     },
     ticks: ticks.filter(t => t < seabedDepth),
     temperatureValues,
+    saltinessValues,
     legend,
     seabedDepth
   }
+}
+
+export const requestImpactData = async (location: number[], volume: number, month: number): Promise<any> => {
+  const lonLat = toLonLat(location, config.projection)
+
+  const baseUrl = collectionImpactUrl(volume)
+
+  const datetime = `2000-${String(month + 1).padStart(2, '0')}-01T00:00:00Z`
+
+  const qs = new URLSearchParams()
+  qs.append('coords', `POINT(${lonLat.join(' ')})`)
+  qs.append('datetime', datetime)
+
+  const tmp = new URLSearchParams(qs)
+  const query = `${baseUrl}position?${tmp.toString()}`
+  const data = await fetch(query, {})
+
+  const response = await data.json()
+
+  if (Object.keys(response as object).length === 0) {
+    throw Error(`Empty EDR response`)
+  }
+
+  return response.coverages[0].domain.axes.z.values.map((z, idx) => ({
+    density: z / 1000000, // for practical reasons, the values from EDR are integers
+    impactRadius: response.coverages[0].ranges.impactradius.values[idx]
+  }))
 }

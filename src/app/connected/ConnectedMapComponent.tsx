@@ -14,6 +14,7 @@ import { LineStringArrowLayer } from "../../components/map/layer/LineStringArrow
 import { Style, Icon, Circle, Fill, Stroke } from 'ol/style'
 import { ConnectedOverlayLayersComponent } from "./ConnectedOverlayLayersComponent"
 import { ConnectedLegendComponent } from "./ConnectedLegendComponent"
+import { ConnectedDischargeImpactLayerComponent } from "./ConnectedDischargeImpactLayerComponent"
 
 const pipeStyleDefault = new Style({
   image: new Circle({
@@ -130,6 +131,7 @@ export const ConnectedMapComponent: React.FC = () => {
       />
       <ConnectedOverlayLayersComponent />
       <ConnectedLegendComponent />
+      <ConnectedDischargeImpactLayerComponent />
     </MapComponent>
   )
 }

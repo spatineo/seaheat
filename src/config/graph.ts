@@ -8,3 +8,4 @@ OutputTitle.set(OutputType.temperatureAtDischargeDepth, "Temperature at discharg
 OutputTitle.set(OutputType.waterThroughputVolume, "Water throughput volume")
 OutputTitle.set(OutputType.dischargeWaterTemperature, "Discharge water temperature")
 OutputTitle.set(OutputType.dischargeTemperatureDifference, "Discharge temperature difference")
+OutputTitle.set(OutputType.impactAnalysis, "Discharge impact radius")
