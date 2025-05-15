@@ -10,10 +10,15 @@ const dischargeImpactStyle = new Style({
   fill: new Fill({ color: '#00000011' })
 })
 
-export const ConnectedDischargeImpactLayerComponent: React.FC = () => {
+interface ConnectedDischargeImpactLayerComponentProps {
+  zIndex: number
+}
+
+export const ConnectedDischargeImpactLayerComponent: React.FC<ConnectedDischargeImpactLayerComponentProps> = ({ zIndex }: ConnectedDischargeImpactLayerComponentProps ) => {
   const impactRadius = useSelector((state: RootState) => state.data.output.impactAnalysis.series[0]?.values)
   const dischargeLocation = useSelector((state: RootState) => state.discharge.location)
 
+  console.log('wow', zIndex)
   const featureCollection = useMemo((): Feature[] => {
     if (!dischargeLocation || !impactRadius) return []
 
@@ -27,7 +32,7 @@ export const ConnectedDischargeImpactLayerComponent: React.FC = () => {
 
   return <FeatureCollectionLayer
     features={featureCollection}
-    zIndex={100}
+    zIndex={zIndex}
     style={dischargeImpactStyle}
   />
 }

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { availableLayers } from "../../config/layers"
 import { WMSLayer } from "../../components/map/layer/WMSLayer"
+import { config } from "../../config/app"
 
 export const ConnectedOverlayLayersComponent: React.FC = () => {
   const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)
@@ -19,7 +20,9 @@ export const ConnectedOverlayLayersComponent: React.FC = () => {
     if (layerInfo && al.type === 'WMS') {
       const dimensions = layerDimensions[al.id]?.values
 
-      return (<WMSLayer key={idx} zIndex={50} layerInfo={layerInfo} opacity={vl.opacity} dimensions={dimensions} />)
+      const zIndexOffset = al.isDatalayer ? config.zIndexOffsetDataLayer : config.zIndexOffsetOverlayLayer
+
+      return (<WMSLayer key={idx} zIndex={zIndexOffset + idx} layerInfo={layerInfo} opacity={vl.opacity} dimensions={dimensions} />)
     }
   }).filter(v => !!v), [visibleLayers, layers, layerDimensions])
 }
