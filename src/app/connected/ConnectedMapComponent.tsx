@@ -16,6 +16,7 @@ import { ConnectedOverlayLayersComponent } from "./ConnectedOverlayLayersCompone
 import { ConnectedLegendComponent } from "./ConnectedLegendComponent"
 import { ConnectedDischargeImpactLayerComponent } from "./ConnectedDischargeImpactLayerComponent"
 import { config } from "../../config/app"
+import { ConnectedCustomLayersComponent } from "./ConnectedCustomLayersComponent"
 
 const pipeStyleDefault = new Style({
   image: new Circle({
@@ -134,6 +135,7 @@ export const ConnectedMapComponent: React.FC = () => {
         style={selectStyle(currentTab, SeaheatFeatureType.FACILITY)}
       />
       <ConnectedOverlayLayersComponent />
+      <ConnectedCustomLayersComponent />
       <ConnectedLegendComponent />
       <ConnectedDischargeImpactLayerComponent
         zIndex={config.zIndexOffsetFeatureLayer + 0}

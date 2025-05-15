@@ -1,15 +1,31 @@
-import React, { useMemo } from "react"
-import { Box, Checkbox, CheckboxGroup, Heading, Stack, Text } from "@chakra-ui/react"
+import React, { useCallback, useMemo, useState } from "react"
+import { Box, Button, Checkbox, CheckboxGroup, Heading, Modal, Stack, Text } from "@chakra-ui/react"
 import { availableLayers } from "../../config/layers"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { toggleLayer } from "../slices/uiState"
+import { addCustomWMSLayer, CustomWMSLayer, toggleLayer } from "../slices/uiState"
 import { ConnectedLayerDimensionComponent } from "../connected/ConnectedLayerDimensionComponent"
+import { WMSConnectView } from "./WMSConnectView"
 
 export const LayersView: React.FC = () => {
   const dispatch = useDispatch()
 
-  const visibleLayers = useSelector((state: RootState) => state.uiState.map.visibleLayers)
+  const [addServiceDialogVisible, setAddServiceDialogVisible] = useState(false)
+
+  const { visibleLayers, customWMSLayers } = useSelector((state: RootState) => state.uiState.map)
+
+  const openDialog = useCallback(() => {
+    setAddServiceDialogVisible(true)
+  }, [])
+
+  const closeDialog = useCallback(() => {
+    setAddServiceDialogVisible(false)
+  }, [])
+
+  const addWMSLayer = useCallback((layer: Omit<CustomWMSLayer, 'id'>) => {
+    dispatch(addCustomWMSLayer(layer))
+    closeDialog()
+  }, [])
 
   const checked = useMemo(() => {
     return visibleLayers.map((v) => v.id)
@@ -38,6 +54,27 @@ export const LayersView: React.FC = () => {
             )
           }
         </CheckboxGroup>
+        <Text>Custom WMS</Text>
+        <CheckboxGroup colorScheme='red' value={checked}>
+          {
+            customWMSLayers.map((service, idx) =>
+              <Checkbox size='md' checked={false} key={idx} onChange={() => dispatch(toggleLayer(service.id))} value={service.id}>{service.title}</Checkbox>
+
+              // TODO
+              // <Flex key={service.id}>
+              //   <Text maxWidth='calc(100% - 2em)'>{service.url}</Text>
+              //   <Spacer />
+              //   <Box maxWidth='2em'>
+              //     <DeleteIcon onClick={() => dispatch(removeCustomWMS(service))}/>
+              //   </Box>
+              // </Flex>
+            )
+          }
+        </CheckboxGroup>
+        <Button onClick={openDialog}>Add WMS</Button>
+        <Modal isOpen={addServiceDialogVisible} onClose={closeDialog} size='full'>
+          <WMSConnectView done={addWMSLayer} cancel={closeDialog} />
+        </Modal>
       </Stack>
     </Box>
   )

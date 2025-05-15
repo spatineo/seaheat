@@ -4,10 +4,18 @@ import { MapView, SeaheatFeatureType } from '../../types'
 import { availableLayers } from '../../config/layers'
 import { OutputType } from './data'
 import { functions, scenarios } from '../../config/scenarios'
+import { v4 as uuidv4 } from 'uuid'
 
 interface VisibleLayer {
   id: string
   opacity: number
+}
+
+export interface CustomWMSLayer {
+  id: string
+  url: string
+  name: string
+  title: string
 }
 
 interface LayerDimension {
@@ -22,6 +30,7 @@ export interface UIState {
     layerDimensions: {
       [key: string]: LayerDimension
     }
+    customWMSLayers: CustomWMSLayer[]
   }
   graph: {
     visibleGraph: OutputType
@@ -40,7 +49,8 @@ const initialState: UIState = {
       zoom: 5
     },
     visibleLayers: [],
-    layerDimensions: {}
+    layerDimensions: {},
+    customWMSLayers: []
   },
   graph: {
     visibleGraph: OutputType.monthlyAveragePowerOutput
@@ -74,6 +84,9 @@ export const uiStateSlice = createSlice({
         // unselect
         state.map.visibleLayers = state.map.visibleLayers.filter((v) => v.id !== action.payload)
       } else {
+        // Check if this is a custom layer
+        const customLayer = state.map.customWMSLayers.find(layer => layer.id === action.payload)
+
         // select, BUT if this is a datalayer and there is already a datalayer, unselect that
         const newLayer = availableLayers.find((al) => al.id === action.payload)
         if (newLayer?.isDatalayer) {
@@ -86,7 +99,7 @@ export const uiStateSlice = createSlice({
 
         state.map.visibleLayers.push({
           id: action.payload,
-          opacity: newLayer?.isDatalayer ? 1.0 : 0.5
+          opacity: (newLayer?.isDatalayer || customLayer) ? 1.0 : 0.5
         })
       }
     },
@@ -113,6 +126,17 @@ export const uiStateSlice = createSlice({
       state.dataSource.functionId = action.payload
     },
 
+    addCustomWMSLayer: (state, action: PayloadAction<Omit<CustomWMSLayer, 'id'>>) => {
+      state.map.customWMSLayers.push({
+        id: uuidv4(),
+        ...action.payload
+      })
+    },
+
+    removeCustomWMSLayer: (state, action: PayloadAction<CustomWMSLayer>) => {
+      state.map.customWMSLayers = state.map.customWMSLayers.filter(layer => layer.id !== action.payload.id)
+    },
+
     restoreUIState: (state, action: PayloadAction<UIState>) => {
       state.selectedPointTab = action.payload.selectedPointTab
       state.map = action.payload.map
@@ -123,6 +147,7 @@ export const uiStateSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, setScenarioId, setFunctionId, restoreUIState } = uiStateSlice.actions
+export const { setSelectedPointTab, setMapView, toggleLayer, setVisibleGraph, setLayerDimension, setScenarioId, setFunctionId,
+  addCustomWMSLayer, removeCustomWMSLayer, restoreUIState } = uiStateSlice.actions
 
 export default uiStateSlice.reducer
