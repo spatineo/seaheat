@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react"
-import { Box, Button, Checkbox, CheckboxGroup, Heading, Modal, Stack, Text } from "@chakra-ui/react"
+import { Box, Button, Checkbox, CheckboxGroup, Flex, Heading, Modal, Spacer, Stack, Text } from "@chakra-ui/react"
 import { availableLayers } from "../../config/layers"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { addCustomWMSLayer, CustomWMSLayer, toggleLayer } from "../slices/uiState"
+import { addCustomWMSLayer, CustomWMSLayer, removeCustomWMSLayer, toggleLayer } from "../slices/uiState"
 import { ConnectedLayerDimensionComponent } from "../connected/ConnectedLayerDimensionComponent"
 import { WMSConnectView } from "./WMSConnectView"
+import { DeleteIcon } from "@chakra-ui/icons"
 
 export const LayersView: React.FC = () => {
   const dispatch = useDispatch()
@@ -57,22 +58,19 @@ export const LayersView: React.FC = () => {
         <Text>Custom WMS</Text>
         <CheckboxGroup colorScheme='red' value={checked}>
           {
-            customWMSLayers.map((service, idx) =>
-              <Checkbox size='md' checked={false} key={idx} onChange={() => dispatch(toggleLayer(service.id))} value={service.id}>{service.title}</Checkbox>
-
-              // TODO
-              // <Flex key={service.id}>
-              //   <Text maxWidth='calc(100% - 2em)'>{service.url}</Text>
-              //   <Spacer />
-              //   <Box maxWidth='2em'>
-              //     <DeleteIcon onClick={() => dispatch(removeCustomWMS(service))}/>
-              //   </Box>
-              // </Flex>
+            customWMSLayers.map((service) =>
+              <Flex key={service.id}>
+                <Checkbox maxWidth='calc(100% - 2em)' size='md' checked={false} onChange={() => dispatch(toggleLayer(service.id))} value={service.id}>{service.title}</Checkbox>
+                <Spacer />
+                <Box maxWidth='2em'>
+                  <DeleteIcon onClick={() => dispatch(removeCustomWMSLayer(service))}/>
+                </Box>
+              </Flex>
             )
           }
         </CheckboxGroup>
         <Button onClick={openDialog}>Add WMS</Button>
-        <Modal isOpen={addServiceDialogVisible} onClose={closeDialog} size='full'>
+        <Modal scrollBehavior='inside' isOpen={addServiceDialogVisible} onClose={closeDialog} size='full'>
           <WMSConnectView done={addWMSLayer} cancel={closeDialog} />
         </Modal>
       </Stack>
