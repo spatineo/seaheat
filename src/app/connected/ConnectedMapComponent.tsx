@@ -15,6 +15,8 @@ import { Style, Icon, Circle, Fill, Stroke } from 'ol/style'
 import { ConnectedOverlayLayersComponent } from "./ConnectedOverlayLayersComponent"
 import { ConnectedLegendComponent } from "./ConnectedLegendComponent"
 import { ConnectedDischargeImpactLayerComponent } from "./ConnectedDischargeImpactLayerComponent"
+import { config } from "../../config/app"
+import { ConnectedCustomLayersComponent } from "./ConnectedCustomLayersComponent"
 
 const pipeStyleDefault = new Style({
   image: new Circle({
@@ -110,28 +112,34 @@ export const ConnectedMapComponent: React.FC = () => {
 
   return (
     <MapComponent onClickFeature={(evt) => clickLocation(evt)} onMapViewChange={onMapViewChange} view={mapView}>
-      <LineStringArrowLayer lineString={lineString} zIndex={100} />
+      <LineStringArrowLayer
+        lineString={lineString}
+        zIndex={config.zIndexOffsetFeatureLayer + 5}
+      />
       <SingleFeatureLayer
         type={SeaheatFeatureType.INTAKE}
         location={intake.location}
-        zIndex={110}
+        zIndex={config.zIndexOffsetFeatureLayer + 10}
         style={selectStyle(currentTab, SeaheatFeatureType.INTAKE)}
       />
       <SingleFeatureLayer
         type={SeaheatFeatureType.DISCHARGE}
         location={discharge.location}
-        zIndex={120}
+        zIndex={config.zIndexOffsetFeatureLayer + 20}
         style={selectStyle(currentTab, SeaheatFeatureType.DISCHARGE)}
       />
       <SingleFeatureLayer
         type={SeaheatFeatureType.FACILITY}
         location={facility.location}
-        zIndex={130}
+        zIndex={config.zIndexOffsetFeatureLayer + 30}
         style={selectStyle(currentTab, SeaheatFeatureType.FACILITY)}
       />
       <ConnectedOverlayLayersComponent />
+      <ConnectedCustomLayersComponent />
       <ConnectedLegendComponent />
-      <ConnectedDischargeImpactLayerComponent />
+      <ConnectedDischargeImpactLayerComponent
+        zIndex={config.zIndexOffsetFeatureLayer + 0}
+      />
     </MapComponent>
   )
 }
