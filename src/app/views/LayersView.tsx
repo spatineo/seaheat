@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react"
-import { Box, Button, Checkbox, CheckboxGroup, Flex, Heading, Modal, Spacer, Stack, Text } from "@chakra-ui/react"
+import { Box, Checkbox, CheckboxGroup, Flex, Heading, Modal, Spacer, Stack, Text } from "@chakra-ui/react"
 import { availableLayers } from "../../config/layers"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { addCustomWMSLayer, CustomWMSLayer, removeCustomWMSLayer, toggleLayer } from "../slices/uiState"
 import { ConnectedLayerDimensionComponent } from "../connected/ConnectedLayerDimensionComponent"
 import { WMSConnectView } from "./WMSConnectView"
-import { DeleteIcon } from "@chakra-ui/icons"
+import { DeleteIcon, PlusSquareIcon } from "@chakra-ui/icons"
 
 export const LayersView: React.FC = () => {
   const dispatch = useDispatch()
@@ -47,7 +47,7 @@ export const LayersView: React.FC = () => {
             )
           }
         </CheckboxGroup>
-        <Text>Overlays</Text>
+        <Text paddingTop='0.5em'>Overlays</Text>
         <CheckboxGroup colorScheme='green' value={checked}>
           {
             availableLayers.filter((al) => !al.isDatalayer).map((l, idx) =>
@@ -55,7 +55,7 @@ export const LayersView: React.FC = () => {
             )
           }
         </CheckboxGroup>
-        <Text>Custom WMS</Text>
+        <Text paddingTop='0.5em'>Custom WMS <PlusSquareIcon style={{ cursor: 'pointer' }} onClick={openDialog}/></Text>
         <CheckboxGroup colorScheme='red' value={checked}>
           {
             customWMSLayers.map((service) =>
@@ -63,13 +63,12 @@ export const LayersView: React.FC = () => {
                 <Checkbox maxWidth='calc(100% - 2em)' size='md' checked={false} onChange={() => dispatch(toggleLayer(service.id))} value={service.id}>{service.title}</Checkbox>
                 <Spacer />
                 <Box maxWidth='2em'>
-                  <DeleteIcon onClick={() => dispatch(removeCustomWMSLayer(service))}/>
+                  <DeleteIcon onClick={() => dispatch(removeCustomWMSLayer(service))} style={{ cursor: 'pointer' }}/>
                 </Box>
               </Flex>
             )
           }
         </CheckboxGroup>
-        <Button onClick={openDialog}>Add WMS</Button>
         <Modal scrollBehavior='inside' isOpen={addServiceDialogVisible} onClose={closeDialog} size='full'>
           <WMSConnectView done={addWMSLayer} cancel={closeDialog} />
         </Modal>
