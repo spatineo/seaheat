@@ -5,6 +5,8 @@ import App from './App'
 import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './query/query'
 
 const theme = extendTheme({
   styles: {
@@ -32,9 +34,11 @@ const theme = extendTheme({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={theme}>
+          <App />
+        </ChakraProvider>
+      </QueryClientProvider>
     </Provider>
   </React.StrictMode>
 )
