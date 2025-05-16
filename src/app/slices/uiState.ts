@@ -127,9 +127,15 @@ export const uiStateSlice = createSlice({
     },
 
     addCustomWMSLayer: (state, action: PayloadAction<Omit<CustomWMSLayer, 'id'>>) => {
+      const id = uuidv4()
       state.map.customWMSLayers.push({
-        id: uuidv4(),
+        id,
         ...action.payload
+      })
+
+      state.map.visibleLayers.push({
+        id,
+        opacity: 1.0
       })
     },
 
