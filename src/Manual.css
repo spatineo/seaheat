@@ -1,0 +1,33 @@
+
+.seaheat-manual > * {
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: .5em;
+}
+
+.seaheat-manual h1 {
+    font-size: 24px;
+    font-weight: bold;
+    padding-top: 1em;
+}
+
+.seaheat-manual h2 {
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 1em;
+}
+
+.seaheat-manual blockquote {
+    background: #ddddff
+}
+
+.seaheat-manual ul,
+.seaheat-manual ol {
+    margin-left: 1em;
+}
+
+.seaheat-manual table td,
+.seaheat-manual table th {
+    border: 1px solid #ddd;
+    padding: .2em;
+}

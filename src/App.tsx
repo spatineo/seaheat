@@ -1,20 +1,19 @@
 /* eslint-disable react/no-children-prop */
 // import './App.css'
 import React, { useEffect, useState } from 'react'
-import { Grid, GridItem, Box, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button } from '@chakra-ui/react'
+import { Grid, GridItem, Box, Flex, Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, ModalFooter, Button } from '@chakra-ui/react'
 import { DesignerView } from './app/views/DesignerView'
 import { ConnectedScenarioSelectView } from './app/connected/ConnectedScenarioSelectView'
 import { SelectedPointView } from './app/views/SelectedPointView'
 import { MapView } from './app/views/MapView'
 import { LayersView } from './app/views/LayersView'
 import { GraphView } from './app/views/GraphView'
-import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
-import ReactMarkdown from 'react-markdown'
 import { useDispatch } from 'react-redux'
 import { processingError } from './middleware/ErrorMiddleware'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
-// import * as manual from './manual.md'
-// console.log('manual', manual)
+import './Manual.css'
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -25,7 +24,6 @@ const App: React.FC = () => {
 
   const openManual = () => setManualOpen(true)
   const closeManual = () => setManualOpen(false)
-
 
   useEffect(() => {
     const loadManual = async () => {
@@ -39,18 +37,6 @@ const App: React.FC = () => {
       dispatch(processingError('Failed to load manual'))
     })
   }, [])
-
-//   const manual = `
-// # Wow
-
-// Hello world
-
-// * This
-// * is
-// * a
-// * bulleted
-// * list
-//   `
 
   return (
     <>
@@ -95,10 +81,9 @@ const App: React.FC = () => {
       <Modal scrollBehavior='inside' isOpen={manualOpen} onClose={closeManual} size='full'>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Seaheat Designer - User Manual</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <ReactMarkdown components={ChakraUIRenderer()} children={manualContent} />
+          <ModalBody className='seaheat-manual'>
+            <Markdown remarkPlugins={[remarkGfm]}>{manualContent}</Markdown>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme='blue' mr={3} onClick={closeManual}>
