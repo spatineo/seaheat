@@ -29,12 +29,12 @@ export const DesignerView: React.FC<DesignerViewProps> = ({ openManual }: Design
           onClick={() => dispatch(exportState())}
           mr="2" fontWeight={400}
           backgroundColor="#f9f9f9"
-          fontSize="calc(4px + 0.5vw + 0.5vh)">Export</Button>
+          fontSize="calc(4px + 0.5vw + 0.5vh)">Save</Button>
         <Box w="75%">
           <UploadView
             onChange={loadFileForImport}
             accept={'application/json'}
-            buttonText="Import"
+            buttonText="Load"
           />
         </Box>
 

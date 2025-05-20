@@ -1,178 +1,64 @@
 # Seaheat Designer - User Manual
 
-This is a manual, tell me yours
+This tool is for simulating evaluating environmental effects and efficacy of sea heat extraction in the Baltic Sea. The tool is based on a simple model of an extraction facility with a single intake, facility location and a single discharge location. The simulations are based on formulas and data produced by the Finnish Meteorological Institute. Underlying data includes multiple different future scenarios regarding global warming.
 
+## Getting started
 
-A paragraph with *emphasis* and **strong importance**.
+1. Ensure the *Intake* tab is selected from the right hand side, then click on map to set intake location
+2. Enter a value for depth (positive number)
+3. Select the *Facility* tab, then click on map to set facility location
+4. Select the *Discharge* tab, then click on map to set discharge location
+5. Enter a value for depth (positive number)
 
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+After the above choices are made, the application has all the basic configuration needed to make in order to perform the analysis.
 
-* Lists alsdkfl adkf alsdfka slfdkas ldfkas ldfkas ldfkas dlfkas dlfkas dlfka sdlfkas ldfka sdlfkas ldfkas dlfkas dlfkas dlfkas dlfkas dlfkas dlfaks dlfaksd lfaks dflaks dlfkas dlfkas dlfkas dlfkas dlfkas dflkas dlfkas dlfkas dlfkas dlfkas dlfkas dlfkas dlfkas dlfkas dlfkas dlfaks dlfaks dlfaks dflkas dflaksd flaskd flaksd falsk
-* [ ] todo
-* [x] done
+![Example screenshot](manual/example.png)
 
-A table:
+# Data
 
-| a     | b     |
-| ----- | ----- |
-| hello | world |
+Scenarios and functions
 
+**TODO**: Simo is the best person to write this
 
 
-## Sub-heading
+# Features
 
-Wow
+## Saving & loading simulations
 
+You can save and load your simulation to and from your computer by using the *Save* and *Load* buttons in the top left hand corner. The files will be saved as JSON files. To load an simulation saved earlier, you can either drag a file to the *Load* button or click the button and then choose the correct file using your system file dialog.
 
-## Another one
+The saved file includes all simulation configuration, but no data. When you load a simulation configuration, the application will automatically load all necessary data.
 
-Yay
+## The Map
 
-1. Numbered
-2. List
+The map features a background map and a selection of data layers and overlays as well as any custom WMS layers you want to configure. The preset layers are enabled and disabled by clicking the checkbox. For overlays, the order of the layers is determined by the order in which the layers were enabled. To bring a overlay to the top, disable and enable the layer again. 
 
-Wow
+Note that some WMS layers are resolution-sensitive and may not render at all zoom levels (for example the Batymetria layer will only appear when zoomed in enough)
 
-* [ ] TODO
-* [x] done
+## Bottom temperature layer
 
+The bottom temperature layer shows data from long term sea heat forecasts. The layer reflects the chosen scenario and function selections. The layer also features a time dimension selector that you can use to choose for which month of year you want to visualise sea bottom temperature. Please disregard the year, day and time information shown in the dimension selector. The data shows projections for different months over a longer period.
 
+![Dimension selection in the bottom temperature layer](manual/bottomtemp.png)
 
-A paragraph with *emphasis* and **strong importance**.
 
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+### Custom WMS layer
 
-* Lists
-* [ ] todo
-* [x] done
+1. Click the [+] icon next to the *Custom WMS* header
+2. Enter in the WMS GetCapabilities url (for example https://gtkdata.gtk.fi/arcgis/services/EMODnet/EMODnet_Geology/MapServer/WmsServer?SERVICE=WMS&REQUEST=GetCapabilities)
+3. Click *Connect*
+4. Select the layer you want from the list
+5. Click *Add* (lower right corner)
 
-A table:
+After this, you can enable / disable the custom WMS layer as with the other layers.
 
-| a     | b     |
-| ----- | ----- |
-| hello | world |
+You can remove the custom WMS layer by clicking on the trash can icon of that layer.
 
+### Measurement tool
 
+You can do distance measuring by clicking on the measurement tool on the top left corner of the map, under the zoom buttons (see screenshot below).
 
-## Sub-heading
+![Measurement tool](manual/measurement.png)
 
-Wow
-
-
-## Another one
-
-Yay
-
-1. Numbered
-2. List
-
-Wow
-
-* [ ] TODO
-* [x] done
-
-
-
-A paragraph with *emphasis* and **strong importance**.
-
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-
-* Lists
-* [ ] todo
-* [x] done
-
-A table:
-
-| a     | b     |
-| ----- | ----- |
-| hello | world |
-
-
-
-## Sub-heading
-
-Wow
-
-
-## Another one
-
-Yay
-
-1. Numbered
-2. List
-
-Wow
-
-* [ ] TODO
-* [x] done
-
-
-
-A paragraph with *emphasis* and **strong importance**.
-
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-
-* Lists
-* [ ] todo
-* [x] done
-
-A table:
-
-| a     | b     |
-| ----- | ----- |
-| hello | world |
-
-
-
-## Sub-heading
-
-Wow
-
-
-## Another one
-
-Yay
-
-1. Numbered
-2. List
-
-Wow
-
-* [ ] TODO
-* [x] done
-
-
-
-A paragraph with *emphasis* and **strong importance**.
-
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-
-* Lists
-* [ ] todo
-* [x] done
-
-A table:
-
-| a     | b     |
-| ----- | ----- |
-| hello | world |
-
-
-
-## Sub-heading
-
-Wow
-
-
-## Another one
-
-Yay
-
-1. Numbered
-2. List
-
-Wow
-
-* [ ] TODO
-* [x] done
+You can make multiple measurements and each measurement may have a single or multiple line segments. Drawing is started by clicking on the map. Waypoints are set by clicking on the next location and you can finish drawing by double-clicking. The measurements will vanish when you disable the tool.
 

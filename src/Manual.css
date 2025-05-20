@@ -18,11 +18,16 @@
 }
 
 .seaheat-manual blockquote {
-    background: #ddddff
+    background: #ddddff;
+    font-family: 'monospace';
 }
 
 .seaheat-manual ul,
 .seaheat-manual ol {
+    margin-left: 1em;
+}
+
+.seaheat-manual table {
     margin-left: 1em;
 }
 
