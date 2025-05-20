@@ -1,6 +1,6 @@
 # Seaheat Designer - User Manual
 
-This tool is for simulating evaluating environmental effects and efficacy of sea heat extraction in the Baltic Sea. The tool is based on a simple model of an extraction facility with a single intake, facility location and a single discharge location. The simulations are based on formulas and data produced by the Finnish Meteorological Institute. Underlying data includes multiple different future scenarios regarding global warming.
+This tool is for simulating evaluating environmental effects and efficacy of sea heat extraction in the Baltic Sea. The tool is based on a simple model of an extraction facility with a single intake, facility location and a single discharge location. The simulations are based on long term forecasts produced by the Finnish Meteorological Institute (https://fmi.fi). Underlying data includes multiple different future scenarios regarding global warming. The application is written by Spatineo Oy (https://spatineo.com)
 
 ## Getting started
 
@@ -23,11 +23,53 @@ Scenarios and functions
 
 # Features
 
-## Saving & loading simulations
+## Saving and loading simulations
 
 You can save and load your simulation to and from your computer by using the *Save* and *Load* buttons in the top left hand corner. The files will be saved as JSON files. To load an simulation saved earlier, you can either drag a file to the *Load* button or click the button and then choose the correct file using your system file dialog.
 
 The saved file includes all simulation configuration, but no data. When you load a simulation configuration, the application will automatically load all necessary data.
+
+## Intake and discharge panels
+
+These panels show configuration of an intake or discharge (name, depth, location) as well as the temperature forcast for different depths for each month. The location of the intake, facility or discharge can be set by either writing the lat/lon coordinates in the panel, or clicking on the map when the appropriate panel is open (the click will edit the location of the marker for which the panel is open).
+
+![Example intake or discharge panel](manual/intake-discharge.png)
+
+## Facility panel
+
+The facility panel shows simulation options for the heat extraction facility. You can set the name and location for the panel similarly as with the intake and discharge panels. You can also control the intake volume and temperature difference month-by-month. There are also controls to increase or decrease either parameter for all months of the year at the same time. You can also set the expected efficiency level of the facility.
+
+![Example facility panel](manual/facility.png)
+
+## Simulation results
+
+Based on the simulation parameters, the software calculates a number of outputs. You can choose to see the graph you are interested in by using the dropdown selector on the top left hand corner. To export the results, you can click the *Download CSV* button on the top right hand corner.
+
+Available results:
+
+* Total Output per Month
+* Power per Month
+* Temperature at intake depth
+* Temperature at discharge depth
+* Water throughput volume
+* Discharge water temperature
+* Discharge temperature difference
+* Discharge impact radius (see section *Discharge impact area*)
+
+![Example output graph](manual/output-graph.png)
+
+If instead of a graph, you see a text "No data series", it means you are missing a simulation parameter. For example the depth setting for either the intake or the discharge. Refer to the "Getting started" section of this manual.
+
+## Discharge impact area visualisation
+
+Discharge impact means an estimate of the size of the area that will be affected or disrupted by the introduction of new water. The discharged water will be of a different temperature and different salinity compared to the discharge location at depth. The map will show a visualisation of the affected area by a method of displaying a circle centered on the impact area. The circle is made up of individual month-by-month circles that are drawn at a constant transparency level.
+
+![Example discharge impact area visualisation](manual/discharge-impact.png)
+
+Lighter impact area: the impact reaches that part of the circle for a duragion of the year
+Darker impact area: the area will be affected for a longer duration during the year
+
+For more accurate analysis, use the discharge impact radius graph and the measurement tool.
 
 ## The Map
 
@@ -35,12 +77,13 @@ The map features a background map and a selection of data layers and overlays as
 
 Note that some WMS layers are resolution-sensitive and may not render at all zoom levels (for example the Batymetria layer will only appear when zoomed in enough)
 
-## Bottom temperature layer
+
+
+### Bottom temperature layer
 
 The bottom temperature layer shows data from long term sea heat forecasts. The layer reflects the chosen scenario and function selections. The layer also features a time dimension selector that you can use to choose for which month of year you want to visualise sea bottom temperature. Please disregard the year, day and time information shown in the dimension selector. The data shows projections for different months over a longer period.
 
 ![Dimension selection in the bottom temperature layer](manual/bottomtemp.png)
-
 
 ### Custom WMS layer
 
@@ -61,4 +104,5 @@ You can do distance measuring by clicking on the measurement tool on the top lef
 ![Measurement tool](manual/measurement.png)
 
 You can make multiple measurements and each measurement may have a single or multiple line segments. Drawing is started by clicking on the map. Waypoints are set by clicking on the next location and you can finish drawing by double-clicking. The measurements will vanish when you disable the tool.
+
 

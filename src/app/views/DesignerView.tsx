@@ -23,7 +23,7 @@ export const DesignerView: React.FC<DesignerViewProps> = ({ openManual }: Design
           onClick={openManual}
           mr="2" fontWeight={400}
           backgroundColor="#f9f9f9"
-          fontSize="calc(4px + 0.5vw + 0.5vh)">Manual</Button>
+          fontSize="calc(4px + 0.5vw + 0.5vh)">Help</Button>
         <Button
           flex="25%"
           onClick={() => dispatch(exportState())}
