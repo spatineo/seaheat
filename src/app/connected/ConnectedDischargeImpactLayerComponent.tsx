@@ -2,9 +2,12 @@ import React, { useMemo } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { Feature } from "ol"
-import { Circle } from "ol/geom"
+import { Geometry } from "ol/geom"
 import { FeatureCollectionLayer } from "../../components/map/layer/FeatureCollectionLayer"
 import { Fill, Style } from "ol/style"
+import { toLonLat } from "ol/proj"
+import GeoJSON from "ol/format/GeoJSON"
+import * as turf from "@turf/turf"
 
 const dischargeImpactStyle = new Style({
   fill: new Fill({ color: '#00000011' })
@@ -12,6 +15,13 @@ const dischargeImpactStyle = new Style({
 
 interface ConnectedDischargeImpactLayerComponentProps {
   zIndex: number
+}
+
+export const createCircle = (coords: number[], radius: number) => {
+  const latlon = toLonLat(coords, "EPSG:3857")
+  const options = { steps: 25, units: "meters" as turf.Units, properties: {} }
+  const circle = turf.circle(latlon, radius, options)
+  return circle
 }
 
 export const ConnectedDischargeImpactLayerComponent: React.FC<ConnectedDischargeImpactLayerComponentProps> = ({ zIndex }: ConnectedDischargeImpactLayerComponentProps ) => {
@@ -22,10 +32,10 @@ export const ConnectedDischargeImpactLayerComponent: React.FC<ConnectedDischarge
     if (!dischargeLocation || !impactRadius) return []
 
     return impactRadius.map((radius) => {
-      return new Feature({
-        // Note: radius can be used direclty as circle radius ONLY when the projection unit is 'm'
-        geometry: new Circle(dischargeLocation, radius)
-      })
+      const circle = createCircle(dischargeLocation, radius)
+
+      const feature = new GeoJSON({ featureProjection: 'EPSG:3857' }).readFeature(circle) as Feature<Geometry>
+      return feature
     })
   }, [impactRadius, dischargeLocation])
 
