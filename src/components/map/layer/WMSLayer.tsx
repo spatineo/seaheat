@@ -9,9 +9,10 @@ interface WMSLayerProps {
   layerInfo: WMSLayerType
   zIndex: number
   dimensions?: { [key: string]: string }
+  layerNameOverride?: string
 }
 
-export const WMSLayer = ({ layerInfo, opacity, zIndex, dimensions }: WMSLayerProps) => {
+export const WMSLayer = ({ layerInfo, opacity, zIndex, dimensions, layerNameOverride }: WMSLayerProps) => {
   const { map } = useContext(MapContext)
 
   const [layer, setLayer] = useState<TileLayer<TileWMS> | null>(null)
@@ -19,12 +20,14 @@ export const WMSLayer = ({ layerInfo, opacity, zIndex, dimensions }: WMSLayerPro
   useEffect(() => {
     if (!map || !layerInfo) return
 
+    const layerName = layerNameOverride || layerInfo.layer.Name
+
     const layer = new TileLayer({
       source: new TileWMS({
         url: layerInfo.url,
         params: {
           ...dimensions,
-          'LAYERS': layerInfo.layer.Name
+          'LAYERS': layerName
         }
       }),
       zIndex
@@ -36,7 +39,7 @@ export const WMSLayer = ({ layerInfo, opacity, zIndex, dimensions }: WMSLayerPro
     return () => {
       map.removeLayer(layer)
     }
-  }, [map, layerInfo, zIndex, dimensions])
+  }, [map, layerInfo, zIndex, dimensions, layerNameOverride])
 
   useEffect(() => {
     if (!layer) return
