@@ -10,6 +10,7 @@ import { useEffect, useState } from "react"
 import { Coordinate } from "ol/coordinate"
 import { EventsKey } from "ol/events"
 import { unByKey } from "ol/Observable"
+import { config } from "../../../config/app"
 
 export const useMeasurementTool = (map: Map | null) => {
   const [measurementToolActive, setMeasurementToolActive] = useState(false)
@@ -30,7 +31,8 @@ export const useMeasurementTool = (map: Map | null) => {
         'stroke-width': 2,
         'circle-radius': 7,
         'circle-fill-color': '#ffcc33'
-      }
+      },
+      zIndex: config.zIndexTop
     })
 
     let sketch: Feature<LineString> | null = null

@@ -3,5 +3,6 @@ export const config = {
   zIndexOffsetBaseLayer: 0,
   zIndexOffsetDataLayer: 100,
   zIndexOffsetOverlayLayer: 200,
-  zIndexOffsetFeatureLayer: 300
+  zIndexOffsetFeatureLayer: 300,
+  zIndexTop: 999
 }
