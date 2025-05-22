@@ -4,7 +4,7 @@ import { LayerConfiguration } from "../types"
 export const availableLayers: Array<LayerConfiguration> = [
   {
     id: 'a404e31f-3035-40b7-905a-25667ac11141',
-    title: 'Bottom temperature (reanalysis scenario/average)',
+    title: 'Bottom temperature',
     capabilitiesUrl: 'https://ext-seaheat-smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
     layer: 'seaheat-customer:seaheat-producer:seaheat-monthly-monthly-timmean-bottomtemperature',
     layerNameFunction: (ds: DataSource) => `seaheat-customer:seaheat-producer:seaheat-monthly-${ds.scenarioId}-${ds.functionId}-bottomtemperature`,
