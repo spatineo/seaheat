@@ -38,6 +38,15 @@ export const ConnectedLayerDimensionComponent: React.FC = () => {
     dispatch(setLayerDimension({ layerId, dimension, value }))
   }
 
+  const dimensionNameFormatter = (dimension: string, value: string) => {
+    if (dimension === 'time') {
+      const date = new Date(value)
+      const month = date.toLocaleString('default', { month: 'long' })
+      return month
+    }
+    return value
+  }
+
   return data.map((opt, idx) => {
     return (
       <div key={idx}>
@@ -48,7 +57,7 @@ export const ConnectedLayerDimensionComponent: React.FC = () => {
               onChange={(evt) => { onChange(opt.layerId, d.name, evt.target.value) }}
               value={layerDimensions[opt.layerId]?.values[d.name]}>
               {options.map((o, oIdx) => (
-                <option value={o} key={oIdx}>{o}</option>
+                <option value={o} key={oIdx}>{dimensionNameFormatter(d.name, o)}</option>
               ))}
             </Select>
           )

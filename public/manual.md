@@ -18,7 +18,7 @@ After the above choices are made, the application has all the basic configuratio
 
 Scenarios and functions
 
-**TODO**: Simo is the best person to write this
+**TODO**: We need a description or link to relevant publications here
 
 
 # Features
@@ -81,7 +81,7 @@ Note that some WMS layers are resolution-sensitive and may not render at all zoo
 
 ### Bottom temperature layer
 
-The bottom temperature layer shows data from long term sea heat forecasts. The layer reflects the chosen scenario and function selections. The layer also features a time dimension selector that you can use to choose for which month of year you want to visualise sea bottom temperature. Please disregard the year, day and time information shown in the dimension selector. The data shows projections for different months over a longer period.
+The bottom temperature layer shows data from long term sea heat forecasts. The layer reflects the chosen scenario and function selections. The layer also features a time dimension selector that you can use to choose for which month of year you want to visualise sea bottom temperature.
 
 ![Dimension selection in the bottom temperature layer](manual/bottomtemp.png)
 
