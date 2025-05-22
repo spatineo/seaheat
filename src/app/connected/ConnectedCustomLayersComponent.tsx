@@ -22,7 +22,8 @@ export const ConnectedCustomLayersComponent: React.FC = () => {
         Title: customLayer.title,
         Name: customLayer.name,
         Layer: []
-      }
+      },
+      capabilities: null!
     }
 
     return (<WMSLayer key={idx} zIndex={config.zIndexOffsetOverlayLayer + idx} layerInfo={layerInfo} opacity={vl.opacity} />)

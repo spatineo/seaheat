@@ -1,3 +1,4 @@
+import { DataSource } from "../app/slices/uiState"
 import { LayerConfiguration } from "../types"
 
 export const availableLayers: Array<LayerConfiguration> = [
@@ -6,6 +7,7 @@ export const availableLayers: Array<LayerConfiguration> = [
     title: 'Bottom temperature (reanalysis scenario/average)',
     capabilitiesUrl: 'https://ext-seaheat-smartmet-server.out.ock.fmi.fi/wms?service=wms&request=getcapabilities',
     layer: 'seaheat-customer:seaheat-producer:seaheat-monthly-monthly-timmean-bottomtemperature',
+    layerNameFunction: (ds: DataSource) => `seaheat-customer:seaheat-producer:seaheat-monthly-${ds.scenarioId}-${ds.functionId}-bottomtemperature`,
     isDatalayer: true,
     type: 'WMS',
     dimensions: ['time']

@@ -1,3 +1,5 @@
+import { DataSource } from "../app/slices/uiState"
+
 export interface WMSCapabilitiesType {
   Service: Service
   Capability: Capability
@@ -32,6 +34,7 @@ interface Service {
 export interface Layer {
   Title: string
   Name?: string
+  NameFunction?: (dataSource: DataSource) => string
   Layer: Array<Layer>
   Dimension?: Array<Dimension>
 }

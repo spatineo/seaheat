@@ -11,7 +11,7 @@ export const initWMSAction = createAction('INIT_WMSLAYERS')
 export const wmsMiddleware = createListenerMiddleware()
 const startAppListening = wmsMiddleware.startListening.withTypes<RootState, AppDispatch>()
 
-const findLayerFromCapabilities = (name: string, capabilities: WMSCapabilitiesType): Layer | undefined => {
+export const findLayerFromCapabilities = (name: string, capabilities: WMSCapabilitiesType): Layer | undefined => {
   function find (layers: Array<Layer>): Layer | undefined {
     let match
     if (layers) {
@@ -42,7 +42,7 @@ startAppListening({
         const dcpType = capabilities.Capability.Request.GetMap.DCPType.find(d => d.HTTP.Get?.OnlineResource)
 
         if (l && dcpType) {
-          listenerApi.dispatch(setLayer({ id: layer.id, url: dcpType.HTTP.Get.OnlineResource, layer: l }))
+          listenerApi.dispatch(setLayer({ id: layer.id, url: dcpType.HTTP.Get.OnlineResource, layer: l, capabilities }))
         } else {
           listenerApi.dispatch(processingError(`Layer ${layer.title}: not available in service Capablities`))
         }

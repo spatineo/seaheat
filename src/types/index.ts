@@ -1,3 +1,5 @@
+import { DataSource } from '../app/slices/uiState'
+
 export type { TemperatureProps, TemperatureData } from './temperature'
 export type { GraphData } from './graph'
 export type { WMSCapabilitiesType, Layer } from './wms_capabilities'
@@ -35,6 +37,7 @@ export interface LayerConfiguration {
   capabilitiesUrl: string
   title: string
   layer: string
+  layerNameFunction?: (dataSource: DataSource) => string
   type: string
   isDatalayer: boolean
   dimensions?: Array<string>

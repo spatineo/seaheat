@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { GraphData, Layer, TemperatureData, emptyGraphData, emptyTemperatureData } from '../../types'
+import { GraphData, Layer, TemperatureData, WMSCapabilitiesType, emptyGraphData, emptyTemperatureData } from '../../types'
 import { emptyImpactData } from '../../types/temperature'
 
 export enum OutputType {
@@ -18,6 +18,7 @@ export interface WMSLayerType {
   id: string
   url: string
   layer: Layer
+  capabilities: WMSCapabilitiesType
 }
 
 export interface Impact {
