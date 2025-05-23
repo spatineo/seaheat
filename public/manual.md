@@ -16,10 +16,19 @@ After the above choices are made, the application has all the basic configuratio
 
 # Data
 
-Scenarios and functions
-
 **TODO**: We need a description or link to relevant publications here
 
+| Scenario                         | Description |
+| -------------------------------- | ----------- |
+| Reanalysis                       |             |
+| RCP 4.5 - long term (2069-2099)  |             |
+| RCP 4.5 - short term (2030-2060) |             |
+| RCP 8.5 - long term (2069-2099)  |             |
+| RCP 8.5 - short term (2030-2060) |             |
+
+Functions: average, min, max, 10th percentile, 90th percentile
+
+The data is accessed via FMI's [EDR](https://ogcapi.ogc.org/edr/EDR) API: https://ext-seaheat-smartmet-server.out.ock.fmi.fi/edr/
 
 # Features
 
