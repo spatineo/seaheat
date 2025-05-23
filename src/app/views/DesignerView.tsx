@@ -5,7 +5,11 @@ import { exportState } from "../../middleware/ImportExportMiddleware"
 import { useFileImport } from "../hooks/useFileImport"
 import { UploadView } from "./UploadView"
 
-export const DesignerView: React.FC = () => {
+interface DesignerViewProps {
+  openManual: () => void
+}
+
+export const DesignerView: React.FC<DesignerViewProps> = ({ openManual }: DesignerViewProps) => {
   const dispatch = useDispatch()
 
   const { loadFileForImport } = useFileImport()
@@ -16,15 +20,21 @@ export const DesignerView: React.FC = () => {
       <Flex alignItems="center" p={0} w="100%">
         <Button
           flex="25%"
+          onClick={openManual}
+          mr="2" fontWeight={400}
+          backgroundColor="#f9f9f9"
+          fontSize="calc(4px + 0.5vw + 0.5vh)">Help</Button>
+        <Button
+          flex="25%"
           onClick={() => dispatch(exportState())}
           mr="2" fontWeight={400}
           backgroundColor="#f9f9f9"
-          fontSize="calc(4px + 0.5vw + 0.5vh)">Export</Button>
+          fontSize="calc(4px + 0.5vw + 0.5vh)">Save</Button>
         <Box w="75%">
           <UploadView
             onChange={loadFileForImport}
             accept={'application/json'}
-            buttonText="Import"
+            buttonText="Load"
           />
         </Box>
 

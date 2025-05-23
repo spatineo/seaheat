@@ -22,6 +22,11 @@ interface LayerDimension {
   values: { [key: string]: string }
 }
 
+export interface DataSource {
+  scenarioId: string
+  functionId: string
+}
+
 export interface UIState {
   selectedPointTab: SeaheatFeatureType
   map: {
@@ -35,10 +40,7 @@ export interface UIState {
   graph: {
     visibleGraph: OutputType
   }
-  dataSource: {
-    scenarioId: string
-    functionId: string
-  }
+  dataSource: DataSource
 }
 
 const initialState: UIState = {
