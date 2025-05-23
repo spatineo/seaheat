@@ -39,7 +39,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({ view, onClickFeature
   useEffect(() => {
     if (!mapRef.current) return
 
-    const scaleControl = new ScaleLine({ units: 'metric' });
+    const scaleControl = new ScaleLine({ units: 'metric' })
     const mapObject: Map = new Map({
       view: new View({
         projection: config.projection
