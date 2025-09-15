@@ -21,15 +21,15 @@ export const availableLayers: Array<LayerConfiguration> = [
   },
   {
     id: '245305de-0385-4c3b-9447-ebe8ab100ee1',
-    title: 'Batymetria (Velmu)',
-    capabilitiesUrl: 'https://paikkatieto.ymparisto.fi/arcgis/services/Velmukartta/Velmukartta/MapServer/WmsServer?SERVICE=WMS&REQUEST=GetCapabilities',
-    layer: '1',
+    title: 'Batymetria (EMODnet)',
+    capabilitiesUrl: 'https://ows.emodnet-bathymetry.eu/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0',
+    layer: 'emodnet:mean_2022',
     isDatalayer: true,
     type: 'WMS',
     legend: {
-      url: 'https://paikkatieto.ymparisto.fi/arcgis/services/Velmukartta/Velmukartta/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=1',
-      width: 90,
-      height: 468,
+      url: 'https://ows.emodnet-bathymetry.eu/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=emodnet%3Amean_2022',
+      width: 86,
+      height: 393,
       scale: 0.8
     }
   },
