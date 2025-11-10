@@ -57,7 +57,7 @@ export const MonthlySlider: React.FC<MonthlySliderProps> = ({ values, minValue, 
                 <SliderFilledTrack bg={color}/>
               </SliderTrack>
               <Tooltip hasArrow placement='top' label={`${value} ${unit}`}>
-                <SliderThumb>
+                <SliderThumb zIndex={0}>
                   <Box as={sliderIcon} />
                 </SliderThumb>
               </Tooltip>

@@ -117,7 +117,7 @@ export const FacilityComponent: React.FC<FacilityComponentProps> = ({
               <SliderFilledTrack />
             </SliderTrack>
             <Tooltip hasArrow placement='top' label={`${Number(facilityEffectivenessFactor * 100).toFixed()}%`}>
-              <SliderThumb>
+              <SliderThumb zIndex={0}>
                 <Box as={SunIcon} />
               </SliderThumb>
             </Tooltip>
